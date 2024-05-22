@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
 import '../Assets/gestion_empleados.module.css';
@@ -31,18 +31,18 @@ const Gestion = () => {
     }
   };
 
-  const fetchRoles = async () => {
+  const fetchRoles = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/roles`);
       setRoles(response.data);
     } catch (error) {
       console.error('Error al obtener los roles:', error);
     }
-  };
+  }, [backendUrl]);
 
   useEffect(() => {
     fetchRoles();
-  }, []);
+  }, [fetchRoles]);
 
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
