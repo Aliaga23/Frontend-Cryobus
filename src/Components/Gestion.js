@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
 import '../Assets/gestion_empleados.module.css';
@@ -18,7 +18,7 @@ const Gestion = () => {
   const [roles, setRoles] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
   const fetchUsers = async () => {
     try {
@@ -31,18 +31,18 @@ const Gestion = () => {
     }
   };
 
-  const fetchRoles = useCallback(async () => {
+  const fetchRoles = async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/roles`);
       setRoles(response.data);
     } catch (error) {
       console.error('Error al obtener los roles:', error);
     }
-  }, [backendUrl]);
+  };
 
   useEffect(() => {
     fetchRoles();
-  }, [fetchRoles]);
+  }, []);
 
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
@@ -123,7 +123,7 @@ const Gestion = () => {
                 <Form.Label htmlFor="idRol">Rol</Form.Label>
                 <Form.Control as="select" id="idRol" name="idRol" value={newUser.idRol} onChange={handleChange}>
                   <option value="">Seleccione un rol</option>
-                  {Array.isArray(roles) && roles.map(role => (
+                  {roles.map(role => (
                     <option key={role.ID} value={role.ID}>{role.NOMBRE}</option>
                   ))}
                 </Form.Control>
