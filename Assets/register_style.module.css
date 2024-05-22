@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card {
+  width: 100%;
+  max-width: 40rem;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  background-color: white;
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.animationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrar el camión */
+  position: relative;
+  overflow: hidden; /* Para asegurarse de que la imagen no salga del contenedor */
+  width: 100%; /* Asegurarse de que ocupe todo el ancho del contenedor */
+}
+
+.driving-image {
+  width: 150px;
+  margin-bottom: 1rem;
+}
+
+@keyframes drive {
+  0% { transform: translateX(-500%); } /* Comienza fuera de la vista a la izquierda */
+  50% { transform: translateX(100%); } /* Se mueve a la derecha */
+  100% { transform: translateX(0); } /* Termina en el centro */
+}
+
+.animate {
+  animation: drive 1s linear forwards;
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: .15em solid orange;
+  white-space: nowrap;
+  width: 0;
+  margin-top: 20px; /* Espacio entre el camión y el mensaje */
+  animation: typewriter 1s steps(40, end) forwards;
+}
+
+.form-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: .5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: .375rem .75rem;
+  border: 1px solid #ccc;
+  border-radius: .25rem;
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: .5rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: .25rem;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: .75rem 1.25rem;
+  border-radius: .25rem;
+  margin-top: 1rem;
+}

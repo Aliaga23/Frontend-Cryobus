@@ -1,0 +1,260 @@
+/* Estilos del Encabezado */
+/* Añadir al comienzo de tu archivo CSS */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+/* Estilos de la Navegación */
+nav {
+    background-color: #006efd9f;
+    padding-right: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 1400px; /* Establecer el ancho máximo */
+    margin: 0 auto; /* Centrar el contenido */
+}
+
+/* Estilos del Contenido Principal */
+main {
+    padding: 20px;
+    max-width: 1400px; /* Establecer el ancho máximo */
+    margin: 0 auto; /* Centrar el contenido */
+}
+
+/* Estilos para el logo */
+.navbar-brand img {
+    height: 65px; /* Aumentar el tamaño del logo */
+    border-radius: 50%;
+}
+
+/* Estilos de la Lista de Navegación */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px; /* Aumentar el tamaño del texto */
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #4CAF50;
+}
+
+/* Estilos para el texto del Contenido Principal */
+.about-us h2,
+.about-us h3 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* Estilos del Contenido Acerca de Nosotros */
+/* Estilos para el bloque "about-us" */
+.about-us {
+    border-radius: 20px;
+    padding: 20px; /* Aumentar el espacio interno */
+    box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    margin-bottom: 40px; /* Aumentar el margen inferior */
+    font-size: 25px; /* Aumentar el tamaño del texto */
+    max-width: 1400px; /* Establecer el ancho máximo */
+}
+
+/* Estilos para el bloque "about-usintro" */
+.about-usintro {
+    margin-inline-start: 20px; /* Mover hacia el borde izquierdo */
+}
+
+/* Ajustes para pantallas grandes */
+@media (min-width: 1400px) {
+    .about-us {
+        margin-inline-end: -100px; /* Mover hacia el borde derecho */
+    }
+
+    .about-usintro {
+        margin-inline-start: -100px; /* Mover hacia el borde izquierdo */
+    }
+}
+
+
+
+.about-usintro h2 {
+    font-size: 36px; /* Aumentar el tamaño del título */
+    color: #4CAF50;
+    margin-bottom: 20px; /* Aumentar el margen inferior */
+    margin-top: 70px; /* Aumentar el margen superior */
+}
+
+.about-usintro h3 {
+    font-size: 60px; /* Aumentar el tamaño del título */
+    margin-bottom: 10px; /* Aumentar el margen inferior */
+    margin-top: 10px; /* Aumentar el margen superior */
+    color: #555; /* Cambiar el color del texto */
+}
+.about-us p
+{
+    font-size: 20px; /* Aumentar el tamaño del título */
+    margin-bottom: 10px; /* Aumentar el margen inferior */
+    margin-top: 10px; /* Aumentar el margen superior */
+    color: #555; /* Cambiar el color del texto */
+    
+}
+/* Estilos del Botón de Llamada a la Acción (CTA) */
+.cta {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px 40px; /* Aumentar el padding */
+    display: inline-block;
+    margin-right: 20px; /* Aumentar el margen derecho */
+    cursor: pointer;
+    border-radius: 8px; /* Aumentar el radio del borde */
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.cta:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para la sección de Servicios */
+#services {
+    text-align: center;
+    margin-top: 60px; /* Aumentar el margen superior */
+}
+
+#services h2 {
+    font-size: 42px; /* Aumentar el tamaño del título */
+    margin-bottom: 60px; /* Aumentar el margen inferior */
+    color: #1f1f1f; /* Cambiar el color del texto */
+}
+
+/* Estilos para cada servicio */
+.service {
+    background-color: #f9f9f910;
+    padding: 0px 50px;
+    border-radius: 30px; /* Aumentar el radio del borde */
+    transition: background-color 0.3s ease;
+    margin-bottom: 30px; /* Aumentar el margen inferior */
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Sombra más pronunciada */
+}
+
+.service h3 {
+    margin-top: 20px; /* Aumentar el margen superior */
+    margin-bottom: 20px; /* Aumentar el margen inferior */
+    font-size: 28px; /* Aumentar el tamaño del título */
+    color: #333; /* Cambiar el color del texto */
+}
+
+/* Estilos para la sección de Destinos */
+/* Estilos para la sección de Destinos *//* Estilos para la sección de Destinos */
+#gallery {
+    padding: 40px 0; /* Espaciado interno */
+}
+
+#gallery h2 {
+    font-size: 36px; /* Tamaño del título */
+    color: #333; /* Color del texto */
+    margin-bottom: 40px; /* Espaciado inferior */
+}
+
+/* Estilos para los contenedores de los destinos */
+.destination-container {
+    margin-bottom: 40px; /* Espaciado inferior */
+}
+
+/* Estilos para los destinos */
+.destination {
+    position: relative; /* Posición relativa para superponer el texto sobre la imagen */
+    overflow: hidden; /* Ocultar el texto que sobresale de la imagen */
+    border-radius: 20px; /* Bordes redondeados */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Estilos para las imágenes de los destinos */
+.destination img {
+    width: 100%; /* Hacer que la imagen ocupe todo el espacio disponible */
+    height: auto; /* Altura automática para mantener la proporción */
+    object-fit: cover; /* Hacer que la imagen cubra todo el contenedor sin deformarse */
+}
+
+/* Estilos para la información de los destinos */
+.destination-info {
+    position: absolute; /* Posición absoluta */
+    bottom: 0; /* Alinear en la parte inferior */
+    left: 0; /* Alinear a la izquierda */
+    width: 100%; /* Ancho completo */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+    padding: 10px; /* Espaciado interno */
+    color: #fff; /* Color del texto */
+    transition: bottom 0.3s ease; /* Transición suave para el efecto hover */
+}
+
+/* Estilos para el texto de los destinos */
+.destination-info h3 {
+    margin: 0; /* Eliminar márgenes */
+    font-size: 24px; /* Tamaño del texto */
+}
+
+/* Estilos para el hover de los destinos */
+.destination:hover img {
+    transform: scale(1.1); /* Aumentar ligeramente el tamaño de la imagen */
+}
+
+.destination:hover .destination-info {
+    bottom: -40px; /* Desplazar hacia arriba */
+}
+
+
+/* Estilos para la sección de Testimonios */
+#testimonials {
+    padding: 40px 0; /* Espaciado interno */
+}
+
+#testimonials h2 {
+    font-size: 36px; /* Tamaño del título */
+    color: #333; /* Color del texto */
+}
+
+/* Estilos para los contenedores de los testimonios */
+.testimonial {
+    background-color: #f9f9f9; /* Color de fondo */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 20px; /* Bordes redondeados */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-bottom: 30px; /* Espaciado inferior */
+    text-align: center; /* Alinear al centro */
+}
+
+/* Estilos para el texto de los testimonios */
+.testimonial p {
+    font-size: 18px; /* Tamaño del texto */
+    margin-bottom: 20px; /* Espaciado inferior */
+}
+
+/* Estilos para el autor de los testimonios */
+.testimonial .author {
+    font-style: italic; /* Estilo itálico */
+    color: #777; /* Color de texto gris */
+}
+
+/* Estilos del Pie de Página */
+footer {
+    background-color: #ffffff;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+    max-width: 1400px; /* Establecer el ancho máximo */
+    margin: 0 auto; /* Centrar el contenido */
+}
