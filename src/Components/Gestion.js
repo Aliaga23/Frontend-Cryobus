@@ -123,7 +123,7 @@ const Gestion = () => {
                 <Form.Label htmlFor="idRol">Rol</Form.Label>
                 <Form.Control as="select" id="idRol" name="idRol" value={newUser.idRol} onChange={handleChange}>
                   <option value="">Seleccione un rol</option>
-                  {roles.map(role => (
+                  {Array.isArray(roles) && roles.map(role => (
                     <option key={role.ID} value={role.ID}>{role.NOMBRE}</option>
                   ))}
                 </Form.Control>
