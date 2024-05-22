@@ -18,7 +18,7 @@ const Register = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await fetch('http://localhost:8081/api/roles');
+        const response = await fetch('https://proyecto2-production-ba5b.up.railway.app/api/roles');
         const data = await response.json();
         setRoles(data);
         if (data.length > 0) {
@@ -39,7 +39,7 @@ const Register = () => {
     const userData = { id, pass: password, apellidos: lastName, nombres: name, id_rol: selectedRole };
 
     try {
-      const response = await fetch('http://localhost:8081/register', {
+      const response = await fetch('https://proyecto2-production-ba5b.up.railway.app/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
