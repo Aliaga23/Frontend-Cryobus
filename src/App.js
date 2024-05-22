@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Home from './Components/Home';
 
 import Register from './Components/Register';
+import Gestion from './Components/Gestion';
 
 import CustomNavbar from './Components/Navbar';
 
@@ -19,6 +20,7 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/gestion" element={<Gestion />} />
         
       </Routes>
     </Router>

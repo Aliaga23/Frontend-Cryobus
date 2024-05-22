@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
-import '../../../Assets/gestion_empleados.module.css';
+import '../Assets/gestion_empleados.module.css';
 
 const Gestion = () => {
   const [users, setUsers] = useState([]);
@@ -17,14 +16,16 @@ const Gestion = () => {
   const [editUser, setEditUser] = useState(null);
   const [showTable, setShowTable] = useState(false);
   const [roles, setRoles] = useState([]);
-  const [showAll, setShowAll] = useState(false); // Nuevo estado para controlar la visualización de la tabla completa
+  const [showAll, setShowAll] = useState(false);
+
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/api/users');
+      const response = await axios.get(`${backendUrl}/api/users`);
       setUsers(response.data);
       setShowTable(true);
-      setShowAll(true); // Mostrar todos los usuarios
+      setShowAll(true);
     } catch (error) {
       console.error('Error al obtener los usuarios:', error);
     }
@@ -32,7 +33,7 @@ const Gestion = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/api/roles');
+      const response = await axios.get(`${backendUrl}/api/roles`);
       setRoles(response.data);
     } catch (error) {
       console.error('Error al obtener los roles:', error);
@@ -51,10 +52,10 @@ const Gestion = () => {
     e.preventDefault();
     try {
       if (editUser) {
-        await axios.put(`http://localhost:8081/api/users/${editUser.ID}`, newUser);
+        await axios.put(`${backendUrl}/api/users/${editUser.ID}`, newUser);
         setEditUser(null);
       } else {
-        await axios.post('http://localhost:8081/api/users', newUser);
+        await axios.post(`${backendUrl}/api/users`, newUser);
       }
       setNewUser({ id: '', apellidos: '', nombres: '', contra: '', idRol: '' });
       fetchUsers();
@@ -76,7 +77,7 @@ const Gestion = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8081/api/users/${id}`);
+      await axios.delete(`${backendUrl}/api/users/${id}`);
       fetchUsers();
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
@@ -86,10 +87,10 @@ const Gestion = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:8081/api/users/${searchTerm}`);
-      setUsers([response.data]); // Configurar los usuarios con un solo resultado
+      const response = await axios.get(`${backendUrl}/api/users/${searchTerm}`);
+      setUsers([response.data]);
       setShowTable(true);
-      setShowAll(false); // Asegúrate de que solo se muestra una fila
+      setShowAll(false);
     } catch (error) {
       console.error('Error al buscar el usuario:', error);
     }
