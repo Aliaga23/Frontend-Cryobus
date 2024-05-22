@@ -1,11 +1,12 @@
 import Home from './Components/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
+import './Assets/style.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <Router>
-    <CustomNavbar />
+  
       <Routes>
         <Route path="/" element={<Home />} />
         
