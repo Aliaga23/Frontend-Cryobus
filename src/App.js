@@ -18,10 +18,8 @@ function App() {
     <CustomNavbar />
       <Routes>
       <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginVista />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/gestion" element={<Gestion />} />
-      
+        
       </Routes>
     </Router>
     </AuthProvider>
