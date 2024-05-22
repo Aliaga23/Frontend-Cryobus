@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
-
 import '../../../Assets/gestion_empleados.module.css';
 
 const Gestion = () => {
@@ -21,7 +21,7 @@ const Gestion = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://proyecto2-production-ba5b.up.railway.app/api/users');
+      const response = await axios.get('http://localhost:8081/api/users');
       setUsers(response.data);
       setShowTable(true);
       setShowAll(true); // Mostrar todos los usuarios
@@ -32,7 +32,7 @@ const Gestion = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('https://proyecto2-production-ba5b.up.railway.app/api/roles');
+      const response = await axios.get('http://localhost:8081/api/roles');
       setRoles(response.data);
     } catch (error) {
       console.error('Error al obtener los roles:', error);
@@ -51,10 +51,10 @@ const Gestion = () => {
     e.preventDefault();
     try {
       if (editUser) {
-        await axios.put(`https://proyecto2-production-ba5b.up.railway.app/api/users/${editUser.ID}`, newUser);
+        await axios.put(`http://localhost:8081/api/users/${editUser.ID}`, newUser);
         setEditUser(null);
       } else {
-        await axios.post('https://proyecto2-production-ba5b.up.railway.app/api/users', newUser);
+        await axios.post('http://localhost:8081/api/users', newUser);
       }
       setNewUser({ id: '', apellidos: '', nombres: '', contra: '', idRol: '' });
       fetchUsers();
@@ -76,7 +76,7 @@ const Gestion = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://proyecto2-production-ba5b.up.railway.app/api/users/${id}`);
+      await axios.delete(`http://localhost:8081/api/users/${id}`);
       fetchUsers();
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
@@ -86,7 +86,7 @@ const Gestion = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`https://proyecto2-production-ba5b.up.railway.app/api/users/${searchTerm}`);
+      const response = await axios.get(`http://localhost:8081/api/users/${searchTerm}`);
       setUsers([response.data]); // Configurar los usuarios con un solo resultado
       setShowTable(true);
       setShowAll(false); // Asegúrate de que solo se muestra una fila
