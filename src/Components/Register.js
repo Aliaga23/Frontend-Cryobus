@@ -1,4 +1,3 @@
-// src/Components/Ciclo#1/CU1/Register_vista.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import usuario from '../Assets/registro_imagen.jpg'; // Verifica que la ruta del archivo de imagen sea correcta
@@ -12,20 +11,22 @@ const Register = () => {
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
   const [error, setError] = useState('');
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         const response = await fetch('https://proyecto2-production-ba5b.up.railway.app/api/roles');
+        if (!response.ok) throw new Error('Failed to fetch roles');
         const data = await response.json();
         setRoles(data);
         if (data.length > 0) {
-          setSelectedRole(data[0].ID); // Select the first role by default
+          setSelectedRole(data[0].ID);
         }
       } catch (error) {
         console.error('Error fetching roles:', error);
+        setError('Failed to load roles');
       }
     };
 
@@ -34,7 +35,8 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsAnimating(true);
+    if (isSubmitting) return;  // Prevents multiple submissions
+    setIsSubmitting(true);
 
     const userData = { id, pass: password, apellidos: lastName, nombres: name, id_rol: selectedRole };
 
@@ -47,19 +49,18 @@ const Register = () => {
         body: JSON.stringify(userData)
       });
 
-      if (response.ok) {
-        setTimeout(() => {
-          setIsAnimating(false);
-          setShowSuccessMessage(true);
-        }, 2000); // Adjust time according to the duration of the truck animation
-      } else {
+      if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.message);
-        setIsAnimating(false);
+        throw new Error(errorData.message || 'Failed to register');
       }
+
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setShowSuccessMessage(true);
+      }, 2000); // Adjust time according to the duration of the truck animation
     } catch (error) {
-      setError('Error registering the user');
-      setIsAnimating(false);
+      setError(error.message || 'Error registering the user');
+      setIsSubmitting(false);
     }
   };
 
@@ -68,7 +69,7 @@ const Register = () => {
       <div className={styles.card}>
         <div className={styles['text-center']}>
           <div className={styles.animationContainer}>
-            <img src={usuario} alt="Logo" className={`${styles['driving-image']} ${isAnimating ? styles.animate : ''}`} />
+            <img src={usuario} alt="Logo" className={`${styles['driving-image']} ${isSubmitting ? styles.animate : ''}`} />
           </div>
           {showSuccessMessage && <h2 className={styles.typewriter}>Successfully Registered!</h2>}
           {!showSuccessMessage && <h1>Register</h1>}
@@ -103,7 +104,7 @@ const Register = () => {
             </select>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">Register</button>
+          <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting}>Register</button>
         </form>
         {error && <div className="alert alert-danger">{error}</div>}
         <p className="mt-3 text-center"><Link to="/login">Login</Link></p>
