@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../Assets/logo.jpeg';
@@ -32,19 +32,23 @@ const CustomNavbar = () => {
             {user ? (
               <>
                 {role === 1 && (
-                  <>
-                    <Nav.Link as={Link} to="/gestion">Usuarios</Nav.Link>
-                    <Nav.Link as={Link} to="/gestion_roles">Roles</Nav.Link>
-                    <Nav.Link as={Link} to="/gestion_rolconductor">Rol Conductor</Nav.Link>
-                    <Nav.Link as={Link} to="/gestion_tipoenvio">Tipo Envio</Nav.Link>
-                    <Nav.Link as={Link} to="/gestion_permiso_rol">Permisos Rol</Nav.Link>
-                    <Nav.Link as={Link} to="/gestion_tipoenvio">Tipo Envio</Nav.Link>
-                  </>
+                  <DropdownButton id="dropdown-basic-button" title="Gestión" >
+                    <Dropdown.Item as={Link} to="/gestion">Usuarios</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_roles">Roles</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_rolconductor">Rol Conductor</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_tipoenvio">Tipo Envio</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_permiso_rol">Permisos Rol</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_items">Gestion Items</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</Dropdown.Item>
+                  </DropdownButton>
                 )}
                 {role === 4 && (
-                  <>
-                    <Nav.Link as={Link} to="/gestion_tipoenvio">Tipo Envio</Nav.Link>
-                  </>
+                  <DropdownButton id="dropdown-basic-button" title="Cliente" variant="link">
+                    <Dropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</Dropdown.Item>
+                  </DropdownButton>
                 )}
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </>
