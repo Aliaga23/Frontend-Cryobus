@@ -1,11 +1,20 @@
 // src/Components/GestionNotaEntrega.js
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 import '../Assets/gestion_empleados.module.css';
 
 const GestionNotaEntrega = () => {
+  const { user } = useAuth();
   const [notasEntrega, setNotasEntrega] = useState([]);
+  const [clientes, setClientes] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [reembolsos, setReembolsos] = useState([]);
+  const [notasTraslado, setNotasTraslado] = useState([]);
+  const [tiposEnvio, setTiposEnvio] = useState([]);
+  const [estadosEntrega, setEstadosEntrega] = useState([]);
+  const [paquetes, setPaquetes] = useState([]);
   const [newNotaEntrega, setNewNotaEntrega] = useState({
     NRO: '',
     FECHARECEPCION: '',
@@ -25,6 +34,7 @@ const GestionNotaEntrega = () => {
   });
   const [editNotaEntrega, setEditNotaEntrega] = useState(null);
   const [showTable, setShowTable] = useState(false);
+  const [error, setError] = useState(null);
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
@@ -34,12 +44,90 @@ const GestionNotaEntrega = () => {
       setNotasEntrega(response.data);
       setShowTable(true);
     } catch (error) {
+      setError('Error al obtener las notas de entrega');
       console.error('Error al obtener las notas de entrega:', error);
+    }
+  };
+
+  const fetchClientes = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/clientes`);
+      setClientes(response.data);
+    } catch (error) {
+      setError('Error al obtener los clientes');
+      console.error('Error al obtener los clientes:', error);
+    }
+  };
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/notasEntrega/usuarios`);
+      setUsuarios(response.data);
+    } catch (error) {
+      setError('Error al obtener los usuarios');
+      console.error('Error al obtener los usuarios:', error);
+    }
+  };
+
+  const fetchReembolsos = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/notasEntrega/reembolsos`);
+      setReembolsos(response.data);
+    } catch (error) {
+      setError('Error al obtener los reembolsos');
+      console.error('Error al obtener los reembolsos:', error);
+    }
+  };
+
+  const fetchNotasTraslado = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/notasEntrega/notasTraslado`);
+      setNotasTraslado(response.data);
+    } catch (error) {
+      setError('Error al obtener las notas de traslado');
+      console.error('Error al obtener las notas de traslado:', error);
+    }
+  };
+
+  const fetchTiposEnvio = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/tipoEnvio`);
+      setTiposEnvio(response.data);
+    } catch (error) {
+      setError('Error al obtener los tipos de envío');
+      console.error('Error al obtener los tipos de envío:', error);
+    }
+  };
+
+  const fetchEstadosEntrega = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/estadosEntrega`);
+      setEstadosEntrega(response.data);
+    } catch (error) {
+      setError('Error al obtener los estados de entrega');
+      console.error('Error al obtener los estados de entrega:', error);
+    }
+  };
+
+  const fetchPaquetes = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/paquetes`);
+      setPaquetes(response.data);
+    } catch (error) {
+      setError('Error al obtener los paquetes');
+      console.error('Error al obtener los paquetes:', error);
     }
   };
 
   useEffect(() => {
     fetchNotasEntrega();
+    fetchClientes();
+    fetchUsuarios();
+    fetchReembolsos();
+    fetchNotasTraslado();
+    fetchTiposEnvio();
+    fetchEstadosEntrega();
+    fetchPaquetes();
   }, []);
 
   const handleChange = (e) => {
@@ -48,6 +136,22 @@ const GestionNotaEntrega = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const {
+      NRO, FECHARECEPCION, HORARECEPCION, FECHAENTREGA, HORAENTREGA,
+      PRECIOESTIMADO, CODIGOCLIENTEENVIA, CODIGOCLIENTERECIBE, IDUSUARIOENVIA,
+      IDUSUARIORECIBE, IDTIPOENVIO, IDESTADOENTREGA, NROREEMBOLSO,
+      CODIGOPAQUETE, NRONOTATRASLADO
+    } = newNotaEntrega;
+
+    if (!NRO || !FECHARECEPCION || !HORARECEPCION || !FECHAENTREGA || !HORAENTREGA ||
+        !PRECIOESTIMADO || !CODIGOCLIENTEENVIA || !CODIGOCLIENTERECIBE || !IDUSUARIOENVIA ||
+        !IDUSUARIORECIBE || !IDTIPOENVIO || !IDESTADOENTREGA || !NROREEMBOLSO ||
+        !CODIGOPAQUETE || !NRONOTATRASLADO) {
+      setError('Por favor, complete todos los campos.');
+      return;
+    }
+
     try {
       if (editNotaEntrega) {
         await axios.put(`${backendUrl}/api/notasEntrega/${editNotaEntrega.NRO}`, newNotaEntrega);
@@ -55,9 +159,15 @@ const GestionNotaEntrega = () => {
       } else {
         await axios.post(`${backendUrl}/api/notasEntrega`, newNotaEntrega);
       }
-      setNewNotaEntrega({ NRO: '', FECHARECEPCION: '', HORARECEPCION: '', FECHAENTREGA: '', HORAENTREGA: '', PRECIOESTIMADO: '', CODIGOCLIENTEENVIA: '', CODIGOCLIENTERECIBE: '', IDUSUARIOENVIA: '', IDUSUARIORECIBE: '', IDTIPOENVIO: '', IDESTADOENTREGA: '', NROREEMBOLSO: '', CODIGOPAQUETE: '', NRONOTATRASLADO: '' });
+      setNewNotaEntrega({
+        NRO: '', FECHARECEPCION: '', HORARECEPCION: '', FECHAENTREGA: '', HORAENTREGA: '',
+        PRECIOESTIMADO: '', CODIGOCLIENTEENVIA: '', CODIGOCLIENTERECIBE: '', IDUSUARIOENVIA: '',
+        IDUSUARIORECIBE: '', IDTIPOENVIO: '', IDESTADOENTREGA: '', NROREEMBOLSO: '',
+        CODIGOPAQUETE: '', NRONOTATRASLADO: ''
+      });
       fetchNotasEntrega();
     } catch (error) {
+      setError('Error al registrar la nota de entrega');
       console.error('Error al registrar la nota de entrega:', error);
     }
   };
@@ -88,12 +198,14 @@ const GestionNotaEntrega = () => {
       await axios.delete(`${backendUrl}/api/notasEntrega/${nro}`);
       fetchNotasEntrega();
     } catch (error) {
+      setError('Error al eliminar la nota de entrega');
       console.error('Error al eliminar la nota de entrega:', error);
     }
   };
 
   return (
     <Container className="mt-5">
+      {error && <Alert variant="danger">{error}</Alert>}
       <Row className="mb-5">
         <Col xs={12}>
           <h3>{editNotaEntrega ? 'Editar Nota de Entrega' : 'Registrar Nueva Nota de Entrega'}</h3>
@@ -124,39 +236,84 @@ const GestionNotaEntrega = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="CODIGOCLIENTEENVIA">Código Cliente Envia</Form.Label>
-              <Form.Control type="text" id="CODIGOCLIENTEENVIA" name="CODIGOCLIENTEENVIA" value={newNotaEntrega.CODIGOCLIENTEENVIA} onChange={handleChange} placeholder="Ingrese el código del cliente que envía" />
+              <Form.Control as="select" id="CODIGOCLIENTEENVIA" name="CODIGOCLIENTEENVIA" value={newNotaEntrega.CODIGOCLIENTEENVIA} onChange={handleChange}>
+                <option value="">Seleccione un cliente</option>
+                {clientes.map(cliente => (
+                  <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="CODIGOCLIENTERECIBE">Código Cliente Recibe</Form.Label>
-              <Form.Control type="text" id="CODIGOCLIENTERECIBE" name="CODIGOCLIENTERECIBE" value={newNotaEntrega.CODIGOCLIENTERECIBE} onChange={handleChange} placeholder="Ingrese el código del cliente que recibe" />
+              <Form.Control as="select" id="CODIGOCLIENTERECIBE" name="CODIGOCLIENTERECIBE" value={newNotaEntrega.CODIGOCLIENTERECIBE} onChange={handleChange}>
+                <option value="">Seleccione un cliente</option>
+                {clientes.map(cliente => (
+                  <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="IDUSUARIOENVIA">ID Usuario Envia</Form.Label>
-              <Form.Control type="text" id="IDUSUARIOENVIA" name="IDUSUARIOENVIA" value={newNotaEntrega.IDUSUARIOENVIA} onChange={handleChange} placeholder="Ingrese el ID del usuario que envía" />
+              <Form.Control as="select" id="IDUSUARIOENVIA" name="IDUSUARIOENVIA" value={newNotaEntrega.IDUSUARIOENVIA} onChange={handleChange}>
+                <option value="">Seleccione un usuario</option>
+                {usuarios.map(usuario => (
+                  <option key={usuario.ID} value={usuario.ID}>{usuario.NOMBRES} {usuario.APELLIDOS}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="IDUSUARIORECIBE">ID Usuario Recibe</Form.Label>
-              <Form.Control type="text" id="IDUSUARIORECIBE" name="IDUSUARIORECIBE" value={newNotaEntrega.IDUSUARIORECIBE} onChange={handleChange} placeholder="Ingrese el ID del usuario que recibe" />
+              <Form.Control as="select" id="IDUSUARIORECIBE" name="IDUSUARIORECIBE" value={newNotaEntrega.IDUSUARIORECIBE} onChange={handleChange}>
+                <option value="">Seleccione un usuario</option>
+                {usuarios.map(usuario => (
+                  <option key={usuario.ID} value={usuario.ID}>{usuario.NOMBRES} {usuario.APELLIDOS}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="IDTIPOENVIO">ID Tipo de Envio</Form.Label>
-              <Form.Control type="text" id="IDTIPOENVIO" name="IDTIPOENVIO" value={newNotaEntrega.IDTIPOENVIO} onChange={handleChange} placeholder="Ingrese el ID del tipo de envio" />
+              <Form.Label htmlFor="IDTIPOENVIO">Tipo de Envio</Form.Label>
+              <Form.Control as="select" id="IDTIPOENVIO" name="IDTIPOENVIO" value={newNotaEntrega.IDTIPOENVIO} onChange={handleChange}>
+                <option value="">Seleccione un tipo de envío</option>
+                {tiposEnvio.map(tipo => (
+                  <option key={tipo.ID} value={tipo.ID}>{tipo.NOMBRE}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="IDESTADOENTREGA">ID Estado de Entrega</Form.Label>
-              <Form.Control type="text" id="IDESTADOENTREGA" name="IDESTADOENTREGA" value={newNotaEntrega.IDESTADOENTREGA} onChange={handleChange} placeholder="Ingrese el ID del estado de entrega" />
+              <Form.Label htmlFor="IDESTADOENTREGA">Estado de Entrega</Form.Label>
+              <Form.Control as="select" id="IDESTADOENTREGA" name="IDESTADOENTREGA" value={newNotaEntrega.IDESTADOENTREGA} onChange={handleChange}>
+                <option value="">Seleccione un estado de entrega</option>
+                {estadosEntrega.map(estado => (
+                  <option key={estado.ID} value={estado.ID}>{estado.NOMBRE}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="NROREEMBOLSO">Número de Reembolso</Form.Label>
-              <Form.Control type="text" id="NROREEMBOLSO" name="NROREEMBOLSO" value={newNotaEntrega.NROREEMBOLSO} onChange={handleChange} placeholder="Ingrese el número de reembolso" />
+              <Form.Control as="select" id="NROREEMBOLSO" name="NROREEMBOLSO" value={newNotaEntrega.NROREEMBOLSO} onChange={handleChange}>
+                <option value="">Seleccione un reembolso</option>
+                {reembolsos.map(reembolso => (
+                  <option key={reembolso.NRO} value={reembolso.NRO}>{reembolso.NRO}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="CODIGOPAQUETE">Código de Paquete</Form.Label>
-              <Form.Control type="text" id="CODIGOPAQUETE" name="CODIGOPAQUETE" value={newNotaEntrega.CODIGOPAQUETE} onChange={handleChange} placeholder="Ingrese el código del paquete" />
+              <Form.Control as="select" id="CODIGOPAQUETE" name="CODIGOPAQUETE" value={newNotaEntrega.CODIGOPAQUETE} onChange={handleChange}>
+                <option value="">Seleccione un paquete</option>
+                {paquetes.map(paquete => (
+                  <option key={paquete.CODIGO} value={paquete.CODIGO}>{paquete.CODIGO}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="NRONOTATRASLADO">Número de Nota de Traslado</Form.Label>
-              <Form.Control type="text" id="NRONOTATRASLADO" name="NRONOTATRASLADO" value={newNotaEntrega.NRONOTATRASLADO} onChange={handleChange} placeholder="Ingrese el número de la nota de traslado" />
+              <Form.Control as="select" id="NRONOTATRASLADO" name="NRONOTATRASLADO" value={newNotaEntrega.NRONOTATRASLADO} onChange={handleChange}>
+                <option value="">Seleccione una nota de traslado</option>
+                {notasTraslado.map(nota => (
+                  <option key={nota.NRO} value={nota.NRO}>{nota.NRO}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Button type="submit" variant="primary" className="mb-3">{editNotaEntrega ? 'Actualizar' : 'Registrar'}</Button>
           </Form>
@@ -180,8 +337,8 @@ const GestionNotaEntrega = () => {
                   <th>Código Cliente Recibe</th>
                   <th>ID Usuario Envia</th>
                   <th>ID Usuario Recibe</th>
-                  <th>ID Tipo de Envio</th>
-                  <th>ID Estado de Entrega</th>
+                  <th>Tipo de Envio</th>
+                  <th>Estado de Entrega</th>
                   <th>Número de Reembolso</th>
                   <th>Código de Paquete</th>
                   <th>Número de Nota de Traslado</th>
@@ -197,15 +354,15 @@ const GestionNotaEntrega = () => {
                     <td>{notaEntrega.FECHAENTREGA}</td>
                     <td>{notaEntrega.HORAENTREGA}</td>
                     <td>{notaEntrega.PRECIOESTIMADO}</td>
-                    <td>{notaEntrega.CODIGOCLIENTEENVIA}</td>
-                    <td>{notaEntrega.CODIGOCLIENTERECIBE}</td>
-                    <td>{notaEntrega.IDUSUARIOENVIA}</td>
-                    <td>{notaEntrega.IDUSUARIORECIBE}</td>
-                    <td>{notaEntrega.IDTIPOENVIO}</td>
-                    <td>{notaEntrega.IDESTADOENTREGA}</td>
+                    <td>{clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.NOMBRES} {clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.APELLIDOS}</td>
+                    <td>{clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTERECIBE)?.NOMBRES} {clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTERECIBE)?.APELLIDOS}</td>
+                    <td>{usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIOENVIA)?.NOMBRES} {usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIOENVIA)?.APELLIDOS}</td>
+                    <td>{usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIORECIBE)?.NOMBRES} {usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIORECIBE)?.APELLIDOS}</td>
+                    <td>{tiposEnvio.find(tipo => tipo.ID === notaEntrega.IDTIPOENVIO)?.NOMBRE}</td>
+                    <td>{estadosEntrega.find(estado => estado.ID === notaEntrega.IDESTADOENTREGA)?.NOMBRE}</td>
                     <td>{notaEntrega.NROREEMBOLSO}</td>
-                    <td>{notaEntrega.CODIGOPAQUETE}</td>
-                    <td>{notaEntrega.NRONOTATRASLADO}</td>
+                    <td>{paquetes.find(paquete => paquete.CODIGO === notaEntrega.CODIGOPAQUETE)?.CODIGO}</td>
+                    <td>{notasTraslado.find(nota => nota.NRO === notaEntrega.NRONOTATRASLADO)?.NRO}</td>
                     <td>
                       <Button variant="warning" size="sm" onClick={() => handleEdit(notaEntrega)}>Editar</Button>
                       <Button variant="danger" size="sm" onClick={() => handleDelete(notaEntrega.NRO)}>Eliminar</Button>
