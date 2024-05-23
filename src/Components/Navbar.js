@@ -22,7 +22,7 @@ const CustomNavbar = () => {
             {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_roles">Roles</Nav.Link>}
             {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_rol_conductor">Rol Conductor</Nav.Link>}
             {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_tipo_envio">Tipo Envio</Nav.Link>}
-            {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_permiso_rol">Permisos Rol</Nav.Link>}
+            {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/">Logout</Nav.Link>}
             <Nav.Link as={Link} to="/login" onClick={logout}>Login</Nav.Link>
           </Nav>
         </Navbar.Collapse>
