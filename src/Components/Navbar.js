@@ -1,13 +1,19 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../Assets/logo.jpeg';
 
 const CustomNavbar = () => {
-  const { roles, logout } = useAuth();
+  const { user, roles, logout } = useAuth();
+  const navigate = useNavigate();
 
-  const hasRole = (roleName) => (roles || []).some(role => role.ROL === roleName);
+  const hasRole = (roleName) => (roles || []).some(role => role.NOMBRE === roleName);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/Login');
+  };
 
   return (
     <Navbar bg="white" expand="lg" className="shadow-sm">
@@ -22,8 +28,8 @@ const CustomNavbar = () => {
             {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_roles">Roles</Nav.Link>}
             {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_rol_conductor">Rol Conductor</Nav.Link>}
             {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_tipo_envio">Tipo Envio</Nav.Link>}
-            {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/">Logout</Nav.Link>}
-            <Nav.Link as={Link} to="/login" onClick={logout}>Login</Nav.Link>
+            {user && <Nav.Link onClick={handleLogout}>Login</Nav.Link>}
+            {!user && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
           </Nav>
         </Navbar.Collapse>
       </Container>
