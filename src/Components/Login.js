@@ -20,7 +20,7 @@ const Login = () => {
       const res = await axios.post(`${backendUrl}/api/auth/login`, { id: username, pass: password });
       setError('');
       login({ user: res.data.user, roles: res.data.roles });
-      navigate('/');
+      navigate('/gestion');
     } catch (err) {
       console.error('Error al intentar iniciar sesión:', err);
       setError('Usuario o contraseña incorrectos');

@@ -16,22 +16,22 @@ import CustomNavbar from './Components/CustomNavbar';
 import './Assets/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 function App() {
   return (
     <AuthProvider>
       <Router>
         <CustomNavbar />
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-                     <Route path="/gestion" element={<Gestion />} />
-            <Route path="/gestion_rol" element={<GestionRoles />} />
+         
+            <Route path="/" element={<Home />} />
+            <Route path="/gestion" element={<Gestion />} />
+            <Route path="/gestion_roles" element={<GestionRoles />} />
             <Route path="/gestion_permiso_rol" element={<GestionPermisoRol />} />
             <Route path="/gestion_tipoenvio" element={<GestionTipoEnvio />} />
             <Route path="/gestion_rolconductor" element={<GestionRolConductor />} />
-        
+         
         </Routes>
       </Router>
     </AuthProvider>
