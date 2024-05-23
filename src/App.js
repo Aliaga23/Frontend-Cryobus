@@ -12,6 +12,7 @@ import GestionTipoEnvio from './Components/GestionTipoEnvio';
 import GestionRolConductor from './Components/GestionRolConductor';
 
 import CustomNavbar from './Components/CustomNavbar';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 import './Assets/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,14 +25,16 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-         
+          <Route path="/gestion" element={<Gestion />} />
+          <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/gestion" element={<Gestion />} />
             <Route path="/gestion_roles" element={<GestionRoles />} />
             <Route path="/gestion_permiso_rol" element={<GestionPermisoRol />} />
             <Route path="/gestion_tipoenvio" element={<GestionTipoEnvio />} />
-            <Route path="/gestion_rolconductor" element={<GestionRolConductor />} />
-         
+            <Route path="/gestion_rol_conductor" element={<GestionRolConductor />} />
+          
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>
