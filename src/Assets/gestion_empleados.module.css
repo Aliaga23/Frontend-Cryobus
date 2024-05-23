@@ -1,41 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-
-
-body {
-  font-family: 'Roboto', sans-serif;
-}
-.navbar {
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+.gestionContainer {
+  padding: 10px;
 }
 
-.nav-link {
-  font-size: 20px;
-  transition: color 0.3s ease;
-}
+@media (max-width: 576px) {
+  .table-responsive {
+    margin-bottom: 15px;
+    overflow-x: auto;
+  }
 
-.nav-link:hover {
-  color: #4CAF50;
-}
+  .table thead th {
+    font-size: 0.8rem;
+  }
 
-.container {
-  max-width: 1150px;
-  margin: 70px auto;
-  text-align: left;
-}
+  .table tbody td {
+    font-size: 0.8rem;
+  }
 
-.btn {
-  font-size: 15px;
-  cursor: pointer;
-}
+  .form-group label {
+    font-size: 0.8rem;
+  }
 
-.table thead th {
-  background-color: #f8f9fa;
-}
+  .form-control {
+    font-size: 0.8rem;
+  }
 
-footer {
-  background-color: #333;
-  color: #fff;
-  padding: 20px 0;
-  text-align: center;
+  .btn {
+    font-size: 0.8rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  h5 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
 }

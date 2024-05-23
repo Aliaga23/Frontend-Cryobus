@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
-import '../Assets/gestion_empleados.module.css';
+import styles from '../Assets/gestion_empleados.module.css'; // Modifié l'import pour correspondre aux pratiques de CSS Modules
 
 const Gestion = () => {
   const [users, setUsers] = useState([]);
@@ -97,10 +97,10 @@ const Gestion = () => {
   };
 
   return (
-    <div>
+    <div className={styles.gestionContainer}>
       <Container className="mt-5">
         <Row className="mb-5">
-          <Col md={12}>
+          <Col xs={12}>
             <h3>{editUser ? 'Editar Usuario' : 'Registrar Nuevo Usuario'}</h3>
             <Form onSubmit={handleSubmit}>
               <Form.Group>
@@ -128,13 +128,13 @@ const Gestion = () => {
                   ))}
                 </Form.Control>
               </Form.Group>
-              <Button type="submit" variant="primary">{editUser ? 'Actualizar' : 'Registrar'}</Button>
+              <Button type="submit" variant="primary" className="mb-3">{editUser ? 'Actualizar' : 'Registrar'}</Button>
             </Form>
           </Col>
         </Row>
 
         <Row className="mb-5">
-          <Col md={12}>
+          <Col xs={12}>
             <h3>Buscar Usuarios</h3>
             <Form onSubmit={handleSearch}>
               <Row className="mb-3">
@@ -148,10 +148,10 @@ const Gestion = () => {
                 </Col>
               </Row>
               <Row>
-                <Col md={3}>
+                <Col xs={6} sm={3}>
                   <Button type="submit" variant="primary" className="mb-3 w-100">Buscar</Button>
                 </Col>
-                <Col md={3}>
+                <Col xs={6} sm={3}>
                   <Button variant="primary" className="mb-3 w-100" onClick={fetchUsers}>Mostrar Todos</Button>
                 </Col>
               </Row>
@@ -161,52 +161,54 @@ const Gestion = () => {
 
         {showTable && (
           <Row>
-            <Col md={12}>
+            <Col xs={12}>
               <h3>Lista de Usuarios</h3>
-              <Table bordered>
-                <thead className="thead-light">
-                  <tr>
-                    <th>ID</th>
-                    <th>Apellidos</th>
-                    <th>Nombres</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {showAll
-                    ? users.map(user => (
-                        <tr key={user.ID}>
-                          <td>{user.ID}</td>
-                          <td>{user.APELLIDOS}</td>
-                          <td>{user.NOMBRES}</td>
-                          <td>{roles.find(role => role.ID === user.IDROL)?.NOMBRE}</td>
-                          <td>
-                            <Button variant="warning" size="sm" onClick={() => handleEdit(user)}>Editar</Button>
-                            <Button variant="danger" size="sm" onClick={() => handleDelete(user.ID)}>Eliminar</Button>
-                          </td>
-                        </tr>
-                      ))
-                    : users.length > 0 && (
-                        <tr key={users[0].ID}>
-                          <td>{users[0].ID}</td>
-                          <td>{users[0].APELLIDOS}</td>
-                          <td>{users[0].NOMBRES}</td>
-                          <td>{roles.find(role => role.ID === users[0].IDROL)?.NOMBRE}</td>
-                          <td>
-                            <Button variant="warning" size="sm" onClick={() => handleEdit(users[0])}>Editar</Button>
-                            <Button variant="danger" size="sm" onClick={() => handleDelete(users[0].ID)}>Eliminar</Button>
-                          </td>
-                        </tr>
-                      )}
-                </tbody>
-              </Table>
+              <div className="table-responsive">
+                <Table bordered>
+                  <thead className="thead-light">
+                    <tr>
+                      <th>ID</th>
+                      <th>Apellidos</th>
+                      <th>Nombres</th>
+                      <th>Rol</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {showAll
+                      ? users.map(user => (
+                          <tr key={user.ID}>
+                            <td>{user.ID}</td>
+                            <td>{user.APELLIDOS}</td>
+                            <td>{user.NOMBRES}</td>
+                            <td>{roles.find(role => role.ID === user.IDROL)?.NOMBRE}</td>
+                            <td>
+                              <Button variant="warning" size="sm" onClick={() => handleEdit(user)}>Editar</Button>
+                              <Button variant="danger" size="sm" onClick={() => handleDelete(user.ID)}>Eliminar</Button>
+                            </td>
+                          </tr>
+                        ))
+                      : users.length > 0 && (
+                          <tr key={users[0].ID}>
+                            <td>{users[0].ID}</td>
+                            <td>{users[0].APELLIDOS}</td>
+                            <td>{users[0].NOMBRES}</td>
+                            <td>{roles.find(role => role.ID === users[0].IDROL)?.NOMBRE}</td>
+                            <td>
+                              <Button variant="warning" size="sm" onClick={() => handleEdit(users[0])}>Editar</Button>
+                              <Button variant="danger" size="sm" onClick={() => handleDelete(users[0].ID)}>Eliminar</Button>
+                            </td>
+                          </tr>
+                        )}
+                  </tbody>
+                </Table>
+              </div>
             </Col>
           </Row>
         )}
 
         <Row className="mt-5">
-          <Col md={12} className="text-center">
+          <Col xs={12} className="text-center">
             <h5>Gestión de Usuarios - CryoBus</h5>
             <p>Administre sus usuarios de manera eficiente y fácil.</p>
           </Col>
