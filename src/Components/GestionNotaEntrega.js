@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table, Alert } from 'react-bootstrap';
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
 import '../Assets/gestion_empleados.module.css';
 
 const GestionNotaEntrega = () => {
-  const { user } = useAuth();
+  
   const [notasEntrega, setNotasEntrega] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [usuarios, setUsuarios] = useState([]);

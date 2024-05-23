@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navbar, Nav, Container, Dropdown, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container,  NavDropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../Assets/logo.jpeg';
@@ -42,12 +42,15 @@ const CustomNavbar = () => {
                       <NavDropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_items">Gestion Items</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
+                      
                      
                     </NavDropdown>
 
                     <NavDropdown title="Registro" id="registro-dropdown">
                       <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
+                    </NavDropdown>
+                    <NavDropdown title="Asignar" id="registro-dropdown">
+                    <NavDropdown.Item as={Link} to="/gestion_notaentrega">Asignar Nota Entrega</NavDropdown.Item>
                     </NavDropdown>
                   </>
                 )}
