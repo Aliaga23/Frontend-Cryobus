@@ -42,22 +42,22 @@ const CustomNavbar = () => {
                       <NavDropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_items">Gestion Items</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
-                      
+                      <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
                      
                     </NavDropdown>
 
                     <NavDropdown title="Registro" id="registro-dropdown">
                       <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
                     </NavDropdown>
-                    <NavDropdown title="Asignar" id="registro-dropdown">
-                    <NavDropdown.Item as={Link} to="/gestion_notaentrega">Asignar Nota Entrega</NavDropdown.Item>
-                    </NavDropdown>
+                    
                   </>
                 )}
                 {role === 4 && (
                   <NavDropdown title="Cliente" id="cliente-dropdown">
                     <NavDropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
                   </NavDropdown>
                 )}
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
