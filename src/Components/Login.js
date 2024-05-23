@@ -3,24 +3,23 @@ import usuario from '../Assets/usuario.png';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../Assets/login_style.module.css';
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext'; // Importa el contexto de autenticación
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
   const [username, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Usa la función login del contexto de autenticación
+  const { login } = useAuth();
 
-  const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app'; // URL de tu backend en Railway
+  const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const res = await axios.post(`${backendUrl}/api/auth/login`, { id: username, pass: password });
-      console.log('Respuesta del servidor:', res.data);
       setError('');
-      login({ user: res.data.user, roles: res.data.roles }); // Llama a la función login del contexto
+      login({ user: res.data.user, roles: res.data.roles });
       navigate('/');
     } catch (err) {
       console.error('Error al intentar iniciar sesión:', err);

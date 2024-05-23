@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,12 +7,17 @@ import logo from '../Assets/logo.jpeg';
 const CustomNavbar = () => {
   const { user, roles, logout } = useAuth();
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(!!user);
+  }, [user]);
 
   const hasRole = (roleName) => (roles || []).some(role => role.NOMBRE === roleName);
 
   const handleLogout = () => {
     logout();
-    navigate('/Login');
+    navigate('/login');
   };
 
   return (
@@ -24,12 +29,17 @@ const CustomNavbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
-            {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion">Usuarios</Nav.Link>}
-            {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_roles">Roles</Nav.Link>}
-            {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_rol_conductor">Rol Conductor</Nav.Link>}
-            {hasRole('GERENTE GENERAL') && <Nav.Link as={Link} to="/gestion_tipo_envio">Tipo Envio</Nav.Link>}
-            {user && <Nav.Link onClick={handleLogout}>Login</Nav.Link>}
-            {!user && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
+            {isAuthenticated && hasRole('GERENTE GENERAL') && (
+              <>
+                <Nav.Link as={Link} to="/gestion">Usuarios</Nav.Link>
+                <Nav.Link as={Link} to="/gestion_roles">Roles</Nav.Link>
+                <Nav.Link as={Link} to="/gestion_rolconductor">Rol Conductor</Nav.Link>
+                <Nav.Link as={Link} to="/gestion_tipoenvio">Tipo Envio</Nav.Link>
+                <Nav.Link as={Link} to="/gestion_permiso_rol">Permisos Rol</Nav.Link>
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+              </>
+            )}
+            {<Nav.Link as={Link} to="/login">Login</Nav.Link>}
           </Nav>
         </Navbar.Collapse>
       </Container>
