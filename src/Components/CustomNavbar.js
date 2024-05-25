@@ -43,7 +43,7 @@ const CustomNavbar = () => {
                       <NavDropdown.Item as={Link} to="/gestion_items">Gestion Items</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/bitacora">Bitacora</NavDropdown.Item>
+                    
                      
                     </NavDropdown>
 
