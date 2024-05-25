@@ -20,6 +20,7 @@ import GestionItems from './Components/GestionItems';
 import GestionPaquetes from './Components/GestionPaquetes';
 import GestionNotaEntrega from './Components/GestionNotaEntrega';
 import GestionRecepcion from './Components/RegistrarRecepcion';
+import Bitacora from './Components/Bitacora';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <Route path="/gestion_paquetes" element={<GestionPaquetes />} />
             <Route path="/gestion_notaentrega" element={<GestionNotaEntrega />} />
             <Route path="/gestion_recepcion" element={<GestionRecepcion />} />
+            <Route path="/bitacora" element={<Bitacora />} />
           </Route>
         </Routes>
       </Router>
