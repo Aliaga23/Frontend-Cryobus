@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
-import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table, Modal } from 'react-bootstrap';
+import { FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
 import '../Assets/gestion_empleados.module.css';
 
@@ -8,6 +8,7 @@ const GestionRoles = () => {
   const [roles, setRoles] = useState([]);
   const [newRole, setNewRole] = useState({ id: '', nombre: '' });
   const [editRole, setEditRole] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app'; // URL de tu backend en Railway
 
@@ -39,6 +40,7 @@ const GestionRoles = () => {
       }
       setNewRole({ id: '', nombre: '' });
       fetchRoles();
+      setShowModal(true); // Mostrar el modal al registrar o actualizar un rol
     } catch (error) {
       console.error('Error al registrar el rol:', error);
     }
@@ -56,6 +58,10 @@ const GestionRoles = () => {
     } catch (error) {
       console.error('Error al eliminar el rol:', error);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -105,6 +111,17 @@ const GestionRoles = () => {
           </Col>
         </Row>
       </Container>
+
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Body className="text-center">
+          <FaCheckCircle size={80} color="green" />
+          <h4 className="mt-3">Registro Exitoso</h4>
+          <p>El rol ha sido registrado exitosamente.</p>
+          <Button variant="primary" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
