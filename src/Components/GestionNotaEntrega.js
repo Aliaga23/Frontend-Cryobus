@@ -1,11 +1,9 @@
-// src/Components/GestionNotaEntrega.js
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import '../Assets/gestion_empleados.module.css';
 
 const GestionNotaEntrega = () => {
-  
   const [notasEntrega, setNotasEntrega] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
@@ -209,112 +207,112 @@ const GestionNotaEntrega = () => {
         <Col xs={12}>
           <h3>{editNotaEntrega ? 'Editar Nota de Entrega' : 'Registrar Nueva Nota de Entrega'}</h3>
           <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Label htmlFor="NRO">Número</Form.Label>
-              <Form.Control type="text" id="NRO" name="NRO" value={newNotaEntrega.NRO} onChange={handleChange} placeholder="Ingrese el número de la nota de entrega" />
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="NRO" className="form-label">Número</Form.Label>
+              <Form.Control type="text" id="NRO" name="NRO" value={newNotaEntrega.NRO} onChange={handleChange} placeholder="Ingrese el número de la nota de entrega" className="form-control" />
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="FECHARECEPCION">Fecha de Recepción</Form.Label>
-              <Form.Control type="date" id="FECHARECEPCION" name="FECHARECEPCION" value={newNotaEntrega.FECHARECEPCION} onChange={handleChange} />
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="FECHARECEPCION" className="form-label">Fecha de Recepción</Form.Label>
+              <Form.Control type="date" id="FECHARECEPCION" name="FECHARECEPCION" value={newNotaEntrega.FECHARECEPCION} onChange={handleChange} className="form-control" />
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="HORARECEPCION">Hora de Recepción</Form.Label>
-              <Form.Control type="time" id="HORARECEPCION" name="HORARECEPCION" value={newNotaEntrega.HORARECEPCION} onChange={handleChange} />
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="HORARECEPCION" className="form-label">Hora de Recepción</Form.Label>
+              <Form.Control type="time" id="HORARECEPCION" name="HORARECEPCION" value={newNotaEntrega.HORARECEPCION} onChange={handleChange} className="form-control" />
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="FECHAENTREGA">Fecha de Entrega</Form.Label>
-              <Form.Control type="date" id="FECHAENTREGA" name="FECHAENTREGA" value={newNotaEntrega.FECHAENTREGA} onChange={handleChange} />
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="FECHAENTREGA" className="form-label">Fecha de Entrega</Form.Label>
+              <Form.Control type="date" id="FECHAENTREGA" name="FECHAENTREGA" value={newNotaEntrega.FECHAENTREGA} onChange={handleChange} className="form-control" />
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="HORAENTREGA">Hora de Entrega</Form.Label>
-              <Form.Control type="time" id="HORAENTREGA" name="HORAENTREGA" value={newNotaEntrega.HORAENTREGA} onChange={handleChange} />
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="HORAENTREGA" className="form-label">Hora de Entrega</Form.Label>
+              <Form.Control type="time" id="HORAENTREGA" name="HORAENTREGA" value={newNotaEntrega.HORAENTREGA} onChange={handleChange} className="form-control" />
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="PRECIOESTIMADO">Precio Estimado</Form.Label>
-              <Form.Control type="number" id="PRECIOESTIMADO" name="PRECIOESTIMADO" value={newNotaEntrega.PRECIOESTIMADO} onChange={handleChange} placeholder="Ingrese el precio estimado" />
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="PRECIOESTIMADO" className="form-label">Precio Estimado</Form.Label>
+              <Form.Control type="number" id="PRECIOESTIMADO" name="PRECIOESTIMADO" value={newNotaEntrega.PRECIOESTIMADO} onChange={handleChange} placeholder="Ingrese el precio estimado" className="form-control" />
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="CODIGOCLIENTEENVIA">Código Cliente Envia</Form.Label>
-              <Form.Control as="select" id="CODIGOCLIENTEENVIA" name="CODIGOCLIENTEENVIA" value={newNotaEntrega.CODIGOCLIENTEENVIA} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="CODIGOCLIENTEENVIA" className="form-label">Código Cliente Envia</Form.Label>
+              <Form.Control as="select" id="CODIGOCLIENTEENVIA" name="CODIGOCLIENTEENVIA" value={newNotaEntrega.CODIGOCLIENTEENVIA} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un cliente</option>
                 {clientes.map(cliente => (
                   <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="CODIGOCLIENTERECIBE">Código Cliente Recibe</Form.Label>
-              <Form.Control as="select" id="CODIGOCLIENTERECIBE" name="CODIGOCLIENTERECIBE" value={newNotaEntrega.CODIGOCLIENTERECIBE} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="CODIGOCLIENTERECIBE" className="form-label">Código Cliente Recibe</Form.Label>
+              <Form.Control as="select" id="CODIGOCLIENTERECIBE" name="CODIGOCLIENTERECIBE" value={newNotaEntrega.CODIGOCLIENTERECIBE} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un cliente</option>
                 {clientes.map(cliente => (
                   <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="IDUSUARIOENVIA">ID Usuario Envia</Form.Label>
-              <Form.Control as="select" id="IDUSUARIOENVIA" name="IDUSUARIOENVIA" value={newNotaEntrega.IDUSUARIOENVIA} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="IDUSUARIOENVIA" className="form-label">ID Usuario Envia</Form.Label>
+              <Form.Control as="select" id="IDUSUARIOENVIA" name="IDUSUARIOENVIA" value={newNotaEntrega.IDUSUARIOENVIA} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un usuario</option>
                 {usuarios.map(usuario => (
                   <option key={usuario.ID} value={usuario.ID}>{usuario.NOMBRES} {usuario.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="IDUSUARIORECIBE">ID Usuario Recibe</Form.Label>
-              <Form.Control as="select" id="IDUSUARIORECIBE" name="IDUSUARIORECIBE" value={newNotaEntrega.IDUSUARIORECIBE} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="IDUSUARIORECIBE" className="form-label">ID Usuario Recibe</Form.Label>
+              <Form.Control as="select" id="IDUSUARIORECIBE" name="IDUSUARIORECIBE" value={newNotaEntrega.IDUSUARIORECIBE} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un usuario</option>
                 {usuarios.map(usuario => (
                   <option key={usuario.ID} value={usuario.ID}>{usuario.NOMBRES} {usuario.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="IDTIPOENVIO">Tipo de Envio</Form.Label>
-              <Form.Control as="select" id="IDTIPOENVIO" name="IDTIPOENVIO" value={newNotaEntrega.IDTIPOENVIO} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="IDTIPOENVIO" className="form-label">Tipo de Envio</Form.Label>
+              <Form.Control as="select" id="IDTIPOENVIO" name="IDTIPOENVIO" value={newNotaEntrega.IDTIPOENVIO} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un tipo de envío</option>
                 {tiposEnvio.map(tipo => (
                   <option key={tipo.ID} value={tipo.ID}>{tipo.NOMBRE}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="IDESTADOENTREGA">Estado de Entrega</Form.Label>
-              <Form.Control as="select" id="IDESTADOENTREGA" name="IDESTADOENTREGA" value={newNotaEntrega.IDESTADOENTREGA} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="IDESTADOENTREGA" className="form-label">Estado de Entrega</Form.Label>
+              <Form.Control as="select" id="IDESTADOENTREGA" name="IDESTADOENTREGA" value={newNotaEntrega.IDESTADOENTREGA} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un estado de entrega</option>
                 {estadosEntrega.map(estado => (
                   <option key={estado.ID} value={estado.ID}>{estado.NOMBRE}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="NROREEMBOLSO">Número de Reembolso</Form.Label>
-              <Form.Control as="select" id="NROREEMBOLSO" name="NROREEMBOLSO" value={newNotaEntrega.NROREEMBOLSO} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="NROREEMBOLSO" className="form-label">Número de Reembolso</Form.Label>
+              <Form.Control as="select" id="NROREEMBOLSO" name="NROREEMBOLSO" value={newNotaEntrega.NROREEMBOLSO} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un reembolso</option>
                 {reembolsos.map(reembolso => (
                   <option key={reembolso.NRO} value={reembolso.NRO}>{reembolso.NRO}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="CODIGOPAQUETE">Código de Paquete</Form.Label>
-              <Form.Control as="select" id="CODIGOPAQUETE" name="CODIGOPAQUETE" value={newNotaEntrega.CODIGOPAQUETE} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="CODIGOPAQUETE" className="form-label">Código de Paquete</Form.Label>
+              <Form.Control as="select" id="CODIGOPAQUETE" name="CODIGOPAQUETE" value={newNotaEntrega.CODIGOPAQUETE} onChange={handleChange} className="form-control">
                 <option value="">Seleccione un paquete</option>
                 {paquetes.map(paquete => (
                   <option key={paquete.CODIGO} value={paquete.CODIGO}>{paquete.CODIGO}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="NRONOTATRASLADO">Número de Nota de Traslado</Form.Label>
-              <Form.Control as="select" id="NRONOTATRASLADO" name="NRONOTATRASLADO" value={newNotaEntrega.NRONOTATRASLADO} onChange={handleChange}>
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="NRONOTATRASLADO" className="form-label">Número de Nota de Traslado</Form.Label>
+              <Form.Control as="select" id="NRONOTATRASLADO" name="NRONOTATRASLADO" value={newNotaEntrega.NRONOTATRASLADO} onChange={handleChange} className="form-control">
                 <option value="">Seleccione una nota de traslado</option>
                 {notasTraslado.map(nota => (
                   <option key={nota.NRO} value={nota.NRO}>{nota.NRO}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Button type="submit" variant="primary" className="mb-3">{editNotaEntrega ? 'Actualizar' : 'Registrar'}</Button>
+            <Button type="submit" variant="primary" className="submit-button">{editNotaEntrega ? 'Actualizar' : 'Registrar'}</Button>
           </Form>
         </Col>
       </Row>
@@ -323,53 +321,55 @@ const GestionNotaEntrega = () => {
         <Col xs={12}>
           <h3>Lista de Notas de Entrega</h3>
           {showTable && (
-            <Table bordered>
-              <thead className="thead-light">
-                <tr>
-                  <th>Número</th>
-                  <th>Fecha de Recepción</th>
-                  <th>Hora de Recepción</th>
-                  <th>Fecha de Entrega</th>
-                  <th>Hora de Entrega</th>
-                  <th>Precio Estimado</th>
-                  <th>Código Cliente Envia</th>
-                  <th>Código Cliente Recibe</th>
-                  <th>ID Usuario Envia</th>
-                  <th>ID Usuario Recibe</th>
-                  <th>Tipo de Envio</th>
-                  <th>Estado de Entrega</th>
-                  <th>Número de Reembolso</th>
-                  <th>Código de Paquete</th>
-                  <th>Número de Nota de Traslado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {notasEntrega.map(notaEntrega => (
-                  <tr key={notaEntrega.NRO}>
-                    <td>{notaEntrega.NRO}</td>
-                    <td>{notaEntrega.FECHARECEPCION}</td>
-                    <td>{notaEntrega.HORARECEPCION}</td>
-                    <td>{notaEntrega.FECHAENTREGA}</td>
-                    <td>{notaEntrega.HORAENTREGA}</td>
-                    <td>{notaEntrega.PRECIOESTIMADO}</td>
-                    <td>{clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.NOMBRES} {clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.APELLIDOS}</td>
-                    <td>{clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTERECIBE)?.NOMBRES} {clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTERECIBE)?.APELLIDOS}</td>
-                    <td>{usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIOENVIA)?.NOMBRES} {usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIOENVIA)?.APELLIDOS}</td>
-                    <td>{usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIORECIBE)?.NOMBRES} {usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIORECIBE)?.APELLIDOS}</td>
-                    <td>{tiposEnvio.find(tipo => tipo.ID === notaEntrega.IDTIPOENVIO)?.NOMBRE}</td>
-                    <td>{estadosEntrega.find(estado => estado.ID === notaEntrega.IDESTADOENTREGA)?.NOMBRE}</td>
-                    <td>{notaEntrega.NROREEMBOLSO}</td>
-                    <td>{paquetes.find(paquete => paquete.CODIGO === notaEntrega.CODIGOPAQUETE)?.CODIGO}</td>
-                    <td>{notasTraslado.find(nota => nota.NRO === notaEntrega.NRONOTATRASLADO)?.NRO}</td>
-                    <td>
-                      <Button variant="warning" size="sm" onClick={() => handleEdit(notaEntrega)}>Editar</Button>
-                      <Button variant="danger" size="sm" onClick={() => handleDelete(notaEntrega.NRO)}>Eliminar</Button>
-                    </td>
+            <div className="table-responsive">
+              <Table bordered className="table">
+                <thead className="thead-light">
+                  <tr>
+                    <th>Número</th>
+                    <th>Fecha de Recepción</th>
+                    <th>Hora de Recepción</th>
+                    <th>Fecha de Entrega</th>
+                    <th>Hora de Entrega</th>
+                    <th>Precio Estimado</th>
+                    <th>Código Cliente Envia</th>
+                    <th>Código Cliente Recibe</th>
+                    <th>ID Usuario Envia</th>
+                    <th>ID Usuario Recibe</th>
+                    <th>Tipo de Envio</th>
+                    <th>Estado de Entrega</th>
+                    <th>Número de Reembolso</th>
+                    <th>Código de Paquete</th>
+                    <th>Número de Nota de Traslado</th>
+                    <th>Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {notasEntrega.map(notaEntrega => (
+                    <tr key={notaEntrega.NRO}>
+                      <td>{notaEntrega.NRO}</td>
+                      <td>{notaEntrega.FECHARECEPCION}</td>
+                      <td>{notaEntrega.HORARECEPCION}</td>
+                      <td>{notaEntrega.FECHAENTREGA}</td>
+                      <td>{notaEntrega.HORAENTREGA}</td>
+                      <td>{notaEntrega.PRECIOESTIMADO}</td>
+                      <td>{clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.NOMBRES} {clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.APELLIDOS}</td>
+                      <td>{clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTERECIBE)?.NOMBRES} {clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTERECIBE)?.APELLIDOS}</td>
+                      <td>{usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIOENVIA)?.NOMBRES} {usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIOENVIA)?.APELLIDOS}</td>
+                      <td>{usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIORECIBE)?.NOMBRES} {usuarios.find(usuario => usuario.ID === notaEntrega.IDUSUARIORECIBE)?.APELLIDOS}</td>
+                      <td>{tiposEnvio.find(tipo => tipo.ID === notaEntrega.IDTIPOENVIO)?.NOMBRE}</td>
+                      <td>{estadosEntrega.find(estado => estado.ID === notaEntrega.IDESTADOENTREGA)?.NOMBRE}</td>
+                      <td>{notaEntrega.NROREEMBOLSO}</td>
+                      <td>{paquetes.find(paquete => paquete.CODIGO === notaEntrega.CODIGOPAQUETE)?.CODIGO}</td>
+                      <td>{notasTraslado.find(nota => nota.NRO === notaEntrega.NRONOTATRASLADO)?.NRO}</td>
+                      <td>
+                        <Button variant="warning" size="sm" onClick={() => handleEdit(notaEntrega)}>Editar</Button>
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(notaEntrega.NRO)}>Eliminar</Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
           )}
         </Col>
       </Row>

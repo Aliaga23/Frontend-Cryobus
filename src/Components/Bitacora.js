@@ -1,62 +1,65 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
+import io from 'socket.io-client';
 import axios from 'axios';
-import socketIOClient from 'socket.io-client';
+
+const socket = io('https://proyecto2-production-ba5b.up.railway.app'); // URL de tu servidor de producción
 
 const Bitacora = () => {
-  const [logs, setLogs] = useState([]);
+  const [registros, setRegistros] = useState([]);
 
   useEffect(() => {
-    const fetchLogs = async () => {
+    const fetchRegistros = async () => {
       try {
-        const response = await axios.get('https://proyecto2-production-ba5b.up.railway.app/api/bitacora');
-        setLogs(response.data);
+        const response = await axios.get('https://proyecto2-production-ba5b.up.railway.app/api/bitacora'); // URL de tu servidor
+        setRegistros(response.data);
       } catch (error) {
         console.error('Error al obtener la bitácora:', error);
       }
     };
 
-    fetchLogs();
+    fetchRegistros();
 
-    const socket = socketIOClient('https://proyecto2-production-ba5b.up.railway.app');
-    socket.on('newLog', (newLog) => {
-      setLogs((prevLogs) => [newLog, ...prevLogs]);
+    socket.on('nuevaAccion', (nuevoRegistro) => {
+      setRegistros((prevRegistros) => [nuevoRegistro, ...prevRegistros]);
     });
 
     return () => {
-      socket.disconnect();
+      socket.off('nuevaAccion');
     };
   }, []);
 
   return (
-    <Container className="mt-5">
+    <Container>
       <h3>Bitácora de Acciones</h3>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Acción</th>
-            <th>Usuario</th>
-            <th>IP</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Elemento Modificado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {logs.map((log) => (
-            <tr key={log.NRO}>
-              <td>{log.NRO}</td>
-              <td>{log.IDACCION}</td>
-              <td>{log.IDUSUARIO}</td>
-              <td>{log.IP}</td>
-              <td>{log.FECHA}</td>
-              <td>{log.HORAACCION}</td>
-              <td>{log.ELEMENTOMODIFICADO}</td>
+      <div className="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>NRO</th>
+              <th>IDACCION</th>
+              <th>IDUSUARIO</th>
+              <th>IP</th>
+              <th>FECHA</th>
+              <th>HORAACCION</th>
+              <th>ELEMENTOMODIFICADO</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {registros.map((registro) => (
+              <tr key={registro.NRO}>
+                <td>{registro.NRO}</td>
+                <td>{registro.IDACCION}</td>
+                <td>{registro.IDUSUARIO}</td>
+                <td>{registro.IP}</td>
+                <td>{registro.FECHA}</td>
+                <td>{registro.HORAACCION}</td>
+                <td>{registro.ELEMENTOMODIFICADO}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </Container>
   );
 };
