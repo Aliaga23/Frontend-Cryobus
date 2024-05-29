@@ -42,7 +42,7 @@ const Login = () => {
         <button type="submit" className={styles.button}>Iniciar sesión</button>
       </form>
       {error && <div className={styles.error}>{error}</div>}
-      <p><Link to="/register">Registrarse</Link></p>
+      <p><Link to="/">Olvidaste tu contraseña?</Link></p>
     </div>
   );
 };

@@ -31,33 +31,35 @@ const Bitacora = () => {
 
   return (
     <Container>
-      <h3>Bitácora de Acciones</h3>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>NRO</th>
-            <th>IDACCION</th>
-            <th>IDUSUARIO</th>
-            <th>IP</th>
-            <th>FECHA</th>
-            <th>HORAACCION</th>
-            <th>ELEMENTOMODIFICADO</th>
-          </tr>
-        </thead>
-        <tbody>
-          {registros.map((registro) => (
-            <tr key={registro.NRO}>
-              <td>{registro.NRO}</td>
-              <td>{registro.IDACCION}</td>
-              <td>{registro.IDUSUARIO}</td>
-              <td>{registro.IP}</td>
-              <td>{registro.FECHA}</td>
-              <td>{registro.HORAACCION}</td>
-              <td>{registro.ELEMENTOMODIFICADO}</td>
+      <h3 className="mt-3">Bitácora de Acciones</h3>
+      <div className="table-responsive mt-3">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>NRO</th>
+              <th>IDACCION</th>
+              <th>IDUSUARIO</th>
+              <th>IP</th>
+              <th>FECHA</th>
+              <th>HORAACCION</th>
+              <th>ELEMENTOMODIFICADO</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {registros.map((registro) => (
+              <tr key={registro.NRO}>
+                <td>{registro.NRO}</td>
+                <td>{registro.IDACCION}</td>
+                <td>{registro.IDUSUARIO}</td>
+                <td>{registro.IP}</td>
+                <td>{registro.FECHA}</td>
+                <td>{registro.HORAACCION}</td>
+                <td>{registro.ELEMENTOMODIFICADO}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </Container>
   );
 };
