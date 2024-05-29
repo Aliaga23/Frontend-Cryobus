@@ -82,7 +82,7 @@ const GestionPermisoRol = () => {
             <Form onSubmit={handleAssignPermiso}>
               <Form.Group>
                 <Form.Label htmlFor="rol">Rol</Form.Label>
-                <Form.Control as="select" id="rol" name="rol" onChange={handleRolChange}>
+                <Form.Control className="mb-3" as="select" id="rol" name="rol" onChange={handleRolChange}>
                   <option value="">Seleccione un rol</option>
                   {roles.map(rol => (
                     <option key={rol.ID} value={rol.ID}>{rol.NOMBRE}</option>
@@ -91,11 +91,11 @@ const GestionPermisoRol = () => {
               </Form.Group>
               <Form.Group>
                 <Form.Label htmlFor="nro">Número de Permiso</Form.Label>
-                <Form.Control type="text" id="nro" name="nro" value={newPermiso.nro} onChange={handlePermisoChange} placeholder="Ingrese el número del permiso" />
+                <Form.Control className="mb-3" id="nro" name="nro" value={newPermiso.nro} onChange={handlePermisoChange} placeholder="Ingrese el número del permiso" />
               </Form.Group>
               <Form.Group>
                 <Form.Label htmlFor="idPermiso">ID Permiso</Form.Label>
-                <Form.Control as="select" id="idPermiso" name="idPermiso" value={newPermiso.idPermiso} onChange={handlePermisoChange}>
+                <Form.Control as="select" id="idPermiso" name="idPermiso" value={newPermiso.idPermiso} onChange={handlePermisoChange} className="mb-3">
                   <option value="">Seleccione un permiso</option>
                   {permisos.map(permiso => (
                     <option key={permiso.ID} value={permiso.ID}>{permiso.NOMBRE}</option>

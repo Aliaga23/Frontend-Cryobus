@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Table, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table, InputGroup, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
-import styles from '../Assets/gestion_empleados.module.css';
+import Swal from 'sweetalert2';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 const GestionRecepcion = () => {
   const { user } = useAuth();
   const [recepciones, setRecepciones] = useState([]);
@@ -67,13 +70,22 @@ const GestionRecepcion = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (editRecepcion) {
         await axios.put(`${backendUrl}/api/recepciones/${editRecepcion.nro}`, newRecepcion);
         setEditRecepcion(null);
+        Swal.fire({
+          title: "¡Recepción actualizada!",
+          text: "La recepción se ha actualizado correctamente.",
+          icon: "success"
+        });
       } else {
         await axios.post(`${backendUrl}/api/recepciones`, newRecepcion);
+        Swal.fire({
+          title: "¡Recepción registrada!",
+          text: "La recepción se ha registrado correctamente.",
+          icon: "success"
+        });
       }
       setNewRecepcion({
         nro: '',
@@ -108,6 +120,11 @@ const GestionRecepcion = () => {
     try {
       await axios.delete(`${backendUrl}/api/recepciones/${nro}`);
       fetchRecepciones();
+      Swal.fire({
+        title: "¡Recepción eliminada!",
+        text: "La recepción se ha eliminado correctamente.",
+        icon: "success"
+      });
     } catch (error) {
       setError('Error al eliminar la recepción');
       console.error('Error al eliminar la recepción:', error);
@@ -115,95 +132,163 @@ const GestionRecepcion = () => {
   };
 
   return (
-    <div className={styles.gestionContainer}>
-      <Container className="mt-5">
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Row className="mb-5">
-          <Col xs={12}>
-            <h3>{editRecepcion ? 'Editar Recepción' : 'Registrar Nueva Recepción'}</h3>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group>
-                <Form.Label htmlFor="nro">Número de Nota de Entrega</Form.Label>
-                <Form.Control type="text" id="nro" name="nro" value={newRecepcion.nro} onChange={handleChange} placeholder="Ingrese el número de la nota de entrega" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label htmlFor="fechaRecepcion">Fecha de Recepción</Form.Label>
-                <Form.Control type="date" id="fechaRecepcion" name="fechaRecepcion" value={newRecepcion.fechaRecepcion} onChange={handleChange} />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label htmlFor="horaRecepcion">Hora de Recepción</Form.Label>
-                <Form.Control type="time" id="horaRecepcion" name="horaRecepcion" value={newRecepcion.horaRecepcion} onChange={handleChange} />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label htmlFor="precioEstimado">Precio Estimado</Form.Label>
-                <Form.Control type="text" id="precioEstimado" name="precioEstimado" value={newRecepcion.precioEstimado} onChange={handleChange} placeholder="Ingrese el precio estimado" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label htmlFor="codigoClienteEnvia">Cliente que Envia</Form.Label>
-                <Form.Control as="select" id="codigoClienteEnvia" name="codigoClienteEnvia" value={newRecepcion.codigoClienteEnvia} onChange={handleChange}>
+    <Container className="mt-5">
+      {error && (
+        <Alert variant="danger" onClose={() => setError(null)} dismissible>
+          {error}
+        </Alert>
+      )}
+      <Row className="mb-5">
+        <Col md={12}>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h3>{ editRecepcion ? 'Editar Recepción' : 'Registrar Nueva Recepción'}</h3>
+          </div>
+          <Form onSubmit={handleSubmit} className="shadow p-4 bg-light rounded">
+            <Form.Group className="mb-3">
+              <InputGroup className="input-group-lg">
+                <InputGroup.Text>Nro</InputGroup.Text>
+                <Form.Control
+                 
+                  placeholder="Ingrese el número de la nota de entrega"
+                  id="nro"
+                  name="nro"
+                  value={newRecepcion.nro}
+                  onChange={handleChange}
+                  aria-label="Nro"
+                />
+              </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <InputGroup className="input-group-lg">
+                <InputGroup.Text>Fecha</InputGroup.Text>
+                <Form.Control
+                  type="date"
+                  id="fechaRecepcion"
+                  name="fechaRecepcion"
+                  value={newRecepcion.fechaRecepcion}
+                  onChange={handleChange}
+                  aria-label="Fecha de Recepción"
+                />
+              </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <InputGroup className="input-group-lg">
+                <InputGroup.Text>Hora</InputGroup.Text>
+                <Form.Control
+                  type="time"
+                  id="horaRecepcion"
+                  name="horaRecepcion"
+                  value={newRecepcion.horaRecepcion}
+                  onChange={handleChange}
+                  aria-label="Hora de Recepción"
+                />
+              </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <InputGroup className="input-group-lg">
+                <InputGroup.Text>Precio</InputGroup.Text>
+                <Form.Control
+                  
+                  placeholder="Ingrese el precio estimado"
+                  id="precioEstimado"
+                  name="precioEstimado"
+                  value={newRecepcion.precioEstimado}
+                  onChange={handleChange}
+                  aria-label="Precio Estimado"
+                />
+              </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <InputGroup className="input-group-lg">
+                <InputGroup.Text>Cliente</InputGroup.Text>
+                <Form.Control
+                  as="select"
+                  id="codigoClienteEnvia"
+                  name="codigoClienteEnvia"
+                  value={newRecepcion.codigoClienteEnvia}
+                  onChange={handleChange}
+                  aria-label="Cliente que Envia"
+                >
                   <option value="">Seleccione un cliente</option>
                   {clientes.map(cliente => (
-                    <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
+                    <option key={cliente.CODIGO} value={cliente.CODIGO}>
+                      {cliente.NOMBRES} {cliente.APELLIDOS}
+                    </option>
                   ))}
                 </Form.Control>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label htmlFor="codigoPaquete">Paquete</Form.Label>
-                <Form.Control as="select" id="codigoPaquete" name="codigoPaquete" value={newRecepcion.codigoPaquete} onChange={handleChange}>
+              </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <InputGroup className="input-group-lg">
+                <InputGroup.Text>Paquete</InputGroup.Text>
+                <Form.Control
+                  as="select"
+                  id="codigoPaquete"
+                  name="codigoPaquete"
+                  value={newRecepcion.codigoPaquete}
+                  onChange={handleChange}
+                  aria-label="Paquete"
+                >
                   <option value="">Seleccione un paquete</option>
                   {paquetes.map(paquete => (
-                    <option key={paquete.CODIGO} value={paquete.CODIGO}>{paquete.CODIGO}</option>
+                    <option key={paquete.CODIGO} value={paquete.CODIGO}>
+                      {paquete.CODIGO}
+                    </option>
                   ))}
                 </Form.Control>
-              </Form.Group>
-              <Button type="submit" variant="primary" className="mb-3">{editRecepcion ? 'Actualizar' : 'Registrar'}</Button>
-            </Form>
-          </Col>
-        </Row>
-
-        {showTable && (
-          <Row>
-            <Col xs={12}>
-              <h3>Lista de Recepciones</h3>
-              <div className="table-responsive">
-                <Table bordered>
-                  <thead className="thead-light">
-                    <tr>
-                      <th>Número de Nota de Entrega</th>
-                      <th>Fecha de Recepción</th>
-                      <th>Hora de Recepción</th>
-                      <th>Precio Estimado</th>
-                      <th>Cliente que Envia</th>
-                      <th>Paquete</th>
-                      <th>ID del Usuario</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recepciones.map(recepcion => (
-                      <tr key={recepcion.nroa}>
-                         <td>{recepcion.NRO}</td>
+              </InputGroup>
+            </Form.Group>
+            <Button type="submit" variant="primary" size="lg" >
+              {editRecepcion ? 'Actualizar' : 'Registrar'}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+      {showTable && (
+        <Row>
+          <Col md={12}>
+            <h3>Lista de Recepciones</h3>
+            <div className="table-responsive">
+              <Table bordered hover striped responsive="sm">
+                <thead className="thead-dark">
+                  <tr>
+                    <th>Número de Nota de Entrega</th>
+                    <th>Fecha de Recepción</th>
+                    <th>Hora de Recepción</th>
+                    <th>Precio Estimado</th>
+                    <th>Cliente que Envia</th>
+                    <th>Paquete</th>
+                    <th>ID del Usuario</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recepciones.map(recepcion => (
+                    <tr key={recepcion.nro}>
+                            <td>{recepcion.NRO}</td>
                         <td>{recepcion.FECHARECEPCION}</td>
                         <td>{recepcion.HORARECEPCION}</td>
                         <td>{recepcion.PRECIOESTIMADO}</td>
                         <td>{recepcion.CODIGOCLIENTEENVIA}</td>
                         <td>{recepcion.CODIGOPAQUETE}</td>
                         <td>{recepcion.IDUSUARIORECIBE}</td>
-                        
-                        <td>
-                          <Button variant="warning" size="sm" onClick={() => handleEdit(recepcion)}>Editar</Button>
-                          <Button variant="danger" size="sm" onClick={() => handleDelete(recepcion.nro)}>Eliminar</Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            </Col>
-          </Row>
-        )}
-      </Container>
-    </div>
+                      <td>
+                        <Button variant="warning" size="sm" onClick={() => handleEdit(recepcion)} className="me-2">
+                          <FontAwesomeIcon icon={faEdit} /> Editar
+                        </Button>
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(recepcion.nro)}>
+                          <FontAwesomeIcon icon={faTrashAlt} /> Eliminar
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          </Col>
+        </Row>
+      )}
+    </Container>
   );
 };
 

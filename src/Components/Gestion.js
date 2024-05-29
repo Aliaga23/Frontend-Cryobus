@@ -121,7 +121,7 @@ const Gestion = () => {
               </Form.Group>
               <Form.Group>
                 <Form.Label htmlFor="idRol">Rol</Form.Label>
-                <Form.Control as="select" id="idRol" name="idRol" value={newUser.idRol} onChange={handleChange}>
+                <Form.Control as="select" id="idRol" name="idRol" value={newUser.idRol} onChange={handleChange} className="mb-3">
                   <option value="">Seleccione un rol</option>
                   {roles.map(role => (
                     <option key={role.ID} value={role.ID}>{role.NOMBRE}</option>

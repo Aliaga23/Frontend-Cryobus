@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Navbar, Nav, Container,  NavDropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import logo from '../Assets/logo.jpeg';
+import logo from '../Assets/logo.png';
 
 const CustomNavbar = () => {
   const { user, role, logout } = useAuth();
@@ -49,8 +49,11 @@ const CustomNavbar = () => {
 
                     <NavDropdown title="Registro" id="registro-dropdown">
                       <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/bitacora">Bitacora</NavDropdown.Item>
+                    
                     </NavDropdown>
                     
+
                   </>
                 )}
                 {role === 4 && (

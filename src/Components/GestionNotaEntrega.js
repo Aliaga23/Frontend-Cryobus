@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table, Alert } from 'react-bootstrap';
 import axios from 'axios';
-import '../Assets/gestion_empleados.module.css';
+import styles from '../Assets/gestion_empleados.module.css';
 
 const GestionNotaEntrega = () => {
   const [notasEntrega, setNotasEntrega] = useState([]);
@@ -207,105 +207,197 @@ const GestionNotaEntrega = () => {
         <Col xs={12}>
           <h3>{editNotaEntrega ? 'Editar Nota de Entrega' : 'Registrar Nueva Nota de Entrega'}</h3>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="NRO" className="form-label">Número</Form.Label>
-              <Form.Control type="text" id="NRO" name="NRO" value={newNotaEntrega.NRO} onChange={handleChange} placeholder="Ingrese el número de la nota de entrega" className="form-control" />
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="NRO" className={styles.formLabel}>Número</Form.Label>
+              <Form.Control 
+                 
+                id="NRO" 
+                name="NRO" 
+                value={newNotaEntrega.NRO} 
+                onChange={handleChange} 
+                placeholder="Ingrese el número de la nota de entrega" 
+                className="form-control form-control-sm mb-3" />
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="FECHARECEPCION" className="form-label">Fecha de Recepción</Form.Label>
-              <Form.Control type="date" id="FECHARECEPCION" name="FECHARECEPCION" value={newNotaEntrega.FECHARECEPCION} onChange={handleChange} className="form-control" />
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="FECHARECEPCION" className={styles.formLabel}>Fecha de Recepción</Form.Label>
+              <Form.Control 
+                type="date" 
+                id="FECHARECEPCION" 
+                name="FECHARECEPCION" 
+                value={newNotaEntrega.FECHARECEPCION} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3" />
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="HORARECEPCION" className="form-label">Hora de Recepción</Form.Label>
-              <Form.Control type="time" id="HORARECEPCION" name="HORARECEPCION" value={newNotaEntrega.HORARECEPCION} onChange={handleChange} className="form-control" />
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="HORARECEPCION" className={styles.formLabel}>Hora de Recepción</Form.Label>
+              <Form.Control 
+                type="time" 
+                id="HORARECEPCION" 
+                name="HORARECEPCION" 
+                value={newNotaEntrega.HORARECEPCION} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3" />
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="FECHAENTREGA" className="form-label">Fecha de Entrega</Form.Label>
-              <Form.Control type="date" id="FECHAENTREGA" name="FECHAENTREGA" value={newNotaEntrega.FECHAENTREGA} onChange={handleChange} className="form-control" />
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="FECHAENTREGA" className={styles.formLabel}>Fecha de Entrega</Form.Label>
+              <Form.Control 
+                type="date" 
+                id="FECHAENTREGA" 
+                name="FECHAENTREGA" 
+                value={newNotaEntrega.FECHAENTREGA} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3" />
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="HORAENTREGA" className="form-label">Hora de Entrega</Form.Label>
-              <Form.Control type="time" id="HORAENTREGA" name="HORAENTREGA" value={newNotaEntrega.HORAENTREGA} onChange={handleChange} className="form-control" />
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="HORAENTREGA" className={styles.formLabel}>Hora de Entrega</Form.Label>
+              <Form.Control 
+                type="time" 
+                id="HORAENTREGA" 
+                name="HORAENTREGA" 
+                value={newNotaEntrega.HORAENTREGA} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3" />
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="PRECIOESTIMADO" className="form-label">Precio Estimado</Form.Label>
-              <Form.Control type="number" id="PRECIOESTIMADO" name="PRECIOESTIMADO" value={newNotaEntrega.PRECIOESTIMADO} onChange={handleChange} placeholder="Ingrese el precio estimado" className="form-control" />
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="PRECIOESTIMADO" className={styles.formLabel}>Precio Estimado</Form.Label>
+              <Form.Control 
+                type="number" 
+                id="PRECIOESTIMADO" 
+                name="PRECIOESTIMADO" 
+                value={newNotaEntrega.PRECIOESTIMADO} 
+                onChange={handleChange} 
+                placeholder="Ingrese el precio estimado" 
+                className="form-control form-control-sm mb-3" />
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="CODIGOCLIENTEENVIA" className="form-label">Código Cliente Envia</Form.Label>
-              <Form.Control as="select" id="CODIGOCLIENTEENVIA" name="CODIGOCLIENTEENVIA" value={newNotaEntrega.CODIGOCLIENTEENVIA} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="CODIGOCLIENTEENVIA" className={styles.formLabel}>Código Cliente Envia</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="CODIGOCLIENTEENVIA" 
+                name="CODIGOCLIENTEENVIA" 
+                value={newNotaEntrega.CODIGOCLIENTEENVIA} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un cliente</option>
                 {clientes.map(cliente => (
                   <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="CODIGOCLIENTERECIBE" className="form-label">Código Cliente Recibe</Form.Label>
-              <Form.Control as="select" id="CODIGOCLIENTERECIBE" name="CODIGOCLIENTERECIBE" value={newNotaEntrega.CODIGOCLIENTERECIBE} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="CODIGOCLIENTERECIBE" className={styles.formLabel}>Código Cliente Recibe</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="CODIGOCLIENTERECIBE" 
+                name="CODIGOCLIENTERECIBE" 
+                value={newNotaEntrega.CODIGOCLIENTERECIBE} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un cliente</option>
                 {clientes.map(cliente => (
                   <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="IDUSUARIOENVIA" className="form-label">ID Usuario Envia</Form.Label>
-              <Form.Control as="select" id="IDUSUARIOENVIA" name="IDUSUARIOENVIA" value={newNotaEntrega.IDUSUARIOENVIA} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="IDUSUARIOENVIA" className={styles.formLabel}>ID Usuario Envia</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="IDUSUARIOENVIA" 
+                name="IDUSUARIOENVIA" 
+                value={newNotaEntrega.IDUSUARIOENVIA} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un usuario</option>
                 {usuarios.map(usuario => (
                   <option key={usuario.ID} value={usuario.ID}>{usuario.NOMBRES} {usuario.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="IDUSUARIORECIBE" className="form-label">ID Usuario Recibe</Form.Label>
-              <Form.Control as="select" id="IDUSUARIORECIBE" name="IDUSUARIORECIBE" value={newNotaEntrega.IDUSUARIORECIBE} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="IDUSUARIORECIBE" className={styles.formLabel}>ID Usuario Recibe</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="IDUSUARIORECIBE" 
+                name="IDUSUARIORECIBE" 
+                value={newNotaEntrega.IDUSUARIORECIBE} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un usuario</option>
                 {usuarios.map(usuario => (
                   <option key={usuario.ID} value={usuario.ID}>{usuario.NOMBRES} {usuario.APELLIDOS}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="IDTIPOENVIO" className="form-label">Tipo de Envio</Form.Label>
-              <Form.Control as="select" id="IDTIPOENVIO" name="IDTIPOENVIO" value={newNotaEntrega.IDTIPOENVIO} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="IDTIPOENVIO" className={styles.formLabel}>Tipo de Envio</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="IDTIPOENVIO" 
+                name="IDTIPOENVIO" 
+                value={newNotaEntrega.IDTIPOENVIO} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un tipo de envío</option>
                 {tiposEnvio.map(tipo => (
                   <option key={tipo.ID} value={tipo.ID}>{tipo.NOMBRE}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="IDESTADOENTREGA" className="form-label">Estado de Entrega</Form.Label>
-              <Form.Control as="select" id="IDESTADOENTREGA" name="IDESTADOENTREGA" value={newNotaEntrega.IDESTADOENTREGA} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="IDESTADOENTREGA" className={styles.formLabel}>Estado de Entrega</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="IDESTADOENTREGA" 
+                name="IDESTADOENTREGA" 
+                value={newNotaEntrega.IDESTADOENTREGA} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un estado de entrega</option>
                 {estadosEntrega.map(estado => (
                   <option key={estado.ID} value={estado.ID}>{estado.NOMBRE}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="NROREEMBOLSO" className="form-label">Número de Reembolso</Form.Label>
-              <Form.Control as="select" id="NROREEMBOLSO" name="NROREEMBOLSO" value={newNotaEntrega.NROREEMBOLSO} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="NROREEMBOLSO" className={styles.formLabel}>Número de Reembolso</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="NROREEMBOLSO" 
+                name="NROREEMBOLSO" 
+                value={newNotaEntrega.NROREEMBOLSO} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un reembolso</option>
                 {reembolsos.map(reembolso => (
                   <option key={reembolso.NRO} value={reembolso.NRO}>{reembolso.NRO}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="CODIGOPAQUETE" className="form-label">Código de Paquete</Form.Label>
-              <Form.Control as="select" id="CODIGOPAQUETE" name="CODIGOPAQUETE" value={newNotaEntrega.CODIGOPAQUETE} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup}>
+              <Form.Label htmlFor="CODIGOPAQUETE" className={styles.formLabel}>Código de Paquete</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="CODIGOPAQUETE" 
+                name="CODIGOPAQUETE" 
+                value={newNotaEntrega.CODIGOPAQUETE} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione un paquete</option>
                 {paquetes.map(paquete => (
                   <option key={paquete.CODIGO} value={paquete.CODIGO}>{paquete.CODIGO}</option>
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="NRONOTATRASLADO" className="form-label">Número de Nota de Traslado</Form.Label>
-              <Form.Control as="select" id="NRONOTATRASLADO" name="NRONOTATRASLADO" value={newNotaEntrega.NRONOTATRASLADO} onChange={handleChange} className="form-control">
+            <Form.Group className={styles.formGroup }>
+              <Form.Label htmlFor="NRONOTATRASLADO" className={styles.formLabel}>Número de Nota de Traslado</Form.Label>
+              <Form.Control 
+                as="select" 
+                id="NRONOTATRASLADO" 
+                name="NRONOTATRASLADO" 
+                value={newNotaEntrega.NRONOTATRASLADO} 
+                onChange={handleChange} 
+                className="form-control form-control-sm mb-3">
                 <option value="">Seleccione una nota de traslado</option>
                 {notasTraslado.map(nota => (
                   <option key={nota.NRO} value={nota.NRO}>{nota.NRO}</option>
