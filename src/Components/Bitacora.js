@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import io from 'socket.io-client';
 import axios from 'axios';
-import moment from 'moment';
 
 const socket = io('https://proyecto2-production-ba5b.up.railway.app'); // URL de tu servidor
 
@@ -30,6 +29,11 @@ const Bitacora = () => {
     };
   }, []);
 
+  const formatFecha = (fecha) => {
+    const date = new Date(fecha);
+    return date.toISOString().split('T')[0];
+  };
+
   return (
     <Container>
       <h3 className="mt-3">Bitácora de Acciones</h3>
@@ -53,7 +57,7 @@ const Bitacora = () => {
                 <td>{registro.IDACCION}</td>
                 <td>{registro.IDUSUARIO}</td>
                 <td>{registro.IP}</td>
-                <td>{moment(registro.FECHA).format('YYYY-MM-DD')}</td>
+                <td>{formatFecha(registro.FECHA)}</td>
                 <td>{registro.HORAACCION}</td>
                 <td>{registro.ELEMENTOMODIFICADO}</td>
               </tr>
