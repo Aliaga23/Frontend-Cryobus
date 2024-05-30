@@ -96,6 +96,8 @@ const Bitacora = () => {
           root: {
             border: '1px solid rgba(224, 224, 224, 1)',
             textAlign: 'center', // Center align text in table cells
+            padding: '6px', // Uniform padding
+            fontSize: '12px', // Uniform font size
           }
         }
       },
@@ -108,7 +110,16 @@ const Bitacora = () => {
           }
         }
       },
-     
+      MuiTableHead: {
+        styleOverrides: {
+          root: {
+            '& .MuiTableCell-root': {
+              fontSize: '14px', // Larger font size for header
+              fontWeight: 'bold',
+            }
+          }
+        }
+      }
     }
   });
 
@@ -118,7 +129,7 @@ const Bitacora = () => {
         {`
           @media print {
             .MuiTableCell-root {
-              font-size: 8px;
+              font-size: 10px; // Slightly smaller font size for print
               padding: 4px;
               text-align: center; // Center align text in table cells for print
             }
@@ -126,14 +137,24 @@ const Bitacora = () => {
               height: auto;
             }
             .MuiTableHead-root {
-              font-size: 10px;
+              font-size: 12px;
               text-align: center; // Center align text in table header cells for print
             }
             h3 {
-              font-size: 12px;
+              font-size: 14px;
               text-align: center; // Center align text for title
             }
-            
+            .MuiTable-root {
+              width: 100% !important; // Ensure table takes full width for print
+            }
+          }
+          @media (max-width: 600px) {
+            .MuiTable-root {
+              font-size: 8px; // Smaller font size for mobile
+            }
+            .MuiTableCell-root {
+              padding: 4px; // Smaller padding for mobile
+            }
           }
         `}
       </style>
