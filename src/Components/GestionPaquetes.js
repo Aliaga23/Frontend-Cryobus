@@ -11,7 +11,6 @@ const GestionPaquetes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editPaquete, setEditPaquete] = useState(null);
   const [showTable, setShowTable] = useState(false);
-  const [showAll, setShowAll] = useState(false);
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
@@ -20,7 +19,6 @@ const GestionPaquetes = () => {
       const response = await axios.get(`${backendUrl}/api/paquetes`);
       setPaquetes(response.data);
       setShowTable(true);
-      setShowAll(true);
     } catch (error) {
       console.error('Error al obtener los paquetes:', error);
     }
@@ -72,7 +70,6 @@ const GestionPaquetes = () => {
       const response = await axios.get(`${backendUrl}/api/paquetes/${searchTerm}`);
       setPaquetes([response.data]);
       setShowTable(true);
-      setShowAll(false);
     } catch (error) {
       console.error('Error al buscar el paquete:', error);
     }
@@ -106,13 +103,8 @@ const GestionPaquetes = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </Col>
-            </Row>
-            <Row>
               <Col xs={6} sm={3}>
                 <Button type="submit" variant="primary" className="mb-3 w-100">Buscar</Button>
-              </Col>
-              <Col xs={6} sm={3}>
-                <Button variant="primary" className="mb-3 w-100" onClick={fetchPaquetes}>Mostrar Todos</Button>
               </Col>
             </Row>
           </Form>
@@ -132,25 +124,21 @@ const GestionPaquetes = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {showAll
-                    ? paquetes.map(paquete => (
-                        <tr key={paquete.CODIGO}>
-                          <td>{paquete.CODIGO}</td>
-                          <td>
-                            <Button variant="warning" size="sm" onClick={() => handleEdit(paquete)}>Editar</Button>
-                            <Button variant="danger" size="sm" onClick={() => handleDelete(paquete.CODIGO)}>Eliminar</Button>
-                          </td>
-                        </tr>
-                      ))
-                    : paquetes.length > 0 && (
-                        <tr key={paquetes[0].CODIGO}>
-                          <td>{paquetes[0].CODIGO}</td>
-                          <td>
-                            <Button variant="warning" size="sm" onClick={() => handleEdit(paquetes[0])}>Editar</Button>
-                            <Button variant="danger" size="sm" onClick={() => handleDelete(paquetes[0].CODIGO)}>Eliminar</Button>
-                          </td>
-                        </tr>
-                      )}
+                  {paquetes.length > 0 ? (
+                    paquetes.map(paquete => (
+                      <tr key={paquete.CODIGO}>
+                        <td>{paquete.CODIGO}</td>
+                        <td>
+                          <Button variant="warning" size="sm" onClick={() => handleEdit(paquete)}>Editar</Button>
+                          <Button variant="danger" size="sm" onClick={() => handleDelete(paquete.CODIGO)}>Eliminar</Button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="2" className="text-center">No se encontraron paquetes</td>
+                    </tr>
+                  )}
                 </tbody>
               </Table>
             </div>

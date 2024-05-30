@@ -16,7 +16,6 @@ const GestionClientes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editCliente, setEditCliente] = useState(null);
   const [showTable, setShowTable] = useState(false);
-  const [showAll, setShowAll] = useState(false);
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
@@ -25,7 +24,6 @@ const GestionClientes = () => {
       const response = await axios.get(`${backendUrl}/api/clientes`);
       setClientes(response.data);
       setShowTable(true);
-      setShowAll(true);
     } catch (error) {
       console.error('Error al obtener los clientes:', error);
     }
@@ -82,20 +80,24 @@ const GestionClientes = () => {
       const response = await axios.get(`${backendUrl}/api/clientes/${searchTerm}`);
       setClientes([response.data]);
       setShowTable(true);
-      setShowAll(false);
     } catch (error) {
       console.error('Error al buscar el cliente:', error);
     }
   };
 
+  const handleCancelSearch = () => {
+    setSearchTerm('');
+    fetchClientes();
+  };
+
   return (
     <div className={styles.gestionContainer}>
-      <Container className="mt-5">
-        <Row className="mb-5">
+      <Container className="mt-4">
+        <Row className="mb-4">
           <Col xs={12}>
             <h3>{editCliente ? 'Editar Cliente' : 'Registrar Nuevo Cliente'}</h3>
             <Form onSubmit={handleSubmit}>
-              <Form.Group>
+              <Form.Group className="mt-4">
                 <Form.Label htmlFor="codigo">Código</Form.Label>
                 <Form.Control type="text" id="codigo" name="codigo" value={newCliente.codigo} onChange={handleChange} placeholder="Ingrese el código del cliente" />
               </Form.Group>
@@ -127,9 +129,9 @@ const GestionClientes = () => {
         <Row className="mb-5">
           <Col xs={12}>
             <h3>Buscar Clientes</h3>
-            <Form onSubmit={handleSearch}>
+            <Form >
               <Row className="mb-3">
-                <Col>
+                <Col className="w-50">
                   <Form.Control
                     type="text"
                     placeholder="Ingrese el código del cliente"
@@ -139,11 +141,11 @@ const GestionClientes = () => {
                 </Col>
               </Row>
               <Row>
-                <Col xs={6} sm={3}>
-                  <Button type="submit" variant="primary" className="mb-3 w-100">Buscar</Button>
+                <Col xs="auto">
+                  <Button  size="lg" variant="primary" style={{ width: '150px' }}onClick={handleSearch}>Buscar</Button>
                 </Col>
-                <Col xs={6} sm={3}>
-                  <Button variant="primary" className="mb-3 w-100" onClick={fetchClientes}>Mostrar Todos</Button>
+                <Col xs="auto">
+                  <Button size="lg" variant="dark" style={{ width: '150px' }} onClick={handleCancelSearch}>Cancelar</Button>
                 </Col>
               </Row>
             </Form>
@@ -168,35 +170,26 @@ const GestionClientes = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {showAll
-                      ? clientes.map(cliente => (
-                          <tr key={cliente.CODIGO}>
-                            <td>{cliente.CODIGO}</td>
-                            <td>{cliente.CI}</td>
-                            <td>{cliente.COMPLEMENTOCI}</td>
-                            <td>{cliente.APELLIDOS}</td>
-                            <td>{cliente.NOMBRES}</td>
-                            <td>{cliente.DIRECCION}</td>
-                            <td>
-                              <Button variant="warning" size="sm" onClick={() => handleEdit(cliente)}>Editar</Button>
-                              <Button variant="danger" size="sm" onClick={() => handleDelete(cliente.CODIGO)}>Eliminar</Button>
-                            </td>
-                          </tr>
-                        ))
-                      : clientes.length > 0 && (
-                          <tr key={clientes[0].CODIGO}>
-                            <td>{clientes[0].CODIGO}</td>
-                            <td>{clientes[0].CI}</td>
-                            <td>{clientes[0].COMPLEMENTOCI}</td>
-                            <td>{clientes[0].APELLIDOS}</td>
-                            <td>{clientes[0].NOMBRES}</td>
-                            <td>{clientes[0].DIRECCION}</td>
-                            <td>
-                              <Button variant="warning" size="sm" onClick={() => handleEdit(clientes[0])}>Editar</Button>
-                              <Button variant="danger" size="sm" onClick={() => handleDelete(clientes[0].CODIGO)}>Eliminar</Button>
-                            </td>
-                          </tr>
-                        )}
+                    {clientes.length > 0 ? (
+                      clientes.map(cliente => (
+                        <tr key={cliente.CODIGO}>
+                          <td>{cliente.CODIGO}</td>
+                          <td>{cliente.CI}</td>
+                          <td>{cliente.COMPLEMENTOCI}</td>
+                          <td>{cliente.APELLIDOS}</td>
+                          <td>{cliente.NOMBRES}</td>
+                          <td>{cliente.DIRECCION}</td>
+                          <td>
+                            <Button variant="warning" size="sm" onClick={() => handleEdit(cliente)}>Editar</Button>
+                            <Button variant="danger" size="sm" onClick={() => handleDelete(cliente.CODIGO)}>Eliminar</Button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="7" className="text-center">No se encontraron clientes</td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </div>

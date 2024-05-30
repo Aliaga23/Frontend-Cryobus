@@ -49,15 +49,17 @@ const CustomNavbar = () => {
 
                     <NavDropdown title="Registro" id="registro-dropdown">
                       <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/bitacora">Bitacora</NavDropdown.Item>
+                     
                     
                     </NavDropdown>
-                    
+                   
+                    <Nav.Link as={Link} to="/bitacora">Bitacora</Nav.Link>
 
                   </>
                 )}
                 {role === 4 && (
                   <NavDropdown title="Cliente" id="cliente-dropdown">
+                    <NavDropdown.Item as={Link} to="/gestion">Usuarios</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>

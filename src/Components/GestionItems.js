@@ -14,8 +14,7 @@ const GestionItems = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editItem, setEditItem] = useState(null);
   const [showTable, setShowTable] = useState(false);
-  const [showAll, setShowAll] = useState(false);
-
+ 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
   const fetchItems = async () => {
@@ -23,7 +22,6 @@ const GestionItems = () => {
       const response = await axios.get(`${backendUrl}/api/items`);
       setItems(response.data);
       setShowTable(true);
-      setShowAll(true);
     } catch (error) {
       console.error('Error al obtener los items:', error);
     }
@@ -76,12 +74,20 @@ const GestionItems = () => {
     e.preventDefault();
     try {
       const response = await axios.get(`${backendUrl}/api/items/${searchTerm}`);
-      setItems([response.data]);
+      if (Array.isArray(response.data)) {
+        setItems(response.data);
+      } else {
+        setItems([response.data]);
+      }
       setShowTable(true);
-      setShowAll(false);
     } catch (error) {
       console.error('Error al buscar el item:', error);
     }
+  };
+
+  const handleCancelSearch = () => {
+    setSearchTerm('');
+    fetchItems();
   };
 
   return (
@@ -116,7 +122,7 @@ const GestionItems = () => {
           <h3>Buscar Items</h3>
           <Form onSubmit={handleSearch}>
             <Row className="mb-3">
-              <Col>
+              <Col className="w-50">
                 <Form.Control
                   type="text"
                   placeholder="Ingrese el código del paquete"
@@ -126,11 +132,11 @@ const GestionItems = () => {
               </Col>
             </Row>
             <Row>
-              <Col xs={6} sm={3}>
-                <Button type="submit" variant="primary" className="mb-3 w-100">Buscar</Button>
+              <Col xs="auto">
+                <Button size="lg" variant="primary" style={{ width: '150px' }} onClick={handleSearch}>Buscar</Button>
               </Col>
-              <Col xs={6} sm={3}>
-                <Button variant="primary" className="mb-3 w-100" onClick={fetchItems}>Mostrar Todos</Button>
+              <Col xs="auto">
+                <Button size="lg" variant="dark" style={{ width: '150px' }} onClick={handleCancelSearch}>Cancelar</Button>
               </Col>
             </Row>
           </Form>
@@ -153,31 +159,18 @@ const GestionItems = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {showAll
-                    ? items.map(item => (
-                        <tr key={`${item.CODIGOPAQUETE}-${item.NRO}`}>
-                          <td>{item.CODIGOPAQUETE}</td>
-                          <td>{item.NRO}</td>
-                          <td>{item.DESCRIPCION}</td>
-                          <td>{item.PESOINDIVIDUAL}</td>
-                          <td>
-                            <Button variant="warning" size="sm" onClick={() => handleEdit(item)}>Editar</Button>
-                            <Button variant="danger" size="sm" onClick={() => handleDelete(item.CODIGOPAQUETE, item.NRO)}>Eliminar</Button>
-                          </td>
-                        </tr>
-                      ))
-                    : items.length > 0 && (
-                        <tr key={`${items[0].CODIGOPAQUETE}-${items[0].NRO}`}>
-                          <td>{items[0].CODIGOPAQUETE}</td>
-                          <td>{items[0].NRO}</td>
-                          <td>{items[0].DESCRIPCION}</td>
-                          <td>{items[0].PESOINDIVIDUAL}</td>
-                          <td>
-                            <Button variant="warning" size="sm" onClick={() => handleEdit(items[0])}>Editar</Button>
-                            <Button variant="danger" size="sm" onClick={() => handleDelete(items[0].CODIGOPAQUETE, items[0].NRO)}>Eliminar</Button>
-                          </td>
-                        </tr>
-                      )}
+                  {items.map(item => (
+                    <tr key={`${item.CODIGOPAQUETE}-${item.NRO}`}>
+                      <td>{item.CODIGOPAQUETE}</td>
+                      <td>{item.NRO}</td>
+                      <td>{item.DESCRIPCION}</td>
+                      <td>{item.PESOINDIVIDUAL}</td>
+                      <td>
+                        <Button variant="warning" size="sm" onClick={() => handleEdit(item)}>Editar</Button>
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(item.CODIGOPAQUETE, item.NRO)}>Eliminar</Button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </Table>
             </div>
