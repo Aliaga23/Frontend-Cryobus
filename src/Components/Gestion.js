@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
-import styles from '../Assets/gestion_empleados.module.css'; // Modifié l'import pour correspondre aux pratiques de CSS Modules
+import styles from '../Assets/gestion_empleados.module.css';
 
 const Gestion = () => {
   const [users, setUsers] = useState([]);
@@ -20,29 +20,60 @@ const Gestion = () => {
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
+  useEffect(() => {
+    fetchRoles();
+    fetchUsers();
+  }, []);
+
   const fetchUsers = async () => {
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+
+    if (!token) {
+      console.error('Token no encontrado. Asegúrate de que el usuario esté autenticado.');
+      return;
+    }
+
     try {
-      const response = await axios.get(`${backendUrl}/api/users`);
-      setUsers(response.data);
-      setShowTable(true);
-      setShowAll(true);
+      const response = await axios.get(`${backendUrl}/api/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 200) {
+        setUsers(response.data);
+        setShowTable(true);
+        setShowAll(true);
+      } else {
+        console.error('Error inesperado al obtener los usuarios:', response);
+      }
     } catch (error) {
-      console.error('Error al obtener los usuarios:', error);
+      if (error.response) {
+        // El servidor respondió con un código de estado fuera del rango 2xx
+        console.error('Error al obtener los usuarios:', error.response.data);
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió ninguna respuesta
+        console.error('No se recibió respuesta del servidor:', error.request);
+      } else {
+        // Algo sucedió en la configuración de la solicitud que desencadenó un error
+        console.error('Error al configurar la solicitud:', error.message);
+      }
     }
   };
 
   const fetchRoles = async () => {
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
     try {
-      const response = await axios.get(`${backendUrl}/api/roles`);
+      const response = await axios.get(`${backendUrl}/api/roles`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       setRoles(response.data);
     } catch (error) {
       console.error('Error al obtener los roles:', error);
     }
   };
-
-  useEffect(() => {
-    fetchRoles();
-  }, []);
 
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
@@ -50,12 +81,21 @@ const Gestion = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
     try {
       if (editUser) {
-        await axios.put(`${backendUrl}/api/users/${editUser.ID}`, newUser);
+        await axios.put(`${backendUrl}/api/users/${editUser.ID}`, newUser, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         setEditUser(null);
       } else {
-        await axios.post(`${backendUrl}/api/users`, newUser);
+        await axios.post(`${backendUrl}/api/users`, newUser, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
       }
       setNewUser({ id: '', apellidos: '', nombres: '', contra: '', idRol: '' });
       fetchUsers();
@@ -76,8 +116,13 @@ const Gestion = () => {
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
     try {
-      await axios.delete(`${backendUrl}/api/users/${id}`);
+      await axios.delete(`${backendUrl}/api/users/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       fetchUsers();
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
@@ -86,8 +131,13 @@ const Gestion = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
     try {
-      const response = await axios.get(`${backendUrl}/api/users/${searchTerm}`);
+      const response = await axios.get(`${backendUrl}/api/users/${searchTerm}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       setUsers([response.data]);
       setShowTable(true);
       setShowAll(false);
@@ -95,6 +145,7 @@ const Gestion = () => {
       console.error('Error al buscar el usuario:', error);
     }
   };
+
 
   return (
     <div className={styles.gestionContainer}>

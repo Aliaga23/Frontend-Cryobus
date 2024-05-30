@@ -8,7 +8,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
-    if (storedUser) {
+    const token = localStorage.getItem('token'); // Recuperar el token JWT del almacenamiento local
+    if (storedUser && token) {
       setUser(storedUser.user);
       setRole(storedUser.role || '');
     }
@@ -18,12 +19,14 @@ export const AuthProvider = ({ children }) => {
     setUser(userData.user);
     setRole(userData.role || '');
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', userData.token); // Almacenar el token JWT en el almacenamiento local
   };
 
   const logout = () => {
     setUser(null);
     setRole('');
     localStorage.removeItem('user');
+    localStorage.removeItem('token'); // Eliminar el token JWT del almacenamiento local
   };
 
   return (

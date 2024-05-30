@@ -20,6 +20,7 @@ const Login = () => {
       console.log('Respuesta del servidor:', res.data);
       setError('');
       login({ user: res.data.user, role: res.data.role });
+      localStorage.setItem('token', res.data.token); // Almacenar el token en localStorage
       navigate('/');
     } catch (err) {
       console.error('Error al intentar iniciar sesión:', err);
