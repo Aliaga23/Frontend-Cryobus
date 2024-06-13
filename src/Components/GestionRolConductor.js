@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
 import '../Assets/gestion_empleados.module.css';
+import Swal from 'sweetalert2';
 
 const GestionRolConductor = () => {
   const [rolConductors, setRolConductors] = useState([]);
@@ -11,8 +12,19 @@ const GestionRolConductor = () => {
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app'; // URL de tu backend en Railway
 
   const fetchRolConductors = async () => {
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+
+    if (!token) {
+      console.error('Token no encontrado. Asegúrate de que el usuario esté autenticado.');
+      return;
+    }
+
     try {
-      const response = await axios.get(`${backendUrl}/api/rolConductor`);
+      const response = await axios.get(`${backendUrl}/api/rolConductor`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       setRolConductors(response.data);
     } catch (error) {
       console.error('Error al obtener los roles de conductor:', error);
@@ -29,17 +41,37 @@ const GestionRolConductor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+
     try {
       if (editRolConductor) {
-        await axios.put(`${backendUrl}/api/rolConductor/${editRolConductor.ID}`, newRolConductor);
+        await axios.put(`${backendUrl}/api/rolConductor/${editRolConductor.ID}`, newRolConductor, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         setEditRolConductor(null);
       } else {
-        await axios.post(`${backendUrl}/api/rolConductor`, newRolConductor);
+        await axios.post(`${backendUrl}/api/rolConductor`, newRolConductor, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
       }
       setNewRolConductor({ id: '', rol: '' });
       fetchRolConductors();
+      Swal.fire({
+        title: "¡Rol de Conductor creado!",
+        text: "El rol de conductor se creó correctamente.",
+        icon: "success"
+      });
     } catch (error) {
       console.error('Error al registrar el rol de conductor:', error);
+      Swal.fire({
+        title: "Error",
+        text: "Rol no autorizado",
+        icon: "error"
+      });
     }
   };
 
@@ -49,11 +81,37 @@ const GestionRolConductor = () => {
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+
     try {
-      await axios.delete(`${backendUrl}/api/rolConductor/${id}`);
-      fetchRolConductors();
+      const result = await Swal.fire({
+        title: "¿Estás seguro?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, estoy seguro"
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`${backendUrl}/api/rolConductor/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        Swal.fire({
+          title: "Rol de Conductor Eliminado",
+          icon: "success"
+        });
+        fetchRolConductors();
+      }
     } catch (error) {
       console.error('Error al eliminar el rol de conductor:', error);
+      Swal.fire({
+        title: "Error",
+        text: "Rol no autorizado",
+        icon: "error"
+      });
     }
   };
 

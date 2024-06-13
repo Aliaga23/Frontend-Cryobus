@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { Navbar, Nav, Container,  NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../Assets/logo.png';
 
 const CustomNavbar = () => {
-  const { user, role, logout } = useAuth();
+  const { user, role } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,8 +14,7 @@ const CustomNavbar = () => {
   }, [user, role]);
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
+    navigate('/logout');
   };
 
   return (
@@ -26,8 +25,7 @@ const CustomNavbar = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-          </Nav>
+          <Nav className="me-auto"></Nav>
           <Nav>
             {user ? (
               <>
@@ -43,18 +41,20 @@ const CustomNavbar = () => {
                       <NavDropdown.Item as={Link} to="/gestion_items">Gestion Items</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
                       <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
-                    
-                     
+                      <NavDropdown.Item as={Link} to="/gestion_camion">Gestion Camion</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_tipo_camion">Gestion Tipo Camion</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_departamento">Gestion Departamento</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_localidad">Gestion Localidad</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_ubicacion">Gestion Ubicacion</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_notas_traslado">Gestion Notas Traslado</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_estados_entrega">Gestion Estado Entrega</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_plan_ruta">Gestion Plan Ruta</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/gestion_tipo_paquete">Gestion Tipo Paquete</NavDropdown.Item>
                     </NavDropdown>
-
                     <NavDropdown title="Registro" id="registro-dropdown">
                       <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
-                     
-                    
                     </NavDropdown>
-                   
                     <Nav.Link as={Link} to="/bitacora">Bitacora</Nav.Link>
-
                   </>
                 )}
                 {role === 4 && (
@@ -64,6 +64,8 @@ const CustomNavbar = () => {
                     <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/gestion_rolconductor">Rol Conductor</NavDropdown.Item>
+
                   </NavDropdown>
                 )}
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>

@@ -12,7 +12,6 @@ import GestionTipoEnvio from './Components/GestionTipoEnvio';
 import GestionRolConductor from './Components/GestionRolConductor';
 import ProtectedRoute from './Components/ProtectedRoute';
 import GestionClientes from './Components/GestionCliente';
-
 import CustomNavbar from './Components/CustomNavbar';
 import './Assets/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,7 +19,17 @@ import GestionItems from './Components/GestionItems';
 import GestionPaquetes from './Components/GestionPaquetes';
 import GestionNotaEntrega from './Components/GestionNotaEntrega';
 import GestionRecepcion from './Components/RegistrarRecepcion';
+import GestionCamion from './Components/GestionCamiones';
+import GestionTipoCamion from './Components/GestionTiposCamion';
+import GestionDepartamento from './Components/GestionDepartamentos';
+import GestionLocalidad from './Components/GestionLocalidades';
+import GestionUbicacion from './Components/GestionUbicaciones';
+import GestionNotasTraslado from './Components/GestionNotasTraslado';
+import GestionEstadosEntrega from './Components/GestionEstadosEntrega';
+import GestionPlanRutas from './Components/GestionPlanRutas';
+import GestionTipoPaquetes from './Components/GestionTipoPaquetes';
 import Bitacora from './Components/Bitacora';
+import Logout from './Components/Logout';
 
 function App() {
   return (
@@ -28,11 +37,11 @@ function App() {
       <Router>
         <CustomNavbar />
         <Routes>
-        <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/logout" element={<Logout />} /> {/* Añadido logout */}
           <Route element={<ProtectedRoute />}>
-            
             <Route path="/gestion" element={<Gestion />} />
             <Route path="/gestion_roles" element={<GestionRoles />} />
             <Route path="/gestion_permiso_rol" element={<GestionPermisoRol />} />
@@ -43,8 +52,16 @@ function App() {
             <Route path="/gestion_paquetes" element={<GestionPaquetes />} />
             <Route path="/gestion_notaentrega" element={<GestionNotaEntrega />} />
             <Route path="/gestion_recepcion" element={<GestionRecepcion />} />
+            <Route path="/gestion_camion" element={<GestionCamion />} />
+            <Route path="/gestion_tipo_camion" element={<GestionTipoCamion />} />
+            <Route path="/gestion_departamento" element={<GestionDepartamento />} />
+            <Route path="/gestion_localidad" element={<GestionLocalidad />} />
+            <Route path="/gestion_ubicacion" element={<GestionUbicacion />} />
+            <Route path="/gestion_notas_traslado" element={<GestionNotasTraslado />} />
+            <Route path="/gestion_estados_entrega" element={<GestionEstadosEntrega />} />
+            <Route path="/gestion_plan_ruta" element={<GestionPlanRutas />} />
+            <Route path="/gestion_tipo_paquete" element={<GestionTipoPaquetes />} />
             <Route path="/bitacora" element={<Bitacora />} />
-          
           </Route>
         </Routes>
       </Router>

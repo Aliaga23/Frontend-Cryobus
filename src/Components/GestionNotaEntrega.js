@@ -261,7 +261,7 @@ const GestionNotaEntrega = () => {
             <Form.Group className={styles.formGroup}>
               <Form.Label htmlFor="PRECIOESTIMADO" className={styles.formLabel}>Precio Estimado</Form.Label>
               <Form.Control 
-                type="number" 
+                type="number" ////cambiar , sin tipo
                 id="PRECIOESTIMADO" 
                 name="PRECIOESTIMADO" 
                 value={newNotaEntrega.PRECIOESTIMADO} 
