@@ -3,18 +3,56 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../Assets/logo.png';
+import routesConfig from './routesConfig';
 
 const CustomNavbar = () => {
-  const { user, role } = useAuth();
+  const { user, role, permisos } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log('Usuario:', user);
     console.log('Rol:', role);
-  }, [user, role]);
+    console.log('Permisos:', permisos);
+  }, [user, role, permisos]);
 
   const handleLogout = () => {
     navigate('/logout');
+  };
+
+  const hasPermission = (permisoId) => {
+    return permisos.includes(permisoId);
+  };
+
+  const renderMenuItems = (items) => {
+    return items.map(item => {
+      if (item.role && role !== item.role) {
+        return null;
+      }
+      if (item.permiso && !hasPermission(item.permiso)) {
+        return null;
+      }
+      return <NavDropdown.Item key={item.path} as={Link} to={item.path}>{item.label}</NavDropdown.Item>;
+    });
+  };
+
+  const renderDropdowns = () => {
+    return Object.keys(routesConfig).map(key => {
+      const section = routesConfig[key];
+      if (section.items) {
+        return (
+          <NavDropdown title={section.title} id={`${key}-dropdown`} key={key}>
+            {renderMenuItems(section.items)}
+          </NavDropdown>
+        );
+      }
+      if (section.role && role !== section.role) {
+        return null;
+      }
+      if (section.permiso && hasPermission(section.permiso)) {
+        return <Nav.Link key={section.path} as={Link} to={section.path}>{section.label}</Nav.Link>;
+      }
+      return null;
+    });
   };
 
   return (
@@ -29,45 +67,7 @@ const CustomNavbar = () => {
           <Nav>
             {user ? (
               <>
-                {role === 1 && (
-                  <>
-                    <NavDropdown title="Gestión" id="gestion-dropdown">
-                      <NavDropdown.Item as={Link} to="/gestion">Usuarios</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_roles">Roles</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_rolconductor">Rol Conductor</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_tipoenvio">Tipo Envio</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_permiso_rol">Permisos Rol</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_items">Gestion Items</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_camion">Gestion Camion</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_tipo_camion">Gestion Tipo Camion</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_departamento">Gestion Departamento</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_localidad">Gestion Localidad</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_ubicacion">Gestion Ubicacion</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_notas_traslado">Gestion Notas Traslado</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_estados_entrega">Gestion Estado Entrega</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_plan_ruta">Gestion Plan Ruta</NavDropdown.Item>
-                      <NavDropdown.Item as={Link} to="/gestion_tipo_paquete">Gestion Tipo Paquete</NavDropdown.Item>
-                    </NavDropdown>
-                    <NavDropdown title="Registro" id="registro-dropdown">
-                      <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
-                    </NavDropdown>
-                    <Nav.Link as={Link} to="/bitacora">Bitacora</Nav.Link>
-                  </>
-                )}
-                {role === 4 && (
-                  <NavDropdown title="Cliente" id="cliente-dropdown">
-                    <NavDropdown.Item as={Link} to="/gestion">Usuarios</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/gestion_cliente">Gestion Cliente</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/gestion_paquetes">Gestion Paquetes</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/gestion_notaentrega">Gestion Nota Entrega</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/gestion_recepcion">Registrar Recepcion</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/gestion_rolconductor">Rol Conductor</NavDropdown.Item>
-
-                  </NavDropdown>
-                )}
+                {renderDropdowns()}
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </>
             ) : (

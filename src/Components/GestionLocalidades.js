@@ -19,7 +19,10 @@ const GestionLocalidades = () => {
 
   const fetchLocalidades = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/localidades`);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${backendUrl}/api/localidades`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setLocalidades(response.data);
       setShowTable(true);
     } catch (error) {
@@ -29,7 +32,10 @@ const GestionLocalidades = () => {
 
   const fetchDepartamentos = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/departamentos`);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${backendUrl}/api/departamentos`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setDepartamentos(response.data);
     } catch (error) {
       console.error('Error al obtener los departamentos:', error);
@@ -48,11 +54,16 @@ const GestionLocalidades = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem('token');
       if (editLocalidad) {
-        await axios.put(`${backendUrl}/api/localidades/${editLocalidad.NOMBRE}/${editLocalidad.NOMBREDEPARTAMENTO}`, newLocalidad);
+        await axios.put(`${backendUrl}/api/localidades/${editLocalidad.NOMBRE}/${editLocalidad.NOMBREDEPARTAMENTO}`, newLocalidad, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setEditLocalidad(null);
       } else {
-        await axios.post(`${backendUrl}/api/localidades`, newLocalidad);
+        await axios.post(`${backendUrl}/api/localidades`, newLocalidad, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
       }
       setNewLocalidad({ nombre: '', nombreDepartamento: '', nuevoNombre: '', nuevoNombreDepartamento: '' });
       fetchLocalidades();
@@ -73,7 +84,10 @@ const GestionLocalidades = () => {
 
   const handleDelete = async (nombre, nombreDepartamento) => {
     try {
-      await axios.delete(`${backendUrl}/api/localidades/${nombre}/${nombreDepartamento}`);
+      const token = localStorage.getItem('token');
+      await axios.delete(`${backendUrl}/api/localidades/${nombre}/${nombreDepartamento}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       fetchLocalidades();
     } catch (error) {
       console.error('Error al eliminar la localidad:', error);

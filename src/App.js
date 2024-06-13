@@ -23,14 +23,16 @@ import GestionCamion from './Components/GestionCamiones';
 import GestionTipoCamion from './Components/GestionTiposCamion';
 import GestionDepartamento from './Components/GestionDepartamentos';
 import GestionLocalidad from './Components/GestionLocalidades';
-import GestionUbicacion from './Components/GestionUbicaciones';
 import GestionNotasTraslado from './Components/GestionNotasTraslado';
 import GestionEstadosEntrega from './Components/GestionEstadosEntrega';
 import GestionPlanRutas from './Components/GestionPlanRutas';
 import GestionTipoPaquetes from './Components/GestionTipoPaquetes';
 import Bitacora from './Components/Bitacora';
 import Logout from './Components/Logout';
-
+import ChangePassword from './Components/ChangePassword';
+import GestionarDireccion from './Components/GestionDireccion';
+import GestionarConductor from './Components/GestionarConductor';
+import GestionarDetalleConductor from './Components/GestionarDetalleConductor';
 function App() {
   return (
     <AuthProvider>
@@ -56,11 +58,15 @@ function App() {
             <Route path="/gestion_tipo_camion" element={<GestionTipoCamion />} />
             <Route path="/gestion_departamento" element={<GestionDepartamento />} />
             <Route path="/gestion_localidad" element={<GestionLocalidad />} />
-            <Route path="/gestion_ubicacion" element={<GestionUbicacion />} />
             <Route path="/gestion_notas_traslado" element={<GestionNotasTraslado />} />
             <Route path="/gestion_estados_entrega" element={<GestionEstadosEntrega />} />
             <Route path="/gestion_plan_ruta" element={<GestionPlanRutas />} />
             <Route path="/gestion_tipo_paquete" element={<GestionTipoPaquetes />} />
+            <Route path="/gestion_direccion" element={<GestionarDireccion />} />
+            <Route path="/gestion_conductor" element={<GestionarConductor />} />
+            <Route path="/gestion_detalle_conductor" element={<GestionarDetalleConductor />} />
+
+            <Route path="/change_password" element={<ChangePassword />} />
             <Route path="/bitacora" element={<Bitacora />} />
           </Route>
         </Routes>

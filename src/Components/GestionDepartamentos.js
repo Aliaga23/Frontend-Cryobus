@@ -16,7 +16,10 @@ const GestionDepartamentos = () => {
 
   const fetchDepartamentos = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/departamentos`);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${backendUrl}/api/departamentos`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setDepartamentos(response.data);
       setShowTable(true);
     } catch (error) {
@@ -35,11 +38,16 @@ const GestionDepartamentos = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem('token');
       if (editDepartamento) {
-        await axios.put(`${backendUrl}/api/departamentos/${editDepartamento.NOMBRE}`, newDepartamento);
+        await axios.put(`${backendUrl}/api/departamentos/${editDepartamento.NOMBRE}`, newDepartamento, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setEditDepartamento(null);
       } else {
-        await axios.post(`${backendUrl}/api/departamentos`, newDepartamento);
+        await axios.post(`${backendUrl}/api/departamentos`, newDepartamento, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
       }
       setNewDepartamento({ nombre: '', nuevoNombre: '' });
       fetchDepartamentos();
@@ -58,7 +66,10 @@ const GestionDepartamentos = () => {
 
   const handleDelete = async (nombre) => {
     try {
-      await axios.delete(`${backendUrl}/api/departamentos/${nombre}`);
+      const token = localStorage.getItem('token');
+      await axios.delete(`${backendUrl}/api/departamentos/${nombre}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       fetchDepartamentos();
     } catch (error) {
       console.error('Error al eliminar el departamento:', error);
