@@ -41,8 +41,11 @@ const GestionNotasTraslado = () => {
   };
 
   const fetchPlanRutas = async () => {
+    const token = localStorage.getItem('token');
     try {
-      const response = await axios.get(`${backendUrl}/api/planRuta`);
+      const response = await axios.get(`${backendUrl}/api/planRuta`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setPlanRutas(response.data);
     } catch (error) {
       console.error('Error al obtener los planes de ruta:', error);
