@@ -1,56 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Collapse, IconButton,
-  Container, Paper, Box, Typography, TablePagination
+  Container, createTheme, ThemeProvider, Typography
 } from '@mui/material';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import MUIDataTable from 'mui-datatables';
 import io from 'socket.io-client';
 import axios from 'axios';
 
 const socket = io('https://proyecto2-production-ba5b.up.railway.app');
 
-const Row = ({ row }) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <TableRow>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-          </IconButton>
-        </TableCell>
-        <TableCell>{row.NRO}</TableCell>
-        <TableCell>{row.IDACCION}</TableCell>
-        <TableCell>{row.IDUSUARIO}</TableCell>
-        <TableCell>{row.IP}</TableCell>
-        <TableCell>{new Date(row.FECHA).toISOString().split('T')[0]}</TableCell>
-        <TableCell>{row.HORAACCION}</TableCell>
-        <TableCell>{row.ELEMENTOMODIFICADO}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                Detalles
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {row.DETALLE}
-              </Typography>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </>
-  );
-};
-
 const Bitacora = () => {
   const [registros, setRegistros] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(50);
 
   useEffect(() => {
     const fetchRegistros = async () => {
@@ -58,7 +17,7 @@ const Bitacora = () => {
         const response = await axios.get('https://proyecto2-production-ba5b.up.railway.app/api/bitacora');
         setRegistros(response.data);
       } catch (error) {
-        console.error('Error al obtener la bitácora:', error);
+        console.error('Error al obtener la bitacora:', error);
       }
     };
 
@@ -73,52 +32,120 @@ const Bitacora = () => {
     };
   }, []);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const columns = [
+    { name: 'NRO', label: 'NRO' },
+    { name: 'IDACCION', label: 'IDACCION' },
+    { name: 'IDUSUARIO', label: 'IDUSUARIO' },
+    { name: 'IP', label: 'IP' },
+    {
+      name: 'FECHA',
+      label: 'FECHA',
+      options: {
+        customBodyRender: (value) => new Date(value).toISOString().split('T')[0]
+      }
+    },
+    { name: 'HORAACCION', label: 'HORA' },
+    { name: 'ELEMENTOMODIFICADO', label: 'ELEMENTO MODIFICADO' },
+    {
+      name: 'DETALLE',
+      label: 'DETALLE',
+      options: {
+        customBodyRender: (value) => (
+          <Typography variant="body2" color="textSecondary">
+            {value}
+          </Typography>
+        )
+      }
+    }
+  ];
+
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'standard',
+    rowsPerPage: 40,
+    rowsPerPageOptions: [40, 80, 120],
+    selectableRows: 'none',
+    textLabels: {
+      body: {
+        noMatch: "No se encontraron registros coincidentes",
+        toolTip: "Ordenar",
+        columnHeaderTooltip: column => `Ordenar por ${column.label}`
+      },
+      pagination: {
+        next: "Siguiente Página",
+        previous: "Página Anterior",
+        rowsPerPage: "Filas por página:",
+        displayRows: "de",
+      },
+      toolbar: {
+        search: "Buscar",
+        downloadCsv: "Descargar CSV",
+        print: "Imprimir",
+        viewColumns: "Ver Columnas",
+        filterTable: "Filtrar Tabla",
+      },
+      filter: {
+        all: "Todo",
+        title: "FILTROS",
+        reset: "REINICIAR",
+      },
+      viewColumns: {
+        title: "Mostrar Columnas",
+        titleAria: "Mostrar/Ocultar Columnas",
+      },
+      selectedRows: {
+        text: "fila(s) seleccionada(s)",
+        delete: "Eliminar",
+        deleteAria: "Eliminar Filas Seleccionadas",
+      },
+    },
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const getMuiTheme = () => createTheme({
+    components: {
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            border: '1px solid rgba(224, 224, 224, 1)',
+            textAlign: 'center',
+            padding: '6px',
+            fontSize: '12px',
+          }
+        }
+      },
+      MuiTableRow: {
+        styleOverrides: {
+          root: {
+            '&:nth-of-type(odd)': {
+              backgroundColor: '#f9f9f9',
+            },
+          }
+        }
+      },
+      MuiTableHead: {
+        styleOverrides: {
+          root: {
+            '& .MuiTableCell-root': {
+              fontSize: '14px',
+              fontWeight: 'bold',
+            }
+          }
+        }
+      }
+    }
+  });
 
   return (
     <Container>
       <h3 className="mt-3">Bitácora de Acciones</h3>
-      <div>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell>NRO</TableCell>
-                <TableCell>IDACCION</TableCell>
-                <TableCell>IDUSUARIO</TableCell>
-                <TableCell>IP</TableCell>
-                <TableCell>FECHA</TableCell>
-                <TableCell>HORA</TableCell>
-                <TableCell>ELEMENTOMODIFICADO</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {registros
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <Row key={row.NRO} row={row} />
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[50, 100, 150]}
-          component="div"
-          count={registros.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+      <ThemeProvider theme={getMuiTheme()}>
+        <MUIDataTable
+          title={"Registro de acciones en la bitácora"}
+          data={registros}
+          columns={columns}
+          options={options}
         />
-      </div>
+      </ThemeProvider>
     </Container>
   );
 };
