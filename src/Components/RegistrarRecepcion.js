@@ -264,7 +264,7 @@ const GestionRecepcion = () => {
                 </thead>
                 <tbody>
                   {recepciones.map(recepcion => (
-                    <tr key={recepcion.nro}>
+                    <tr key={recepcion.NRO}>
                             <td>{recepcion.NRO}</td>
                         <td>{recepcion.FECHARECEPCION}</td>
                         <td>{recepcion.HORARECEPCION}</td>
