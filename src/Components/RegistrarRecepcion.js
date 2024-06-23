@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { format } from 'date-fns';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
@@ -266,7 +267,7 @@ const GestionRecepcion = () => {
                   {recepciones.map(recepcion => (
                     <tr key={recepcion.NRO}>
                             <td>{recepcion.NRO}</td>
-                        <td>{recepcion.FECHARECEPCION}</td>
+                        <td>{format(new Date(recepcion.FECHARECEPCION), 'yyyy-MM-dd')}</td>
                         <td>{recepcion.HORARECEPCION}</td>
                         <td>{recepcion.PRECIOESTIMADO}</td>
                         <td>{recepcion.CODIGOCLIENTEENVIA}</td>

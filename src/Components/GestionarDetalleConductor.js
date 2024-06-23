@@ -171,7 +171,7 @@ const GestionarDetalleConductor = () => {
             <thead>
               <tr>
                 <th>Número</th>
-                <th>Código del Conductor</th>
+                <th>Nombre del Conductor</th>
                 <th>Rol del Conductor</th>
                 <th>Número de Nota de Traslado</th>
                 <th>Acciones</th>
@@ -181,8 +181,8 @@ const GestionarDetalleConductor = () => {
               {detalles.map((detalle) => (
                 <tr key={detalle.NRO}>
                   <td>{detalle.NRO}</td>
-                  <td>{detalle.CODIGOCONDUCTOR}</td>
-                  <td>{detalle.IDROLCONDUCTOR}</td>
+                  <td>{detalle.APELLIDOS} {detalle.NOMBRES}</td>
+                  <td>{detalle.ROL}</td>
                   <td>{detalle.NRONOTATRASLADO}</td>
                   <td>
                     <Button variant="warning" size="sm" onClick={() => handleEdit(detalle)}>Editar</Button>

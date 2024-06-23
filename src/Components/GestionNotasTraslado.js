@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
 import styles from '../Assets/gestion_empleados.module.css';
-
+import { format } from 'date-fns';
 const GestionNotasTraslado = () => {
   const [notasTraslado, setNotasTraslado] = useState([]);
   const [camiones, setCamiones] = useState([]);
@@ -173,9 +173,9 @@ const GestionNotasTraslado = () => {
                       notasTraslado.map(notaTraslado => (
                         <tr key={notaTraslado.NRO}>
                           <td>{notaTraslado.NRO}</td>
-                          <td>{notaTraslado.FECHALLEGADA}</td>
+                          <td>{format(new Date(notaTraslado.FECHALLEGADA), 'yyyy-MM-dd')}</td>
                           <td>{notaTraslado.HORALLEGADA}</td>
-                          <td>{notaTraslado.FECHASALIDA}</td>
+                          <td>{format(new Date(notaTraslado.FECHASALIDA), 'yyyy-MM-dd')}</td>
                           <td>{notaTraslado.HORASALIDA}</td>
                           <td>{notaTraslado.NROCAMION}</td>
                           <td>{notaTraslado.IDPLANRUTA}</td>

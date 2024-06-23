@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import styles from '../Assets/gestion_empleados.module.css';
+import { format } from 'date-fns';
 
 const GestionNotaEntrega = () => {
   const [notasEntrega, setNotasEntrega] = useState([]);
@@ -439,9 +440,9 @@ const GestionNotaEntrega = () => {
                   {notasEntrega.map(notaEntrega => (
                     <tr key={notaEntrega.NRO}>
                       <td>{notaEntrega.NRO}</td>
-                      <td>{notaEntrega.FECHARECEPCION}</td>
+                      <td>{format(new Date(notaEntrega.FECHARECEPCION), 'yyyy-MM-dd')}</td>
                       <td>{notaEntrega.HORARECEPCION}</td>
-                      <td>{notaEntrega.FECHAENTREGA}</td>
+                      <td>{format(new Date(notaEntrega.FECHAENTREGA), 'yyyy-MM-dd')}</td>
                       <td>{notaEntrega.HORAENTREGA}</td>
                       <td>{notaEntrega.PRECIOESTIMADO}</td>
                       <td>{clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.NOMBRES} {clientes.find(cliente => cliente.CODIGO === notaEntrega.CODIGOCLIENTEENVIA)?.APELLIDOS}</td>

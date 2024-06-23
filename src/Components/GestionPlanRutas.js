@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
+import { format } from 'date-fns';
 import '../Assets/gestion_empleados.module.css';
 
 const GestionPlanRutas = () => {
@@ -29,99 +30,98 @@ const GestionPlanRutas = () => {
       setPlanRutas(response.data);
     } catch (error) {
       console.error('Error al obtener los planes de ruta:', error);
-    }
-  };
+   
+    }  };
 
-  const fetchLocalidades = async () => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await axios.get(`${backendUrl}/api/localidades`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setLocalidades(response.data);
-    } catch (error) {
-      console.error('Error al obtener las localidades:', error);
-    }
-  };
-
-  const fetchDepartamentos = async () => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await axios.get(`${backendUrl}/api/departamentos`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setDepartamentos(response.data);
-    } catch (error) {
-      console.error('Error al obtener los departamentos:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlanRutas();
-    fetchLocalidades();
-    fetchDepartamentos();
-  }, []);
-
-  const handleChange = (e) => {
-    setNewPlanRuta({ ...newPlanRuta, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem('token');
-    try {
-      if (editPlanRuta) {
-        await axios.put(`${backendUrl}/api/planRuta/${editPlanRuta.ID}`, newPlanRuta, {
+    const fetchLocalidades = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`${backendUrl}/api/localidades`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setEditPlanRuta(null);
-      } else {
-        await axios.post(`${backendUrl}/api/planRuta`, newPlanRuta, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        setLocalidades(response.data);
+      } catch (error) {
+        console.error('Error al obtener las localidades:', error);
       }
+    };
+  
+    const fetchDepartamentos = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`${backendUrl}/api/departamentos`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setDepartamentos(response.data);
+      } catch (error) {
+        console.error('Error al obtener los departamentos:', error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchPlanRutas();
+      fetchLocalidades();
+      fetchDepartamentos();
+    }, []);
+  
+    const handleChange = (e) => {
+      setNewPlanRuta({ ...newPlanRuta, [e.target.name]: e.target.value });
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem('token');
+      try {
+        if (editPlanRuta) {
+          await axios.put(`${backendUrl}/api/planRuta/${editPlanRuta.ID}`, newPlanRuta, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setEditPlanRuta(null);
+        } else {
+          await axios.post(`${backendUrl}/api/planRuta`, newPlanRuta, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        }
+        setNewPlanRuta({
+          id: '',
+          nombreLocalidad: '',
+          nombreDepartamento: '',
+          fechaSalidaEsperada: '',
+          horaSalidaEsperada: '',
+          fechaLlegadaEsperada: '',
+          horaLlegadaEsperada: ''
+        });
+        fetchPlanRutas();
+      } catch (error) {
+        console.error('Error al registrar el plan de ruta:', error);
+      }
+    };
+  
+    const handleEdit = (planRuta) => {
       setNewPlanRuta({
-        id: '',
-        nombreLocalidad: '',
-        nombreDepartamento: '',
-        fechaSalidaEsperada: '',
-        horaSalidaEsperada: '',
-        fechaLlegadaEsperada: '',
-        horaLlegadaEsperada: ''
+        id: planRuta.ID,
+        nombreLocalidad: planRuta.NOMBRELOCALIDAD,
+        nombreDepartamento: planRuta.NOMBREDEPARTAMENTO,
+        fechaSalidaEsperada: planRuta.FECHASALIDAESPERADA,
+        horaSalidaEsperada: planRuta.HORASALIDAESPERADA,
+        fechaLlegadaEsperada: planRuta.FECHALLEGADAESPERADA,
+        horaLlegadaEsperada: planRuta.HORALLEGADAESPERADA
       });
-      fetchPlanRutas();
-    } catch (error) {
-      console.error('Error al registrar el plan de ruta:', error);
-    }
-  };
-
-  const handleEdit = (planRuta) => {
-    setNewPlanRuta({
-      id: planRuta.ID,
-      nombreLocalidad: planRuta.NOMBRELOCALIDAD,
-      nombreDepartamento: planRuta.NOMBREDEPARTAMENTO,
-      fechaSalidaEsperada: planRuta.FECHASALIDAESPERADA,
-      horaSalidaEsperada: planRuta.HORASALIDAESPERADA,
-      fechaLlegadaEsperada: planRuta.FECHALLEGADAESPERADA,
-      horaLlegadaEsperada: planRuta.HORALLEGADAESPERADA
-    });
-    setEditPlanRuta(planRuta);
-  };
-
-  const handleDelete = async (id) => {
-    const token = localStorage.getItem('token');
-    try {
-      await axios.delete(`${backendUrl}/api/planRuta/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      fetchPlanRutas();
-    } catch (error) {
-      console.error('Error al eliminar el plan de ruta:', error);
-    }
-  };
-
-  return (
-
+      setEditPlanRuta(planRuta);
+    };
+  
+    const handleDelete = async (id) => {
+      const token = localStorage.getItem('token');
+      try {
+        await axios.delete(`${backendUrl}/api/planRuta/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        fetchPlanRutas();
+      } catch (error) {
+        console.error('Error al eliminar el plan de ruta:', error);
+      }
+    };
+  
+    return (
       <Container className="mt-5">
         <Row className="mb-5">
           <Col md={12}>
@@ -241,10 +241,10 @@ const GestionPlanRutas = () => {
                     <td>{planRuta.ID}</td>
                     <td>{planRuta.NOMBRELOCALIDAD}</td>
                     <td>{planRuta.NOMBREDEPARTAMENTO}</td>
-                    <td>{planRuta.FECHASALIDAESPERADA}</td>
-                    <td>{planRuta.HORASALIDAESPERADA}</td>
-                    <td>{planRuta.FECHALLEGADAESPERADA}</td>
-                    <td>{planRuta.HORALLEGADAESPERADA}</td>
+                    <td>{format(new Date(planRuta.FECHASALIDAESPERADA), 'yyyy-MM-dd')}</td>
+                    <td>{planRuta.HORASALIDAESPERADA.slice(0, 5)}</td>
+                    <td>{format(new Date(planRuta.FECHALLEGADAESPERADA), 'yyyy-MM-dd')}</td>
+                    <td>{planRuta.HORALLEGADAESPERADA.slice(0, 5)}</td>
                     <td>
                       <Button
                         variant="warning"

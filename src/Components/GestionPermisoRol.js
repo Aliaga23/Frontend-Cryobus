@@ -1,4 +1,3 @@
-// GestionPermisoRol.js
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
@@ -146,7 +145,7 @@ const GestionPermisoRol = () => {
               <thead className="thead-light">
                 <tr>
                   <th>Número</th>
-                  <th>ID Permiso</th>
+                  <th>Nombre del Permiso</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -154,7 +153,7 @@ const GestionPermisoRol = () => {
                 {rolPermisos.map(permiso => (
                   <tr key={permiso.NRO}>
                     <td>{permiso.NRO}</td>
-                    <td>{permiso.IDPERMISO}</td>
+                    <td>{permiso.PERMISONOMBRE}</td>
                     <td>
                       <Button variant="danger" size="sm" onClick={() => handleRemovePermiso(permiso.NRO)}>Eliminar</Button>
                     </td>
