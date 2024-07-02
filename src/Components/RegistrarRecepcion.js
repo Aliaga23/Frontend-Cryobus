@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Form, Button, Table, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -19,27 +19,17 @@ const RegistrarRecepcion = () => {
     idTipoEnvio: '',
     idPlanRuta: '',
     costoPrevisto: '',
-    codigoPaquete: '' // Aseguramos de tener este campo
+    codigoPaquete: ''
   });
-  const [selectedPaquete, setSelectedPaquete] = useState(null);
   const [showModalPaquete, setShowModalPaquete] = useState(false);
   const [showModalCliente, setShowModalCliente] = useState(false);
-  const [showItemsModal, setShowItemsModal] = useState(false); // Nuevo estado para controlar el modal de ítems
-  const [usuarioAtendiendo, setUsuarioAtendiendo] = useState(''); // Asumiendo que se puede obtener el nombre de usuario desde la sesión
+  const [showItemsModal, setShowItemsModal] = useState(false);
   const [selectedRecepcionPaquete, setSelectedRecepcionPaquete] = useState(null);
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    fetchClientes();
-    fetchTiposEnvio();
-    fetchPlanRutas();
-    fetchRecepciones();
-    fetchPaquetes();
-  }, []);
-
-  const fetchClientes = async () => {
+  const fetchClientes = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/clientes`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -48,9 +38,9 @@ const RegistrarRecepcion = () => {
     } catch (error) {
       console.error('Error al obtener los clientes:', error);
     }
-  };
+  }, [backendUrl, token]);
 
-  const fetchTiposEnvio = async () => {
+  const fetchTiposEnvio = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/tipoEnvio`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -59,9 +49,9 @@ const RegistrarRecepcion = () => {
     } catch (error) {
       console.error('Error al obtener los tipos de envío:', error);
     }
-  };
+  }, [backendUrl, token]);
 
-  const fetchPlanRutas = async () => {
+  const fetchPlanRutas = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/planRuta`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -70,9 +60,9 @@ const RegistrarRecepcion = () => {
     } catch (error) {
       console.error('Error al obtener los planes de ruta:', error);
     }
-  };
+  }, [backendUrl, token]);
 
-  const fetchRecepciones = async () => {
+  const fetchRecepciones = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/recepciones`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -81,9 +71,9 @@ const RegistrarRecepcion = () => {
     } catch (error) {
       console.error('Error al obtener las recepciones:', error);
     }
-  };
+  }, [backendUrl, token]);
 
-  const fetchPaquetes = async () => {
+  const fetchPaquetes = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/paquetes`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -92,7 +82,7 @@ const RegistrarRecepcion = () => {
     } catch (error) {
       console.error('Error al obtener los paquetes:', error);
     }
-  };
+  }, [backendUrl, token]);
 
   const fetchItemsPaquete = async (codigoPaquete) => {
     try {
@@ -104,6 +94,14 @@ const RegistrarRecepcion = () => {
       console.error('Error al obtener los ítems del paquete:', error);
     }
   };
+
+  useEffect(() => {
+    fetchClientes();
+    fetchTiposEnvio();
+    fetchPlanRutas();
+    fetchRecepciones();
+    fetchPaquetes();
+  }, [fetchClientes, fetchTiposEnvio, fetchPlanRutas, fetchRecepciones, fetchPaquetes]);
 
   const handleChangeRecepcion = (e) => {
     setNewRecepcion({ ...newRecepcion, [e.target.name]: e.target.value });
@@ -135,7 +133,6 @@ const RegistrarRecepcion = () => {
         costoPrevisto: '',
         codigoPaquete: ''
       });
-      setSelectedPaquete(null);
       setItemsPaquete([]);
     } catch (error) {
       console.error('Error al registrar la recepción:', error);
@@ -143,11 +140,9 @@ const RegistrarRecepcion = () => {
   };
 
   const handleSelectPaquete = async (e) => {
-    const paqueteSeleccionado = paquetes.find(paquete => paquete.CODIGO === e.target.value);
-    setSelectedPaquete(paqueteSeleccionado);
-    setNewRecepcion({ ...newRecepcion, codigoPaquete: e.target.value }); // Asegurarse de que el paquete se guarda correctamente
+    setNewRecepcion({ ...newRecepcion, codigoPaquete: e.target.value });
     await fetchItemsPaquete(e.target.value);
-    setShowItemsModal(true); // Mostrar el modal de ítems al seleccionar un paquete
+    setShowItemsModal(true);
   };
 
   const handleShowModalPaquete = () => {
@@ -160,12 +155,12 @@ const RegistrarRecepcion = () => {
 
   const closeModalPaquete = () => {
     setShowModalPaquete(false);
-    fetchPaquetes(); // Actualiza la lista de paquetes
+    fetchPaquetes();
   };
 
   const closeModalCliente = () => {
     setShowModalCliente(false);
-    fetchClientes(); // Actualiza la lista de clientes
+    fetchClientes();
   };
 
   const closeItemsModal = () => {
