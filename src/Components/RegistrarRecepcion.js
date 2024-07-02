@@ -184,10 +184,10 @@ const RegistrarRecepcion = () => {
   };
 
   return (
-    <Container className={styles.gestionContainer}>
-      <Row className="mt-5">
-        <Col xs={12}>
-          <h3>Registrar Recepción</h3>
+    <Container fluid className={styles.gestionContainer}>
+      <Row className="mt-5 justify-content-center">
+        <Col xs={12} md={8} lg={6}>
+          <h3 className="text-center">Registrar Recepción</h3>
           <Form onSubmit={handleSubmitRecepcion}>
             <Form.Group>
               <Form.Label htmlFor="codigoClienteEnvia">Cliente que Envia</Form.Label>
@@ -238,13 +238,13 @@ const RegistrarRecepcion = () => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Button type="submit" variant="primary" className="mt-2">Registrar</Button>
+            <Button type="submit" variant="primary" className="mt-2 w-100">Registrar</Button>
           </Form>
         </Col>
       </Row>
 
-      <Row className="mt-5">
-        <Col xs={12}>
+      <Row className="mt-5 justify-content-center">
+        <Col xs={12} md={8} lg={6} className="d-flex justify-content-around">
           <Button variant="info" onClick={handleShowModalCliente}>Gestionar Clientes</Button>
           <Button variant="primary" onClick={handleShowModalPaquete}>Gestionar Paquetes</Button>
         </Col>
@@ -252,8 +252,8 @@ const RegistrarRecepcion = () => {
 
       <Row className="mt-5">
         <Col xs={12}>
-          <h3>Recepciones Registradas</h3>
-          <Table bordered>
+          <h3 className="text-center">Recepciones Registradas</h3>
+          <Table bordered responsive>
             <thead className="thead-light">
               <tr>
                 <th>Número</th>
@@ -319,7 +319,7 @@ const RegistrarRecepcion = () => {
           <Modal.Title>Detalles del Paquete: {selectedRecepcionPaquete}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Table bordered>
+          <Table bordered responsive>
             <thead className="thead-light">
               <tr>
                 <th>Código del Paquete</th>
