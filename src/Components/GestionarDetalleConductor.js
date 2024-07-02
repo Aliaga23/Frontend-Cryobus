@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const GestionarDetalleConductor = () => {
+const GestionDetalleConductor = () => {
   const [detalles, setDetalles] = useState([]);
   const [conductores, setConductores] = useState([]);
   const [rolesConductor, setRolesConductor] = useState([]);
   const [notaTraslados, setNotaTraslados] = useState([]);
   const [formData, setFormData] = useState({
-    nro: '',
     codigoConductor: '',
     idRolConductor: '',
     nroNotaTraslado: ''
   });
   const [editDetalle, setEditDetalle] = useState(null);
+  const [error, setError] = useState(null);
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
@@ -31,6 +35,7 @@ const GestionarDetalleConductor = () => {
       });
       setDetalles(response.data);
     } catch (error) {
+      setError('Error al obtener los detalles del conductor');
       console.error('Error al obtener los detalles del conductor:', error);
     }
   };
@@ -42,6 +47,7 @@ const GestionarDetalleConductor = () => {
       });
       setConductores(response.data);
     } catch (error) {
+      setError('Error al obtener los conductores');
       console.error('Error al obtener los conductores:', error);
     }
   };
@@ -53,6 +59,7 @@ const GestionarDetalleConductor = () => {
       });
       setRolesConductor(response.data);
     } catch (error) {
+      setError('Error al obtener los roles de conductor');
       console.error('Error al obtener los roles de conductor:', error);
     }
   };
@@ -64,6 +71,7 @@ const GestionarDetalleConductor = () => {
       });
       setNotaTraslados(response.data);
     } catch (error) {
+      setError('Error al obtener las notas de traslado');
       console.error('Error al obtener las notas de traslado:', error);
     }
   };
@@ -81,21 +89,31 @@ const GestionarDetalleConductor = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setEditDetalle(null);
+        Swal.fire({
+          title: "¡Detalle actualizado!",
+          text: "El detalle se ha actualizado correctamente.",
+          icon: "success"
+        });
       } else {
         await axios.post(`${backendUrl}/api/detalleconductor`, formData, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
+        Swal.fire({
+          title: "¡Detalle registrado!",
+          text: "El detalle se ha registrado correctamente.",
+          icon: "success"
+        });
       }
-      setFormData({ nro: '', codigoConductor: '', idRolConductor: '', nroNotaTraslado: '' });
+      setFormData({ codigoConductor: '', idRolConductor: '', nroNotaTraslado: '' });
       fetchDetalles();
     } catch (error) {
-      console.error('Error al guardar el detalle del conductor:', error);
+      setError('Error al registrar el detalle');
+      console.error('Error al registrar el detalle:', error);
     }
   };
 
   const handleEdit = (detalle) => {
     setFormData({
-      nro: detalle.NRO,
       codigoConductor: detalle.CODIGOCONDUCTOR,
       idRolConductor: detalle.IDROLCONDUCTOR,
       nroNotaTraslado: detalle.NRONOTATRASLADO
@@ -109,21 +127,28 @@ const GestionarDetalleConductor = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       fetchDetalles();
+      Swal.fire({
+        title: "¡Detalle eliminado!",
+        text: "El detalle se ha eliminado correctamente.",
+        icon: "success"
+      });
     } catch (error) {
+      setError('Error al eliminar el detalle del conductor');
       console.error('Error al eliminar el detalle del conductor:', error);
     }
   };
 
   return (
     <Container className="mt-5">
+      {error && (
+        <Alert variant="danger" onClose={() => setError(null)} dismissible>
+          {error}
+        </Alert>
+      )}
       <Row className="mb-5">
         <Col md={12}>
           <h3>Gestionar Detalle del Conductor</h3>
           <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Label>Número</Form.Label>
-              <Form.Control type="text" name="nro" value={formData.nro} onChange={handleChange} required />
-            </Form.Group>
             <Form.Group>
               <Form.Label>Código del Conductor</Form.Label>
               <Form.Control as="select" name="codigoConductor" value={formData.codigoConductor} onChange={handleChange} required>
@@ -199,4 +224,4 @@ const GestionarDetalleConductor = () => {
   );
 };
 
-export default GestionarDetalleConductor;
+export default GestionDetalleConductor;

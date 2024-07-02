@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table,  Alert } from 'react-bootstrap';
 import axios from 'axios';
-import styles from '../Assets/gestion_empleados.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../Assets/gestion_empleados.module.css';
 
 const GestionItems = () => {
   const [items, setItems] = useState([]);
@@ -14,7 +18,8 @@ const GestionItems = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editItem, setEditItem] = useState(null);
   const [showTable, setShowTable] = useState(false);
- 
+  const [error, setError] = useState(null);
+
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
   const fetchItems = async () => {
@@ -23,6 +28,7 @@ const GestionItems = () => {
       setItems(response.data);
       setShowTable(true);
     } catch (error) {
+      setError('Error al obtener los items');
       console.error('Error al obtener los items:', error);
     }
   };
@@ -41,12 +47,23 @@ const GestionItems = () => {
       if (editItem) {
         await axios.put(`${backendUrl}/api/items/${editItem.CODIGOPAQUETE}/${editItem.NRO}`, newItem);
         setEditItem(null);
+        Swal.fire({
+          title: "¡Item actualizado!",
+          text: "El item se ha actualizado correctamente.",
+          icon: "success"
+        });
       } else {
         await axios.post(`${backendUrl}/api/items`, newItem);
+        Swal.fire({
+          title: "¡Item registrado!",
+          text: "El item se ha registrado correctamente.",
+          icon: "success"
+        });
       }
       setNewItem({ codigopaquete: '', nro: '', descripcion: '', pesoindividual: '' });
       fetchItems();
     } catch (error) {
+      setError('Error al registrar el item');
       console.error('Error al registrar el item:', error);
     }
   };
@@ -65,7 +82,13 @@ const GestionItems = () => {
     try {
       await axios.delete(`${backendUrl}/api/items/${codigopaquete}/${nro}`);
       fetchItems();
+      Swal.fire({
+        title: "¡Item eliminado!",
+        text: "El item se ha eliminado correctamente.",
+        icon: "success"
+      });
     } catch (error) {
+      setError('Error al eliminar el item');
       console.error('Error al eliminar el item:', error);
     }
   };
@@ -81,6 +104,7 @@ const GestionItems = () => {
       }
       setShowTable(true);
     } catch (error) {
+      setError('Error al buscar el item');
       console.error('Error al buscar el item:', error);
     }
   };
@@ -91,8 +115,14 @@ const GestionItems = () => {
   };
 
   return (
-    <Container className={styles.gestionContainer}>
-      <Row className="mt-5">
+    <Container className>
+      {error && (
+        <Alert variant="danger" onClose={() => setError(null)} dismissible>
+          {error}
+        </Alert>
+      )}
+
+        <Row className="mt-5">
         <Col xs={12}>
           <h3>{editItem ? 'Editar Item' : 'Registrar Nuevo Item'}</h3>
           <Form onSubmit={handleSubmit}>
@@ -148,8 +178,8 @@ const GestionItems = () => {
           <Col xs={12}>
             <h3>Lista de Items</h3>
             <div className="table-responsive">
-              <Table bordered>
-                <thead className="thead-light">
+              <Table bordered hover striped responsive="sm">
+                <thead className="thead-dark">
                   <tr>
                     <th>Código del Paquete</th>
                     <th>Número</th>
@@ -166,8 +196,21 @@ const GestionItems = () => {
                       <td>{item.DESCRIPCION}</td>
                       <td>{item.PESOINDIVIDUAL}</td>
                       <td>
-                        <Button variant="warning" size="sm" onClick={() => handleEdit(item)}>Editar</Button>
-                        <Button variant="danger" size="sm" onClick={() => handleDelete(item.CODIGOPAQUETE, item.NRO)}>Eliminar</Button>
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          onClick={() => handleEdit(item)}
+                          className="me-2"
+                        >
+                          <FontAwesomeIcon icon={faEdit} /> Editar
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(item.CODIGOPAQUETE, item.NRO)}
+                        >
+                          <FontAwesomeIcon icon={faTrashAlt} /> Eliminar
+                        </Button>
                       </td>
                     </tr>
                   ))}

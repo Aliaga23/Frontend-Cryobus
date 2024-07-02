@@ -33,17 +33,22 @@ import ChangePassword from './Components/ChangePassword';
 import GestionarDireccion from './Components/GestionDireccion';
 import GestionarConductor from './Components/GestionarConductor';
 import GestionarDetalleConductor from './Components/GestionarDetalleConductor';
+import GestionarReembolso from './Components/GestionarReembolso';
 function App() {
   return (
     <AuthProvider>
       <Router>
+
         <CustomNavbar />
+        
         <Routes>
+          
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout />} /> {/* Añadido logout */}
           <Route element={<ProtectedRoute />}>
+
             <Route path="/gestion" element={<Gestion />} />
             <Route path="/gestion_roles" element={<GestionRoles />} />
             <Route path="/gestion_permiso_rol" element={<GestionPermisoRol />} />
@@ -65,9 +70,12 @@ function App() {
             <Route path="/gestion_direccion" element={<GestionarDireccion />} />
             <Route path="/gestion_conductor" element={<GestionarConductor />} />
             <Route path="/gestion_detalle_conductor" element={<GestionarDetalleConductor />} />
+            <Route path="/gestion_reembolso" element={<GestionarReembolso />} />
 
             <Route path="/change_password" element={<ChangePassword />} />
             <Route path="/bitacora" element={<Bitacora />} />
+                        <Route path="/bitacora" element={<Bitacora />} />
+
           </Route>
         </Routes>
       </Router>

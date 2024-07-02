@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Row, Col, Form, Button, Table, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import styles from '../Assets/gestion_empleados.module.css';
 
@@ -16,22 +16,40 @@ const GestionClientes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editCliente, setEditCliente] = useState(null);
   const [showTable, setShowTable] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [celulares, setCelulares] = useState([]);
+  const [selectedCliente, setSelectedCliente] = useState(null);
+  const [newCelular, setNewCelular] = useState('');
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
+  const token = localStorage.getItem('token');
 
-  const fetchClientes = async () => {
+  const fetchClientes = useCallback(async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/clientes`);
+      const response = await axios.get(`${backendUrl}/api/clientes`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setClientes(response.data);
       setShowTable(true);
     } catch (error) {
       console.error('Error al obtener los clientes:', error);
     }
+  }, [backendUrl, token]);
+
+  const fetchCelulares = async (codigoCliente) => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/celulares/${codigoCliente}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCelulares(response.data);
+    } catch (error) {
+      console.error('Error al obtener los celulares del cliente:', error);
+    }
   };
 
   useEffect(() => {
     fetchClientes();
-  }, []);
+  }, [fetchClientes]);
 
   const handleChange = (e) => {
     setNewCliente({ ...newCliente, [e.target.name]: e.target.value });
@@ -41,10 +59,14 @@ const GestionClientes = () => {
     e.preventDefault();
     try {
       if (editCliente) {
-        await axios.put(`${backendUrl}/api/clientes/${editCliente.CODIGO}`, newCliente);
+        await axios.put(`${backendUrl}/api/clientes/${editCliente.CODIGO}`, newCliente, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setEditCliente(null);
       } else {
-        await axios.post(`${backendUrl}/api/clientes`, newCliente);
+        await axios.post(`${backendUrl}/api/clientes`, newCliente, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
       }
       setNewCliente({ codigo: '', ci: '', complementoci: '', apellidos: '', nombres: '', direccion: '' });
       fetchClientes();
@@ -67,7 +89,9 @@ const GestionClientes = () => {
 
   const handleDelete = async (codigo) => {
     try {
-      await axios.delete(`${backendUrl}/api/clientes/${codigo}`);
+      await axios.delete(`${backendUrl}/api/clientes/${codigo}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       fetchClientes();
     } catch (error) {
       console.error('Error al eliminar el cliente:', error);
@@ -77,7 +101,9 @@ const GestionClientes = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`${backendUrl}/api/clientes/${searchTerm}`);
+      const response = await axios.get(`${backendUrl}/api/clientes/${searchTerm}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setClientes([response.data]);
       setShowTable(true);
     } catch (error) {
@@ -88,6 +114,42 @@ const GestionClientes = () => {
   const handleCancelSearch = () => {
     setSearchTerm('');
     fetchClientes();
+  };
+
+  const handleAddCelular = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${backendUrl}/api/celulares`, { codigoCliente: selectedCliente.CODIGO, numero: newCelular }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchCelulares(selectedCliente.CODIGO);
+      setNewCelular('');
+    } catch (error) {
+      console.error('Error al agregar el celular:', error);
+    }
+  };
+
+  const handleDeleteCelular = async (codigoCliente, numero) => {
+    try {
+      await axios.delete(`${backendUrl}/api/celulares/${codigoCliente}/${numero}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchCelulares(codigoCliente);
+    } catch (error) {
+      console.error('Error al eliminar el celular:', error);
+    }
+  };
+
+  const openModal = (cliente) => {
+    setSelectedCliente(cliente);
+    fetchCelulares(cliente.CODIGO);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedCliente(null);
+    setCelulares([]);
   };
 
   return (
@@ -182,6 +244,7 @@ const GestionClientes = () => {
                           <td>
                             <Button variant="warning" size="sm" onClick={() => handleEdit(cliente)}>Editar</Button>
                             <Button variant="danger" size="sm" onClick={() => handleDelete(cliente.CODIGO)}>Eliminar</Button>
+                            <Button variant="info" size="sm" onClick={() => openModal(cliente)}>Añadir Celular</Button>
                           </td>
                         </tr>
                       ))
@@ -196,6 +259,42 @@ const GestionClientes = () => {
             </Col>
           </Row>
         )}
+
+        <Modal show={showModal} onHide={closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Gestión de Celulares</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleAddCelular}>
+              <Form.Group>
+                <Form.Label>Nuevo Celular</Form.Label>
+                <Form.Control type="text" value={newCelular} onChange={(e) => setNewCelular(e.target.value)} />
+              </Form.Group>
+              <Button type="submit" variant="primary" className="mt-2">Añadir Celular</Button>
+            </Form>
+            <Table bordered className="mt-4">
+              <thead>
+                <tr>
+                  <th>Celular</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {celulares.map(celular => (
+                  <tr key={celular.NUMERO}>
+                    <td>{celular.NUMERO}</td>
+                    <td>
+                      <Button variant="danger" size="sm" onClick={() => handleDeleteCelular(selectedCliente.CODIGO, celular.NUMERO)}>Eliminar</Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closeModal}>Cerrar</Button>
+          </Modal.Footer>
+        </Modal>
 
         <Row className="mt-5">
           <Col xs={12} className="text-center">

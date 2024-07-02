@@ -3,12 +3,12 @@ import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
 import styles from '../Assets/gestion_empleados.module.css';
 import { format } from 'date-fns';
+
 const GestionNotasTraslado = () => {
   const [notasTraslado, setNotasTraslado] = useState([]);
   const [camiones, setCamiones] = useState([]);
   const [planRutas, setPlanRutas] = useState([]);
   const [newNotaTraslado, setNewNotaTraslado] = useState({
-    nro: '',
     fechaLlegada: '',
     horaLlegada: '',
     fechaSalida: '',
@@ -71,7 +71,7 @@ const GestionNotasTraslado = () => {
       } else {
         await axios.post(`${backendUrl}/api/notasTraslado`, newNotaTraslado);
       }
-      setNewNotaTraslado({ nro: '', fechaLlegada: '', horaLlegada: '', fechaSalida: '', horaSalida: '', nroCamion: '', idPlanRuta: '' });
+      setNewNotaTraslado({ fechaLlegada: '', horaLlegada: '', fechaSalida: '', horaSalida: '', nroCamion: '', idPlanRuta: '' });
       fetchNotasTraslado();
     } catch (error) {
       console.error('Error al registrar la nota de traslado:', error);
@@ -80,7 +80,6 @@ const GestionNotasTraslado = () => {
 
   const handleEdit = (notaTraslado) => {
     setNewNotaTraslado({
-      nro: notaTraslado.NRO,
       fechaLlegada: notaTraslado.FECHALLEGADA,
       horaLlegada: notaTraslado.HORALLEGADA,
       fechaSalida: notaTraslado.FECHASALIDA,
@@ -107,10 +106,7 @@ const GestionNotasTraslado = () => {
           <Col xs={12}>
             <h3>{editNotaTraslado ? 'Editar Nota de Traslado' : 'Registrar Nueva Nota de Traslado'}</h3>
             <Form onSubmit={handleSubmit}>
-              <Form.Group className="mt-4">
-                <Form.Label htmlFor="nro">Número</Form.Label>
-                <Form.Control type="text" id="nro" name="nro" value={newNotaTraslado.nro} onChange={handleChange} placeholder="Ingrese el número de la nota de traslado" />
-              </Form.Group>
+             
               <Form.Group>
                 <Form.Label htmlFor="fechaLlegada">Fecha de Llegada</Form.Label>
                 <Form.Control type="date" id="fechaLlegada" name="fechaLlegada" value={newNotaTraslado.fechaLlegada} onChange={handleChange} />
