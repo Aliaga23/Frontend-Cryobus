@@ -26,7 +26,6 @@ const GestionPaquetes = () => {
   const [showModalItems, setShowModalItems] = useState(false);
   const [showModalTipos, setShowModalTipos] = useState(false);
   const [selectedPaquete, setSelectedPaquete] = useState(null);
-  const [error, setError] = useState(null);
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
 
@@ -118,7 +117,6 @@ const GestionPaquetes = () => {
       setNewItem({ codigopaquete: '', nro: '', descripcion: '', pesoindividual: '' });
       fetchItems(selectedPaquete.CODIGO);
     } catch (error) {
-      setError('Error al registrar el item');
       console.error('Error al registrar el item:', error);
     }
   };
@@ -170,7 +168,6 @@ const GestionPaquetes = () => {
         icon: "success"
       });
     } catch (error) {
-      setError('Error al eliminar el item');
       console.error('Error al eliminar el item:', error);
     }
   };
