@@ -4,7 +4,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import GestionReembolso from './GestionarReembolso'; // Importa el componente de Gestión de Reembolso
 import styles from '../Assets/gestion_empleados.module.css';
-import { jwtDecode } from 'jwt-decode'; // Para decodificar el token JWT
+import moment from 'moment';
+import {jwtDecode} from 'jwt-decode';
 
 const RegistrarEntrega = () => {
   const [entregas, setEntregas] = useState([]);
@@ -134,7 +135,6 @@ const RegistrarEntrega = () => {
     try {
       const method = newEntrega.NRO ? 'put' : 'post';
       const url = `${backendUrl}/api/entregas${method === 'put' ? `/${newEntrega.NRO}` : ''}`;
-      
       await axios[method](url, {
         ...newEntrega,
         IDUSUARIORECIBE: userId, // Usar el ID del usuario en sesión
@@ -273,8 +273,8 @@ const RegistrarEntrega = () => {
               {entregas.map(entrega => (
                 <tr key={entrega.NRO}>
                   <td>{entrega.NRO}</td>
-                  <td>{entrega.FECHAENTREGA}</td>
-                  <td>{entrega.HORAENTREGA}</td>
+                  <td>{entrega.FECHAENTREGA ? moment(entrega.FECHAENTREGA).utc().format('YYYY-MM-DD') : ''}</td>
+                  <td>{entrega.HORAENTREGA ? entrega.HORAENTREGA : ''}</td>
                   <td>{entrega.PRECIOESTIMADO}</td>
                   <td>{getClienteNombre(entrega.CODIGOCLIENTEENVIA)}</td>
                   <td>{getClienteNombre(entrega.CODIGOCLIENTERECIBE)}</td>
