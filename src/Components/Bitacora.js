@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Container, createTheme, ThemeProvider, Typography
+  Container, createTheme, ThemeProvider, Typography, Button, TextField, Box
 } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import io from 'socket.io-client';
 import axios from 'axios';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const socket = io('https://proyecto2-production-ba5b.up.railway.app');
 
 const Bitacora = () => {
   const [registros, setRegistros] = useState([]);
+  const [filteredRegistros, setFilteredRegistros] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     const fetchRegistros = async () => {
       try {
         const response = await axios.get('https://proyecto2-production-ba5b.up.railway.app/api/bitacora');
         setRegistros(response.data);
+        setFilteredRegistros(response.data);
       } catch (error) {
         console.error('Error al obtener la bitacora:', error);
       }
@@ -25,12 +31,34 @@ const Bitacora = () => {
 
     socket.on('nuevaAccion', (nuevoRegistro) => {
       setRegistros((prevRegistros) => [nuevoRegistro, ...prevRegistros]);
+      setFilteredRegistros((prevRegistros) => [nuevoRegistro, ...prevRegistros]);
     });
 
     return () => {
       socket.off('nuevaAccion');
     };
   }, []);
+
+  const filterRecords = useCallback(() => {
+    if (startDate && endDate) {
+      const filtered = registros.filter((record) => {
+        const recordDate = new Date(record.FECHA);
+        return recordDate >= new Date(startDate) && recordDate <= new Date(endDate);
+      });
+      setFilteredRegistros(filtered);
+    } else {
+      setFilteredRegistros(registros);
+    }
+  }, [startDate, endDate, registros]);
+
+  useEffect(() => {
+    filterRecords();
+  }, [filterRecords]);
+
+  const handleResetFilter = () => {
+    setStartDate('');
+    setEndDate('');
+  };
 
   const columns = [
     { name: 'NRO', label: 'NRO' },
@@ -135,13 +163,76 @@ const Bitacora = () => {
     }
   });
 
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(filteredRegistros);
+
+    // Add filters to the first row
+    ws['!autofilter'] = { ref: 'A1:H1' };
+
+    // Adjust column widths
+    const wscols = [
+      { wch: 5 }, // NRO
+      { wch: 10 }, // IDACCION
+      { wch: 10 }, // IDUSUARIO
+      { wch: 15 }, // IP
+      { wch: 10 }, // FECHA
+      { wch: 10 }, // HORA
+      { wch: 30 }, // ELEMENTO MODIFICADO
+      { wch: 35 }, // DETALLE
+    ];
+    ws['!cols'] = wscols;
+
+    // Add styles
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Bitacora");
+
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: EXCEL_TYPE });
+    saveAs(data, `Bitacora_${new Date().toLocaleDateString()}.xlsx`);
+  };
+
+  const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
   return (
     <Container>
       <h3 className="mt-3">Bitácora de Acciones</h3>
       <ThemeProvider theme={getMuiTheme()}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+          <TextField
+            label="Fecha de inicio"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            sx={{ marginRight: 2 }}
+          />
+          <TextField
+            label="Fecha de fin"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            sx={{ marginRight: 2 }}
+          />
+          <Button
+            variant="contained"
+            onClick={handleResetFilter}
+            style={{ marginBottom: '16px' }}
+          >
+            Restablecer Filtro
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={exportToExcel}
+            style={{ marginBottom: '16px' }}
+          >
+            Exportar a Excel
+          </Button>
+        </Box>
         <MUIDataTable
           title={"Registro de acciones en la bitácora"}
-          data={registros}
+          data={filteredRegistros}
           columns={columns}
           options={options}
         />

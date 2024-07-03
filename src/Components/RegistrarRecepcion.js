@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import GestionPaquetes from './GestionPaquetes';
 import GestionClientes from './GestionCliente';
 import styles from '../Assets/gestion_empleados.module.css';
+import {jwtDecode} from 'jwt-decode';
 
 const RegistrarRecepcion = () => {
   const [recepciones, setRecepciones] = useState([]);
@@ -14,12 +15,12 @@ const RegistrarRecepcion = () => {
   const [paquetes, setPaquetes] = useState([]);
   const [itemsPaquete, setItemsPaquete] = useState([]);
   const [newRecepcion, setNewRecepcion] = useState({
-    codigoClienteEnvia: '',
-    codigoClienteRecibe: '',
-    idTipoEnvio: '',
-    idPlanRuta: '',
-    costoPrevisto: '',
-    codigoPaquete: ''
+    CODIGOCLIENTEENVIA: '',
+    CODIGOCLIENTERECIBE: '',
+    IDTIPOENVIO: '',
+    IDPLANDERUTA: '',
+    PRECIOESTIMADO: '',
+    CODIGOPAQUETE: ''
   });
   const [showModalPaquete, setShowModalPaquete] = useState(false);
   const [showModalCliente, setShowModalCliente] = useState(false);
@@ -28,6 +29,9 @@ const RegistrarRecepcion = () => {
 
   const backendUrl = 'https://proyecto2-production-ba5b.up.railway.app';
   const token = localStorage.getItem('token');
+
+  const user = jwtDecode(token);
+  const userId = user.userId;
 
   const fetchClientes = useCallback(async () => {
     try {
@@ -112,10 +116,10 @@ const RegistrarRecepcion = () => {
     try {
       await axios.post(`${backendUrl}/api/recepciones`, {
         ...newRecepcion,
-        usuarioAtendiendo: 2801,
-        estadoEntrega: 1,
-        fechaRecepcion: new Date().toISOString().split('T')[0],
-        horaRecepcion: new Date().toTimeString().split(' ')[0],
+        IDUSUARIOENVIA: userId,
+        IDESTADOENTREGA: 1,
+        FECHARECEPCION: new Date().toISOString().split('T')[0],
+        HORARECEPCION: new Date().toTimeString().split(' ')[0],
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -126,12 +130,12 @@ const RegistrarRecepcion = () => {
       });
       fetchRecepciones();
       setNewRecepcion({
-        codigoClienteEnvia: '',
-        codigoClienteRecibe: '',
-        idTipoEnvio: '',
-        idPlanRuta: '',
-        costoPrevisto: '',
-        codigoPaquete: ''
+        CODIGOCLIENTEENVIA: '',
+        CODIGOCLIENTERECIBE: '',
+        IDTIPOENVIO: '',
+        IDPLANDERUTA: '',
+        PRECIOESTIMADO: '',
+        CODIGOPAQUETE: ''
       });
       setItemsPaquete([]);
     } catch (error) {
@@ -140,7 +144,7 @@ const RegistrarRecepcion = () => {
   };
 
   const handleSelectPaquete = async (e) => {
-    setNewRecepcion({ ...newRecepcion, codigoPaquete: e.target.value });
+    setNewRecepcion({ ...newRecepcion, CODIGOPAQUETE: e.target.value });
     await fetchItemsPaquete(e.target.value);
     setShowItemsModal(true);
   };
@@ -184,14 +188,14 @@ const RegistrarRecepcion = () => {
   };
 
   return (
-    <Container fluid className={styles.gestionContainer}>
+    <Container className={`${styles.gestionContainer} p-3`} style={{ maxWidth: '1400px' }}>
       <Row className="mt-5 justify-content-center">
-        <Col xs={12} md={8} lg={6}>
-          <h3 className="text-center">Registrar Recepción</h3>
+        <Col xs={12}>
+          <h3>Registrar Recepción</h3>
           <Form onSubmit={handleSubmitRecepcion}>
             <Form.Group>
               <Form.Label htmlFor="codigoClienteEnvia">Cliente que Envia</Form.Label>
-              <Form.Control as="select" id="codigoClienteEnvia" name="codigoClienteEnvia" value={newRecepcion.codigoClienteEnvia} onChange={handleChangeRecepcion} required>
+              <Form.Control as="select" id="CODIGOCLIENTEENVIA" name="CODIGOCLIENTEENVIA" value={newRecepcion.CODIGOCLIENTEENVIA} onChange={handleChangeRecepcion} required>
                 <option value="">Seleccione un cliente</option>
                 {clientes.map(cliente => (
                   <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
@@ -200,7 +204,7 @@ const RegistrarRecepcion = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="codigoClienteRecibe">Cliente que Recibe</Form.Label>
-              <Form.Control as="select" id="codigoClienteRecibe" name="codigoClienteRecibe" value={newRecepcion.codigoClienteRecibe} onChange={handleChangeRecepcion} required>
+              <Form.Control as="select" id="CODIGOCLIENTERECIBE" name="CODIGOCLIENTERECIBE" value={newRecepcion.CODIGOCLIENTERECIBE} onChange={handleChangeRecepcion} required>
                 <option value="">Seleccione un cliente</option>
                 {clientes.map(cliente => (
                   <option key={cliente.CODIGO} value={cliente.CODIGO}>{cliente.NOMBRES} {cliente.APELLIDOS}</option>
@@ -209,7 +213,7 @@ const RegistrarRecepcion = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="idTipoEnvio">Tipo de Envío</Form.Label>
-              <Form.Control as="select" id="idTipoEnvio" name="idTipoEnvio" value={newRecepcion.idTipoEnvio} onChange={handleChangeRecepcion} required>
+              <Form.Control as="select" id="IDTIPOENVIO" name="IDTIPOENVIO" value={newRecepcion.IDTIPOENVIO} onChange={handleChangeRecepcion} required>
                 <option value="">Seleccione un tipo de envío</option>
                 {tiposEnvio.map(tipo => (
                   <option key={tipo.ID} value={tipo.ID}>{tipo.NOMBRE}</option>
@@ -218,7 +222,7 @@ const RegistrarRecepcion = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="idPlanRuta">Plan de Ruta</Form.Label>
-              <Form.Control as="select" id="idPlanRuta" name="idPlanRuta" value={newRecepcion.idPlanRuta} onChange={handleChangeRecepcion} required>
+              <Form.Control as="select" id="IDPLANDERUTA" name="IDPLANDERUTA" value={newRecepcion.IDPLANDERUTA} onChange={handleChangeRecepcion} required>
                 <option value="">Seleccione un plan de ruta</option>
                 {planRutas.map(plan => (
                   <option key={plan.ID} value={plan.ID}>{plan.NOMBRELOCALIDAD} - {plan.NOMBREDEPARTAMENTO}</option>
@@ -226,12 +230,12 @@ const RegistrarRecepcion = () => {
               </Form.Control>
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="costoPrevisto">Costo Previsto</Form.Label>
-              <Form.Control type="number" id="costoPrevisto" name="costoPrevisto" value={newRecepcion.costoPrevisto} onChange={handleChangeRecepcion} required />
+              <Form.Label htmlFor="PRECIOESTIMADO">Costo Previsto</Form.Label>
+              <Form.Control type="number" id="PRECIOESTIMADO" name="PRECIOESTIMADO" value={newRecepcion.PRECIOESTIMADO} onChange={handleChangeRecepcion} required />
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="paquete">Seleccionar Paquete</Form.Label>
-              <Form.Control as="select" id="codigoPaquete" name="codigoPaquete" value={newRecepcion.codigoPaquete} onChange={handleSelectPaquete} required>
+              <Form.Label htmlFor="CODIGOPAQUETE">Seleccionar Paquete</Form.Label>
+              <Form.Control as="select" id="CODIGOPAQUETE" name="CODIGOPAQUETE" value={newRecepcion.CODIGOPAQUETE} onChange={handleSelectPaquete} required>
                 <option value="">Seleccione un paquete</option>
                 {paquetes.map(paquete => (
                   <option key={paquete.CODIGO} value={paquete.CODIGO}>{paquete.CODIGO}</option>
@@ -242,14 +246,12 @@ const RegistrarRecepcion = () => {
           </Form>
         </Col>
       </Row>
-
-      <Row className="mt-5 justify-content-center">
-        <Col xs={12} md={8} lg={6} className="d-flex justify-content-around">
-          <Button variant="info" onClick={handleShowModalCliente}>Gestionar Clientes</Button>
-          <Button variant="primary" onClick={handleShowModalPaquete}>Gestionar Paquetes</Button>
+      <Row className="mt-4 justify-content-center">
+        <Col className="">
+          <Button variant="info" size="md" style={{ width: '150px', marginRight: '10px' }} onClick={handleShowModalCliente}>Gestionar Clientes</Button>
+          <Button variant="primary" size="md" style={{ width: '150px', marginLeft: '10px' }} onClick={handleShowModalPaquete}>Gestionar Paquetes</Button>
         </Col>
       </Row>
-
       <Row className="mt-5">
         <Col xs={12}>
           <h3 className="text-center">Recepciones Registradas</h3>
@@ -281,7 +283,7 @@ const RegistrarRecepcion = () => {
                   <td>{getTipoEnvioNombre(recepcion.IDTIPOENVIO)}</td>
                   <td>{recepcion.IDPLANDERUTA}</td>
                   <td>{recepcion.IDESTADOENTREGA}</td>
-                  <td>{recepcion.IDUSUARIORECIBE}</td>
+                  <td>{recepcion.IDUSUARIOENVIA}</td>
                   <td><Button variant="dark" size="sm" onClick={() => handleVerPaquete(recepcion.CODIGOPAQUETE)}>Ver Paquete {recepcion.CODIGOPAQUETE}</Button></td>
                 </tr>
               ))}

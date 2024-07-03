@@ -12,7 +12,9 @@ const GestionTipoEnvio = () => {
 
   const fetchTipoEnvios = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/tipoEnvio`);
+      const response = await axios.get(`${backendUrl}/api/tipoEnvio`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       setTipoEnvios(response.data);
     } catch (error) {
       console.error('Error al obtener los tipos de envío:', error);
@@ -31,10 +33,14 @@ const GestionTipoEnvio = () => {
     e.preventDefault();
     try {
       if (editTipoEnvio) {
-        await axios.put(`${backendUrl}/api/tipoEnvio/${editTipoEnvio.ID}`, newTipoEnvio);
+        await axios.put(`${backendUrl}/api/tipoEnvio/${editTipoEnvio.ID}`, newTipoEnvio, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
         setEditTipoEnvio(null);
       } else {
-        await axios.post(`${backendUrl}/api/tipoEnvio`, newTipoEnvio);
+        await axios.post(`${backendUrl}/api/tipoEnvio`, newTipoEnvio, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
       }
       setNewTipoEnvio({ id: '', nombre: '' });
       fetchTipoEnvios();
@@ -50,7 +56,9 @@ const GestionTipoEnvio = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${backendUrl}/api/tipoEnvio/${id}`);
+      await axios.delete(`${backendUrl}/api/tipoEnvio/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       fetchTipoEnvios();
     } catch (error) {
       console.error('Error al eliminar el tipo de envío:', error);

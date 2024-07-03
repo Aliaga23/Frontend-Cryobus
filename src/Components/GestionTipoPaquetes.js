@@ -12,7 +12,9 @@ const GestionTipoPaquetes = () => {
 
   const fetchTipoPaquetes = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/tipoPaquete`);
+      const response = await axios.get(`${backendUrl}/api/tipoPaquete`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       setTipoPaquetes(response.data);
     } catch (error) {
       console.error('Error al obtener los tipos de paquete:', error);
@@ -31,10 +33,14 @@ const GestionTipoPaquetes = () => {
     e.preventDefault();
     try {
       if (editTipoPaquete) {
-        await axios.put(`${backendUrl}/api/tipoPaquete/${editTipoPaquete.ID}`, newTipoPaquete);
+        await axios.put(`${backendUrl}/api/tipoPaquete/${editTipoPaquete.ID}`, newTipoPaquete, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
         setEditTipoPaquete(null);
       } else {
-        await axios.post(`${backendUrl}/api/tipoPaquete`, newTipoPaquete);
+        await axios.post(`${backendUrl}/api/tipoPaquete`, newTipoPaquete, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
       }
       setNewTipoPaquete({ id: '', nombre: '' });
       fetchTipoPaquetes();
@@ -50,7 +56,9 @@ const GestionTipoPaquetes = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${backendUrl}/api/tipoPaquete/${id}`);
+      await axios.delete(`${backendUrl}/api/tipoPaquete/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       fetchTipoPaquetes();
     } catch (error) {
       console.error('Error al eliminar el tipo de paquete:', error);
