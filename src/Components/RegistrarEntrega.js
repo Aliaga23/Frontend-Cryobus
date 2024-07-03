@@ -134,6 +134,7 @@ const RegistrarEntrega = () => {
     try {
       const method = newEntrega.NRO ? 'put' : 'post';
       const url = `${backendUrl}/api/entregas${method === 'put' ? `/${newEntrega.NRO}` : ''}`;
+      
       await axios[method](url, {
         ...newEntrega,
         IDUSUARIORECIBE: userId, // Usar el ID del usuario en sesión

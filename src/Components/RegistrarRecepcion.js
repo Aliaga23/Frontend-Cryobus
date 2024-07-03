@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Form, Button, Table, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import moment from 'moment-timezone';
 import GestionPaquetes from './GestionPaquetes';
 import GestionClientes from './GestionCliente';
 import styles from '../Assets/gestion_empleados.module.css';
 import {jwtDecode} from 'jwt-decode';
+import { format } from 'date-fns';
 
 const RegistrarRecepcion = () => {
   const [recepciones, setRecepciones] = useState([]);
@@ -113,13 +115,15 @@ const RegistrarRecepcion = () => {
 
   const handleSubmitRecepcion = async (e) => {
     e.preventDefault();
+    const fechaActualBolivia = moment().tz("America/La_Paz").format('YYYY-MM-DD');
+    const horaActualBolivia = moment().tz("America/La_Paz").format('HH:mm:ss');
     try {
       await axios.post(`${backendUrl}/api/recepciones`, {
         ...newRecepcion,
         IDUSUARIOENVIA: userId,
         IDESTADOENTREGA: 1,
-        FECHARECEPCION: new Date().toISOString().split('T')[0],
-        HORARECEPCION: new Date().toTimeString().split(' ')[0],
+        FECHARECEPCION: fechaActualBolivia,
+        HORARECEPCION: horaActualBolivia,
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -275,7 +279,7 @@ const RegistrarRecepcion = () => {
               {recepciones.map(recepcion => (
                 <tr key={recepcion.NRO}>
                   <td>{recepcion.NRO}</td>
-                  <td>{recepcion.FECHARECEPCION}</td>
+                  <td>{format(new Date(recepcion.FECHARECEPCION), 'yyyy-MM-dd')}</td>
                   <td>{recepcion.HORARECEPCION}</td>
                   <td>{recepcion.PRECIOESTIMADO}</td>
                   <td>{getClienteNombre(recepcion.CODIGOCLIENTEENVIA)}</td>
