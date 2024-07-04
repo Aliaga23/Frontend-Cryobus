@@ -178,7 +178,7 @@ const RegistrarSalidaPaquete = () => {
               {notasTraslado.map(nota => (
                 <tr key={nota.NRO}>
                   <td>{nota.NRO}</td>
-                  <td>{moment(nota.FECHASALIDAPAQUETE).utc().format('YYYY-MM-DD')}</td>
+                  <td>{nota.FECHASALIDAPAQUETE ? moment(nota.FECHASALIDAPAQUETE).utc().format('YYYY-MM-DD'): ''}</td>
                   <td>{nota.HORASALIDAPAQUETE}</td>
                   <td>{nota.CONDUCTOR}</td>
                   <td>{nota.ROLCONDUCTOR}</td>

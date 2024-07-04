@@ -39,6 +39,9 @@ import ReporteEntrega from './Components/ReporteEntrega';
 import ReporteTraslado from './Components/ReporteTraslado';
 import RegistrarSalidaPaquete from './Components/RegistrarSalidaPaquete';
 import RegistrarLlegadaPaquete from './Components/RegistrarLlegadaPaquete';
+import ReporteGeneral from './Components/ReporteGeneral';
+
+
 
 function App() {
   return (
@@ -82,6 +85,7 @@ function App() {
             <Route path="/reporte_traslado" element={<ReporteTraslado />} />
             <Route path="/registrar_salida" element={<RegistrarSalidaPaquete />} />
             <Route path="/registrar_llegada" element={<RegistrarLlegadaPaquete />} />
+            <Route path="/reporte_general" element={<ReporteGeneral />} />
 
             <Route path="/change_password" element={<ChangePassword />} />
             <Route path="/bitacora" element={<Bitacora />} />

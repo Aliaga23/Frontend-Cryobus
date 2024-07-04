@@ -78,7 +78,9 @@ const routesConfig = {
         sector: "Reportes",
         routes: [
           { path: "/reporte_entrega", label: "Reporte Entrega", permiso: 6},
-          { path: "/reporte_traslado", label: "Reporte Traslado", permiso: 6}
+          { path: "/reporte_traslado", label: "Reporte Traslado", permiso: 6},
+          { path: "/reporte_general", label: "Reporte General", permiso: 6}
+
         ]
       }
     ]
