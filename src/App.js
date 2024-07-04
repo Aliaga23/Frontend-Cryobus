@@ -36,6 +36,7 @@ import GestionarDetalleConductor from './Components/GestionarDetalleConductor';
 import GestionarReembolso from './Components/GestionarReembolso';
 import RegistrarEntrega from './Components/RegistrarEntrega';
 import ReporteEntrega from './Components/ReporteEntrega';
+import ReporteTraslado from './Components/ReporteTraslado';
 
 function App() {
   return (
@@ -76,6 +77,7 @@ function App() {
             <Route path="/gestion_reembolso" element={<GestionarReembolso />} />
             <Route path="/registrar_entrega" element={<RegistrarEntrega />} />
             <Route path="/reporte_entrega" element={<ReporteEntrega />} />
+            <Route path="/reporte_traslado" element={<ReporteTraslado />} />
 
             <Route path="/change_password" element={<ChangePassword />} />
             <Route path="/bitacora" element={<Bitacora />} />

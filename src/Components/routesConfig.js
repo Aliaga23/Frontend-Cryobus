@@ -65,7 +65,9 @@ const routesConfig = {
           { path: "/gestion_notaentrega", label: "Registrar Nota Entrega", permiso: 5 },
           { path: "/gestion_notas_traslado", label: "Registrar Notas Traslado", permiso: 6 },
           { path: "/registrar_entrega", label: "Registrar Entrega", permiso: 6 },
-          { path: "/reporte_entrega", label: "Reporte Entrega", permiso: 6}
+          { path: "/reporte_entrega", label: "Reporte Entrega", permiso: 6},
+          { path: "/reporte_traslado", label: "Reporte Traslado", permiso: 6}
+
         ]
       }
     ]
