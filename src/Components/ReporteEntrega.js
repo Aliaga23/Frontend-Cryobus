@@ -1,7 +1,7 @@
 // frontend/src/components/ReporteEntrega.js
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Container, createTheme, ThemeProvider, Typography, Button, TextField, Box
+  Container, createTheme, ThemeProvider, Button, TextField, Box
 } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import io from 'socket.io-client';
