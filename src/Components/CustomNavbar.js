@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../Assets/logo.png';
 import routesConfig from './routesConfig';
-import { FaUser, FaTruck, FaUserTie, FaBoxOpen, FaRoute, FaSignInAlt, FaBook, FaHistory, FaSignOutAlt } from 'react-icons/fa'; // Importa los iconos que necesites
+import { FaUser, FaTruck, FaUserTie, FaBoxOpen, FaRoute, FaSignInAlt, FaBook, FaHistory, FaSignOutAlt, FaChartLine } from 'react-icons/fa'; // Importa los iconos que necesites
 
 const CustomNavbar = () => {
   const { user, role, permisos } = useAuth();
@@ -71,6 +71,7 @@ const CustomNavbar = () => {
       case 'Rutas': return FaRoute;
       case 'Registro': return FaBook;
       case 'Bitácora': return FaHistory;
+      case 'Reportes': return FaChartLine;
       default: return null; // Por defecto no hay ícono
     }
   };
@@ -89,7 +90,7 @@ const CustomNavbar = () => {
               <>
                 {renderDropdowns()}
                 <Nav.Link onClick={handleLogout}>
-                  <FaSignOutAlt className="me-2"style={{ display: 'inline-flex', alignItems: 'center' }} />Logout
+                  <FaSignOutAlt className="me-2" style={{ display: 'inline-flex', alignItems: 'center' }} />Logout
                 </Nav.Link>
               </>
             ) : (

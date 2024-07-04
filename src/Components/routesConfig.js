@@ -41,7 +41,6 @@ const routesConfig = {
           { path: "/gestion_estados_entrega", label: "Gestion Estado Entrega", permiso: 4 },
           { path: "/gestion_tipo_paquete", label: "Gestion Tipo Paquete", permiso: 11 },
           { path: "/gestion_tipoenvio", label: "Gestion Tipo Envio", permiso: 11 }
-
         ]
       },
       {
@@ -64,17 +63,26 @@ const routesConfig = {
           { path: "/gestion_recepcion", label: "Registrar Recepcion", permiso: 5 },
           { path: "/gestion_notaentrega", label: "Registrar Nota Entrega", permiso: 5 },
           { path: "/gestion_notas_traslado", label: "Registrar Notas Traslado", permiso: 6 },
-          { path: "/registrar_entrega", label: "Registrar Entrega", permiso: 6 },
+          { path: "/registrar_entrega", label: "Registrar Entrega", permiso: 6 }
+        ]
+      }
+    ]
+  },
+  reportes: {
+    title: "Reportes",
+    items: [
+      {
+        sector: "Reportes",
+        routes: [
           { path: "/reporte_entrega", label: "Reporte Entrega", permiso: 6},
           { path: "/reporte_traslado", label: "Reporte Traslado", permiso: 6}
-
         ]
       }
     ]
   },
   bitacora: {
     title: "Bitácora",
-    items: [ // Mantiene la estructura pero solo un item directo
+    items: [
       {
         sector: "Bitácora",
         routes: [
