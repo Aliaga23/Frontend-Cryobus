@@ -73,10 +73,7 @@ const ReporteEntrega = () => {
     },
     { 
       name: 'HORARECEPCION', 
-      label: 'HORA RECEPCION',
-      options: {
-        customBodyRender: (value) => value ? moment(value, 'HH:mm:ss').utc().format('HH:mm:ss') : ''
-      }
+
     },
     { 
       name: 'FECHAENTREGA', 
@@ -88,22 +85,19 @@ const ReporteEntrega = () => {
     
     { 
       name: 'HORAENTREGA', 
-      label: 'HORA ENTREGA',
-      options: {
-        customBodyRender: (value) => value ? moment(value, 'HH:mm:ss').utc().format('HH:mm:ss') : ''
-      }
+
     },
     { name: 'PRECIOESTIMADO', label: 'PRECIO ESTIMADO' },
-    { name: 'CODIGOCLIENTEENVIA', label: 'CODIGO CLIENTE ENVIA' },
-    { name: 'CODIGOCLIENTERECIBE', label: 'CODIGO CLIENTE RECIBE' },
-    { name: 'IDUSUARIOENVIA', label: 'ID USUARIO ENVIA' },
-    { name: 'IDUSUARIORECIBE', label: 'ID USUARIO RECIBE' },
-    { name: 'IDTIPOENVIO', label: 'ID TIPO ENVIO' },
-    { name: 'IDESTADOENTREGA', label: 'ID ESTADO ENTREGA' },
+    { name: 'CODIGOCLIENTEENVIA', label: 'CLIENTE ENVIA' },
+    { name: 'CODIGOCLIENTERECIBE', label: 'CLIENTE RECIBE' },
+    { name: 'IDUSUARIOENVIA', label: 'USUARIO ENVIA' },
+    { name: 'IDUSUARIORECIBE', label: 'USUARIO RECIBE' },
+    { name: 'IDTIPOENVIO', label: 'TIPO ENVIO' },
+    { name: 'IDESTADOENTREGA', label: 'ESTADO ENTREGA' },
     { name: 'NROREEMBOLSO', label: 'NRO REEMBOLSO' },
     { name: 'CODIGOPAQUETE', label: 'CODIGO PAQUETE' },
     { name: 'NRONOTATRASLADO', label: 'NRO NOTA TRASLADO' },
-    { name: 'IDPLANDERUTA', label: 'ID PLAN DE RUTA' }
+    { name: 'IDPLANDERUTA', label: 'PLAN DE RUTA' }
   ];
 
   const options = {
@@ -221,7 +215,7 @@ const ReporteEntrega = () => {
   const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
   return (
-    <Container style={{ maxWidth: '1500px' }}>
+    <Container style={{ maxWidth: '1650px' }}>
       <h3 className="mt-3">Reporte de Notas de Entrega</h3>
       <ThemeProvider theme={getMuiTheme()}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>

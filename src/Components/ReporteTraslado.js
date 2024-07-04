@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Container, createTheme, ThemeProvider,  Button, TextField, Box
+  Container, createTheme, ThemeProvider, Button, TextField, Box
 } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import io from 'socket.io-client';
@@ -67,29 +67,23 @@ const ReporteTraslado = () => {
       name: 'FECHALLEGADA', 
       label: 'FECHA LLEGADA',
       options: {
-        customBodyRender: (value) => value ? moment(value).utc().format('YYYY-MM-DD') : ''
+        customBodyRender: (value) => moment(value).utc().format('YYYY-MM-DD')
       }
     },
     { 
       name: 'HORALLEGADA', 
-      label: 'HORA LLEGADA',
-      options: {
-        customBodyRender: (value) => value ? moment(value, 'HH:mm:ss').utc().format('HH:mm:ss') : ''
-      }
+  
     },
     { 
       name: 'FECHASALIDA', 
       label: 'FECHA SALIDA',
       options: {
-        customBodyRender: (value) => value ? moment(value).utc().format('YYYY-MM-DD') : ''
+        customBodyRender: (value) =>  moment(value).utc().format('YYYY-MM-DD') 
       }
     },
     { 
       name: 'HORASALIDA', 
-      label: 'HORA SALIDA',
-      options: {
-        customBodyRender: (value) => value ? moment(value, 'HH:mm:ss').utc().format('HH:mm:ss') : ''
-      }
+ 
     },
     { name: 'NROCAMION', label: 'NRO CAMION' },
     { name: 'IDPLANRUTA', label: 'ID PLAN RUTA' }
