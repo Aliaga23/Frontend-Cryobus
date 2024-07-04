@@ -7,7 +7,6 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import moment from 'moment';
 
 const socket = io('https://proyecto2-production-ba5b.up.railway.app');
 
@@ -65,10 +64,7 @@ const ReporteTraslado = () => {
     { name: 'NRO', label: 'NRO' },
     { 
       name: 'FECHALLEGADA', 
-      label: 'FECHA LLEGADA',
-      options: {
-        customBodyRender: (value) => moment(value).utc().format('YYYY-MM-DD')
-      }
+     
     },
     { 
       name: 'HORALLEGADA', 
@@ -76,10 +72,7 @@ const ReporteTraslado = () => {
     },
     { 
       name: 'FECHASALIDA', 
-      label: 'FECHA SALIDA',
-      options: {
-        customBodyRender: (value) =>  moment(value).utc().format('YYYY-MM-DD') 
-      }
+  
     },
     { 
       name: 'HORASALIDA', 
