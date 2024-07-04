@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import axios from 'axios';
-import { format } from 'date-fns';
+import moment from 'moment';
 import '../Assets/gestion_empleados.module.css';
 
 const GestionPlanRutas = () => {
@@ -15,7 +15,9 @@ const GestionPlanRutas = () => {
     fechaSalidaEsperada: '',
     horaSalidaEsperada: '',
     fechaLlegadaEsperada: '',
-    horaLlegadaEsperada: ''
+    horaLlegadaEsperada: '',
+    localidadDestino: '',
+    departamentoDestino: ''
   });
   const [editPlanRuta, setEditPlanRuta] = useState(null);
 
@@ -88,7 +90,9 @@ const GestionPlanRutas = () => {
         fechaSalidaEsperada: '',
         horaSalidaEsperada: '',
         fechaLlegadaEsperada: '',
-        horaLlegadaEsperada: ''
+        horaLlegadaEsperada: '',
+        localidadDestino: '',
+        departamentoDestino: ''
       });
       fetchPlanRutas();
     } catch (error) {
@@ -104,7 +108,9 @@ const GestionPlanRutas = () => {
       fechaSalidaEsperada: planRuta.FECHASALIDAESPERADA,
       horaSalidaEsperada: planRuta.HORASALIDAESPERADA,
       fechaLlegadaEsperada: planRuta.FECHALLEGADAESPERADA,
-      horaLlegadaEsperada: planRuta.HORALLEGADAESPERADA
+      horaLlegadaEsperada: planRuta.HORALLEGADAESPERADA,
+      localidadDestino: planRuta.LOCALIDADDESTINO,
+      departamentoDestino: planRuta.DEPARTAMENTODESTINO
     });
     setEditPlanRuta(planRuta);
   };
@@ -127,113 +133,125 @@ const GestionPlanRutas = () => {
         <Col md={12}>
           <h3>{editPlanRuta ? 'Editar Plan de Ruta' : 'Registrar Nuevo Plan de Ruta'}</h3>
           <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col md={6} sm={12}>
-                <Form.Group>
-                  <Form.Label htmlFor="id">ID</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="id"
-                    name="id"
-                    value={newPlanRuta.id}
-                    onChange={handleChange}
-                    placeholder="Ingrese el ID del plan de ruta"
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6} sm={12}>
-                <Form.Group>
-                  <Form.Label htmlFor="nombreLocalidad">Nombre de la Localidad</Form.Label>
-                  <Form.Control
-                    as="select"
-                    id="nombreLocalidad"
-                    name="nombreLocalidad"
-                    value={newPlanRuta.nombreLocalidad}
-                    onChange={handleChange}
-                  >
-                    <option value="">Seleccione la Localidad</option>
-                    {localidades.map((localidad) => (
-                      <option key={localidad.NOMBRE} value={localidad.NOMBRE}>
-                        {localidad.NOMBRE}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6} sm={12}>
-                <Form.Group>
-                  <Form.Label htmlFor="nombreDepartamento">Nombre del Departamento</Form.Label>
-                  <Form.Control
-                    as="select"
-                    id="nombreDepartamento"
-                    name="nombreDepartamento"
-                    value={newPlanRuta.nombreDepartamento}
-                    onChange={handleChange}
-                  >
-                    <option value="">Seleccione el Departamento</option>
-                    {departamentos.map((departamento) => (
-                      <option key={departamento.NOMBRE} value={departamento.NOMBRE}>
-                        {departamento.NOMBRE}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-              <Col md={6} sm={12}>
-                <Form.Group>
-                  <Form.Label htmlFor="fechaSalidaEsperada">Fecha de Salida Esperada</Form.Label>
-                  <Form.Control
-                    type="date"
-                    id="fechaSalidaEsperada"
-                    name="fechaSalidaEsperada"
-                    value={newPlanRuta.fechaSalidaEsperada}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6} sm={12}>
-                <Form.Group>
-                  <Form.Label htmlFor="horaSalidaEsperada">Hora de Salida Esperada</Form.Label>
-                  <Form.Control
-                    type="time"
-                    id="horaSalidaEsperada"
-                    name="horaSalidaEsperada"
-                    value={newPlanRuta.horaSalidaEsperada}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6} sm={12}>
-                <Form.Group>
-                  <Form.Label htmlFor="fechaLlegadaEsperada">Fecha de Llegada Esperada</Form.Label>
-                  <Form.Control
-                    type="date"
-                    id="fechaLlegadaEsperada"
-                    name="fechaLlegadaEsperada"
-                    value={newPlanRuta.fechaLlegadaEsperada}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6} sm={12}>
-                <Form.Group>
-                  <Form.Label htmlFor="horaLlegadaEsperada">Hora de Llegada Esperada</Form.Label>
-                  <Form.Control
-                    type="time"
-                    id="horaLlegadaEsperada"
-                    name="horaLlegadaEsperada"
-                    value={newPlanRuta.horaLlegadaEsperada}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+            <Form.Group>
+              <Form.Label htmlFor="id">ID</Form.Label>
+              <Form.Control
+                type="text"
+                id="id"
+                name="id"
+                value={newPlanRuta.id}
+                onChange={handleChange}
+                placeholder="Ingrese el ID del plan de ruta"
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="nombreLocalidad">Nombre de la Localidad</Form.Label>
+              <Form.Control
+                as="select"
+                id="nombreLocalidad"
+                name="nombreLocalidad"
+                value={newPlanRuta.nombreLocalidad}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione la Localidad</option>
+                {localidades.map((localidad) => (
+                  <option key={localidad.NOMBRE} value={localidad.NOMBRE}>
+                    {localidad.NOMBRE}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="nombreDepartamento">Nombre del Departamento</Form.Label>
+              <Form.Control
+                as="select"
+                id="nombreDepartamento"
+                name="nombreDepartamento"
+                value={newPlanRuta.nombreDepartamento}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione el Departamento</option>
+                {departamentos.map((departamento) => (
+                  <option key={departamento.NOMBRE} value={departamento.NOMBRE}>
+                    {departamento.NOMBRE}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="fechaSalidaEsperada">Fecha de Salida Esperada</Form.Label>
+              <Form.Control
+                type="date"
+                id="fechaSalidaEsperada"
+                name="fechaSalidaEsperada"
+                value={newPlanRuta.fechaSalidaEsperada}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="horaSalidaEsperada">Hora de Salida Esperada</Form.Label>
+              <Form.Control
+                type="time"
+                id="horaSalidaEsperada"
+                name="horaSalidaEsperada"
+                value={newPlanRuta.horaSalidaEsperada}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="fechaLlegadaEsperada">Fecha de Llegada Esperada</Form.Label>
+              <Form.Control
+                type="date"
+                id="fechaLlegadaEsperada"
+                name="fechaLlegadaEsperada"
+                value={newPlanRuta.fechaLlegadaEsperada}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="horaLlegadaEsperada">Hora de Llegada Esperada</Form.Label>
+              <Form.Control
+                type="time"
+                id="horaLlegadaEsperada"
+                name="horaLlegadaEsperada"
+                value={newPlanRuta.horaLlegadaEsperada}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="localidadDestino">Localidad de Destino</Form.Label>
+              <Form.Control
+                as="select"
+                id="localidadDestino"
+                name="localidadDestino"
+                value={newPlanRuta.localidadDestino}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione la Localidad</option>
+                {localidades.map((localidad) => (
+                  <option key={localidad.NOMBRE} value={localidad.NOMBRE}>
+                    {localidad.NOMBRE}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="departamentoDestino">Departamento de Destino</Form.Label>
+              <Form.Control
+                as="select"
+                id="departamentoDestino"
+                name="departamentoDestino"
+                value={newPlanRuta.departamentoDestino}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione el Departamento</option>
+                {departamentos.map((departamento) => (
+                  <option key={departamento.NOMBRE} value={departamento.NOMBRE}>
+                    {departamento.NOMBRE}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
             <Button type="submit" variant="primary" className="mt-3">
               {editPlanRuta ? 'Actualizar' : 'Registrar'}
             </Button>
@@ -254,6 +272,8 @@ const GestionPlanRutas = () => {
                 <th>Hora Salida</th>
                 <th>Fecha Llegada</th>
                 <th>Hora Llegada</th>
+                <th>Localidad Destino</th>
+                <th>Departamento Destino</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -263,10 +283,12 @@ const GestionPlanRutas = () => {
                   <td>{planRuta.ID}</td>
                   <td>{planRuta.NOMBRELOCALIDAD}</td>
                   <td>{planRuta.NOMBREDEPARTAMENTO}</td>
-                  <td>{format(new Date(planRuta.FECHASALIDAESPERADA), 'yyyy-MM-dd')}</td>
+                  <td>{moment(planRuta.FECHASALIDAESPERADA).utc().format('YYYY-MM-DD')}</td>
                   <td>{planRuta.HORASALIDAESPERADA.slice(0, 5)}</td>
-                  <td>{format(new Date(planRuta.FECHALLEGADAESPERADA), 'yyyy-MM-dd')}</td>
+                  <td>{moment(planRuta.FECHALLEGADAESPERADA).utc().format('YYYY-MM-DD')}</td>
                   <td>{planRuta.HORALLEGADAESPERADA.slice(0, 5)}</td>
+                  <td>{planRuta.LOCALIDADDESTINO}</td>
+                  <td>{planRuta.DEPARTAMENTODESTINO}</td>
                   <td>
                     <Button
                       variant="warning"

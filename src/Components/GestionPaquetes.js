@@ -58,8 +58,13 @@ const GestionPaquetes = () => {
   };
 
   const fetchAvailableTiposPaquete = async () => {
+    const token = localStorage.getItem('token');
+
     try {
-      const response = await axios.get(`${backendUrl}/api/tipoPaquete`);
+
+      const response = await axios.get(`${backendUrl}/api/tipoPaquete`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setAvailableTiposPaquete(response.data);
     } catch (error) {
       console.error('Error al obtener los tipos de paquete disponibles:', error);

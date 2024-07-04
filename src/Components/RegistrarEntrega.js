@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import GestionReembolso from './GestionarReembolso'; // Importa el componente de Gestión de Reembolso
 import styles from '../Assets/gestion_empleados.module.css';
 import moment from 'moment';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const RegistrarEntrega = () => {
   const [entregas, setEntregas] = useState([]);
@@ -140,6 +140,7 @@ const RegistrarEntrega = () => {
         IDUSUARIORECIBE: userId, // Usar el ID del usuario en sesión
         fechaEntrega: new Date().toISOString().split('T')[0],
         horaEntrega: new Date().toTimeString().split(' ')[0],
+        IDESTADOENTREGA: 4 // Cambiar el estado de entrega a 4
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
